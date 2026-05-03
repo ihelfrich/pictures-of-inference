@@ -53,3 +53,6 @@ _site/
 
 # Claude Code session artifacts
 .claude/sessions/
+
+/.quarto/
+**/*.quarto_ipynb
