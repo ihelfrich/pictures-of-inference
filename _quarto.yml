@@ -16,6 +16,10 @@ book:
       chapters:
         - prose/part1/01-numbers-on-the-page.qmd
         - prose/part1/02-probability-as-area.qmd
+        - prose/part1/03-shapes-of-data.qmd
+        - prose/part1/04-grammar-of-graphics.qmd
+        - prose/part1/05-center-spread-shape.qmd
+        - prose/part1/06-lying-with-charts.qmd
   search: true
   page-navigation: true
 

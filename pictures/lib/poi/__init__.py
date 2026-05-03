@@ -10,6 +10,7 @@ from poi.style import (
     apply_defaults,
     clean_axes, annotate_value,
 )
+from poi import data
 
 __all__ = [
     "poi_style",
@@ -20,4 +21,5 @@ __all__ = [
     "FIG_OUTPUT",
     "apply_defaults",
     "clean_axes", "annotate_value",
+    "data",
 ]
