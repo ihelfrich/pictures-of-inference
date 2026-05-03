@@ -1,0 +1,174 @@
+\documentclass[11pt,twoside,openany]{book}
+
+\usepackage[
+  letterpaper,
+  inner=1.2in, outer=1.0in, top=1.0in, bottom=1.0in,
+  marginparwidth=0pt, marginparsep=0pt
+]{geometry}
+
+\usepackage{mathpazo}
+\usepackage[T1]{fontenc}
+\linespread{1.08}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\small\itshape\nouppercase{\leftmark}}
+\fancyhead[RO]{\small\itshape\nouppercase{\rightmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{12pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-20pt}{30pt}
+
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{bm}
+
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{codebg}{HTML}{f8f5f0}
+\definecolor{codeframe}{HTML}{d4c9b0}
+\definecolor{codekey}{HTML}{1a4f7a}
+\definecolor{codecomment}{HTML}{7a7a7a}
+\definecolor{codestr}{HTML}{b85c38}
+\lstset{
+  basicstyle=\small\ttfamily,
+  keywordstyle=\bfseries\color{codekey},
+  commentstyle=\itshape\color{codecomment},
+  stringstyle=\color{codestr},
+  backgroundcolor=\color{codebg},
+  frame=single, rulecolor=\color{codeframe},
+  breaklines=true, xleftmargin=8pt, xrightmargin=8pt,
+  aboveskip=10pt, belowskip=10pt, columns=flexible, framesep=6pt,
+}
+\lstdefinelanguage{Rlang}{
+  morekeywords={function,if,else,for,while,in,return,library,
+    lm,summary,plot,hist,mean,sd,var,rnorm,set.seed,
+    replicate,sample,data.frame,c,TRUE,FALSE,NULL,
+    rbinom,ifelse,cat,str,head,nrow,ncol,sapply,class,
+    cor,data,par,abline,curve,dnorm,t.test,power.t.test,sqrt,
+    rexp,dpois,pnorm,qnorm,dbinom,polygon,seq,lines,glm,
+    optim,solve,diag,binomial,IQR,median,summary,vif,anova,
+    integrate,optimize,arima,arima.sim,acf,pacf,ivreg,subset,
+    predict,forecast,exp,log,as.numeric,confint,coef,
+    runif,points},
+  morecomment=[l]{\#}, morestring=[b]", sensitive=true,
+}
+
+\usepackage[breakable,skins]{tcolorbox}
+\newtcolorbox{keyinsight}{
+  enhanced, breakable,
+  colframe=orange!70!black, colback=orange!5,
+  fonttitle=\sffamily\bfseries\small, title=Key Insight,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+\newtcolorbox{trythis}{
+  enhanced, breakable,
+  colframe=blue!50!black, colback=blue!3,
+  fonttitle=\sffamily\bfseries\small, title=Try This,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+\newtcolorbox{codelab}{
+  enhanced, breakable,
+  colframe=green!50!black, colback=green!3,
+  fonttitle=\sffamily\bfseries\small, title=Code Lab,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+\newtcolorbox{reflect}{
+  enhanced, breakable,
+  colframe=purple!50!black, colback=purple!3,
+  fonttitle=\sffamily\bfseries\small, title=Reflect Before Moving On,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue!50!black, urlcolor=blue!50!black}
+
+\newcommand{\E}{\operatorname{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+\newcommand{\bbeta}{\bm{\beta}}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\vspace*{2in}
+{\Huge\bfseries Pictures of Inference\par}
+\vspace{0.4in}
+{\Large A Visual Course in Statistics, Calculus,\\ and Econometrics\par}
+\vspace{0.8in}
+{\large Dr.\ Ian Helfrich\par}
+\vspace{0.15in}
+{\normalsize Georgia Institute of Technology\par}
+\vspace{2in}
+{\normalsize Draft Edition\quad---\quad 2026\par}
+\end{titlepage}
+
+\frontmatter
+\tableofcontents
+
+\mainmatter
+
+\part{Foundations}
+\include{chapters/whatisdata}
+\include{chapters/noise}
+\include{chapters/probability}
+\include{chapters/distributions}
+
+\part{Calculus and Linear Algebra}
+\include{chapters/derivatives}
+\include{chapters/integrals}
+\include{chapters/optimization}
+\include{chapters/matrices}
+
+\part{Descriptive Statistics}
+\include{chapters/centerspread}
+\include{chapters/correlation}
+
+\part{Inference}
+\include{chapters/sampling}
+\include{chapters/hypothesis}
+
+\part{Regression}
+\include{chapters/regression}
+\include{chapters/multiple_regression}
+\include{chapters/mle}
+\include{chapters/logistic}
+
+\part{Time Series}
+\include{chapters/timeseries}
+
+\part{Comparison of Means}
+\include{chapters/anova}
+
+\part{Modern Methods}
+\include{chapters/nonparametric}
+\include{chapters/regularization}
+\include{chapters/bayesian}
+
+\part{Panel and Causal Inference}
+\include{chapters/panel}
+\include{chapters/causal}
+\include{chapters/iv_did}
+
+\end{document}

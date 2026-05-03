@@ -1,0 +1,185 @@
+\chapter{Integrals}
+\label{ch:integrals}
+
+\noindent\textsc{If derivatives are about rates,} integrals are about totals.
+
+When water flows into a tank at a varying rate, the derivative of the water-level function tells you the current rate of inflow. The integral tells you how much water has accumulated. These are inverse operations, in a precise sense the Fundamental Theorem of Calculus will make exact.
+
+For statistics, the integral is the operation that turns a probability density function into a probability. The probability that a normal random variable falls between $-1.96$ and $1.96$ is the integral of the density over that range.
+
+\section{The area problem}
+
+Forget calculus for a moment. You have a non-negative function $f(x)$ on $[a, b]$, and you want to know the area of the region between the curve and the $x$-axis.
+
+If $f$ is constant, easy: it's a rectangle, area $= f \cdot (b - a)$. If $f$ is piecewise linear, you can split the region into trapezoids. But what if $f$ is some general curve?
+
+Here's the trick. Cut $[a, b]$ into $n$ small pieces of width $\Delta x = (b-a)/n$. On each piece, $f$ is approximately constant. Approximate the area on the $i$-th piece as a rectangle of height $f(x_i^*)$ for some sample point $x_i^*$ and width $\Delta x$. Sum these up:
+\begin{equation}
+  S_n = \sum_{i=1}^{n} f(x_i^*) \, \Delta x.
+  \label{eq:riemann-sum}
+\end{equation}
+This is a \emph{Riemann sum}. As $n \to \infty$ (rectangles get thinner), the approximation gets exact.
+
+\section{The definite integral}
+
+The limit, when it exists, is called the definite integral of $f$ from $a$ to $b$:
+\begin{equation}
+  \boxed{\int_a^b f(x) \, dx = \lim_{n \to \infty} \sum_{i=1}^{n} f(x_i^*) \, \Delta x.}
+  \label{eq:definite-integral}
+\end{equation}
+The notation is suggestive: the elongated S is for ``sum,'' $f(x)\,dx$ is the area of an infinitesimal rectangle of height $f(x)$ and width $dx$. The integral sums these infinitesimals from $a$ to $b$.
+
+For continuous $f$, the limit always exists. For more general $f$, you need conditions like ``bounded with finitely many discontinuities.''
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{fig_riemann.pdf}
+\caption{Riemann sums approaching the exact integral. The function is $f(x) = \tfrac{1}{2}x^2 + 1$ on $[0, 3]$, whose true area is $7.5$. With more rectangles (left to right: $n = 4, 8, 16, 64$), the approximation improves. The limit as $n \to \infty$ is the definite integral.}
+\label{fig:riemann}
+\end{figure}
+
+
+
+\paragraph{Key properties.}
+\begin{align}
+  \int_a^b [f(x) + g(x)]\,dx &= \int_a^b f(x)\,dx + \int_a^b g(x)\,dx, \\[4pt]
+  \int_a^b c\, f(x)\,dx &= c \int_a^b f(x)\,dx, \\[4pt]
+  \int_a^b f(x)\,dx &= -\int_b^a f(x)\,dx, \\[4pt]
+  \int_a^b f(x)\,dx &= \int_a^c f(x)\,dx + \int_c^b f(x)\,dx.
+\end{align}
+Linear, sign-flipping when you reverse the limits, additive when you split the interval.
+
+\section{The Fundamental Theorem of Calculus}
+
+The relationship between derivatives and integrals is captured by what is, with no exaggeration, one of the most important theorems in mathematics.
+
+\paragraph{Part 1.} If $F(x) = \int_a^x f(t)\,dt$, then $F'(x) = f(x)$.
+
+In words: integrating a function and then differentiating gives you back the original function. The integral is a kind of inverse of the derivative.
+
+\paragraph{Part 2.} If $F$ is any antiderivative of $f$ (meaning $F'(x) = f(x)$), then
+\begin{equation}
+  \boxed{\int_a^b f(x)\,dx = F(b) - F(a).}
+  \label{eq:ftoc}
+\end{equation}
+
+This is the computational power of calculus. To compute an integral, you find an antiderivative and evaluate it at the endpoints. The mass of accumulated change equals the difference of the antiderivative at the boundaries.
+
+\section{Common antiderivatives}
+
+Inverting the derivative rules from the previous chapter:
+\begin{align}
+  \int x^n \, dx &= \frac{x^{n+1}}{n+1} + C, \quad n \neq -1 \\[4pt]
+  \int \frac{1}{x}\, dx &= \ln|x| + C \\[4pt]
+  \int e^x \, dx &= e^x + C \\[4pt]
+  \int \cos x \, dx &= \sin x + C \\[4pt]
+  \int \sin x \, dx &= -\cos x + C
+\end{align}
+
+The $+C$ is the \emph{constant of integration}: any constant differentiates to zero, so antiderivatives are unique only up to addition of a constant. For definite integrals, the constants cancel: $F(b) + C - (F(a) + C) = F(b) - F(a)$.
+
+\section{$u$-substitution}
+
+The chain rule in reverse. To compute $\int f(g(x))\,g'(x)\,dx$, let $u = g(x)$, so $du = g'(x)\,dx$, and the integral becomes $\int f(u)\,du$. If you can integrate $f(u)$, you can integrate the original.
+
+\paragraph{Example.} Compute $\int 2x\, e^{x^2}\,dx$. Let $u = x^2$, so $du = 2x\,dx$. The integral becomes
+\[
+  \int e^u \, du = e^u + C = e^{x^2} + C.
+\]
+
+\section{Integration by parts}
+
+The product rule in reverse. From $(uv)' = u'v + uv'$:
+\[
+  \int u\,dv = uv - \int v\,du.
+\]
+This converts one integral into another, hopefully simpler.
+
+\paragraph{Example.} $\int x e^x \, dx$. Let $u = x$, $dv = e^x dx$, so $du = dx$ and $v = e^x$:
+\[
+  \int x e^x \, dx = x e^x - \int e^x \, dx = x e^x - e^x + C = (x-1)e^x + C.
+\]
+
+\section{Improper integrals}
+
+Sometimes the limits of integration are infinite, or the function blows up at one of the endpoints. These are \emph{improper integrals}, defined as limits:
+\begin{equation}
+  \int_a^{\infty} f(x)\,dx = \lim_{b \to \infty} \int_a^b f(x)\,dx.
+\end{equation}
+
+If the limit exists and is finite, the integral \emph{converges}. Otherwise it \emph{diverges}.
+
+\paragraph{Example.}
+\[
+  \int_1^{\infty} \frac{1}{x^2}\,dx = \lim_{b \to \infty}\left[-\frac{1}{x}\right]_1^b = \lim_{b\to\infty}\left(1 - \frac{1}{b}\right) = 1.
+\]
+Converges. But:
+\[
+  \int_1^{\infty} \frac{1}{x}\,dx = \lim_{b\to\infty}[\ln x]_1^b = \lim_{b\to\infty} \ln b = \infty.
+\]
+Diverges. The two functions $1/x$ and $1/x^2$ both go to zero, but the second decays fast enough for the area under the tail to be finite. The first doesn't.
+
+\section{Application: probabilities from densities}
+
+If $X$ is a continuous random variable with PDF $f(x)$, then
+\begin{equation}
+  P(a \leq X \leq b) = \int_a^b f(x)\,dx.
+\end{equation}
+For the standard normal: $f(x) = \frac{1}{\sqrt{2\pi}}e^{-x^2/2}$. The probability of $|X| \leq 1.96$ is $\int_{-1.96}^{1.96} f(x)\,dx \approx 0.95$.
+
+This integral has no closed form, which is why we use tables (or \texttt{pnorm} in R) instead of computing antiderivatives.
+
+\paragraph{Expected value as integral.}
+\begin{equation}
+  \E[X] = \int_{-\infty}^{\infty} x \cdot f(x)\,dx.
+\end{equation}
+The mean is a weighted average over the entire support, with the PDF as the weight.
+
+\begin{keyinsight}
+The integral is the inverse of the derivative. Computing it exactly requires finding an antiderivative; in practice, many integrals have no closed form and must be computed numerically.
+
+For statistics, the integral turns probability densities into probabilities. Every probability statement about a continuous random variable is, ultimately, an integral.
+\end{keyinsight}
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# Numerical integration
+integrate(function(x) x^2, lower = 0, upper = 3)
+# Should equal x^3/3 from 0 to 3 = 9. R gives 9.
+
+# Standard normal CDF via integration
+integrate(function(x) dnorm(x), lower = -1.96, upper = 1.96)
+# Should give about 0.95
+pnorm(1.96) - pnorm(-1.96)  # built-in: same answer
+
+# Plot a normal PDF and shade the central 95%
+x <- seq(-4, 4, length.out = 200)
+plot(x, dnorm(x), type = "l", lwd = 2,
+     ylab = "density", main = "P(-1.96 < Z < 1.96)")
+xx <- seq(-1.96, 1.96, length.out = 100)
+polygon(c(xx, rev(xx)), c(dnorm(xx), rep(0, 100)),
+        col = "lightblue", border = NA)
+lines(x, dnorm(x), lwd = 2)
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item Compute $\int_0^2 (3x^2 + 2x)\,dx$ by finding an antiderivative.
+  \item Use $u$-substitution to evaluate $\int x \cos(x^2)\,dx$.
+  \item Use integration by parts to evaluate $\int \ln x \,dx$.
+  \item For $f(x) = 2x$ on $[0, 1]$, verify that this is a valid PDF (integrates to 1) and find $\E[X]$.
+  \item Compute $\int_0^{\infty} e^{-\lambda x}\,\lambda\,dx$, the integral of an exponential PDF over its full support. What should the answer be and why?
+  \item Use R's \texttt{integrate()} to compute the standard normal probability $P(0 < Z < 2.5)$ and compare to \texttt{pnorm(2.5) - pnorm(0)}.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~State the Fundamental Theorem of Calculus from memory.
+
+\smallskip
+$\triangleright$~Why does the constant of integration not matter for definite integrals?
+
+\smallskip
+$\triangleright$~Why is the probability that a continuous random variable equals any specific value zero, even though the variable certainly takes some value?
+\end{reflect}

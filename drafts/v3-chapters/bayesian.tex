@@ -1,0 +1,174 @@
+\chapter{Bayesian Inference}
+\label{ch:bayesian}
+
+\noindent\textsc{Bayesian inference is a different way of thinking} about statistics. Frequentists treat parameters as fixed unknown constants and probabilities as long-run frequencies. Bayesians treat parameters as random variables and probabilities as degrees of belief. Both views give correct answers in their own framework, and for many problems the numerical answers nearly coincide. Where they differ, they differ for principled reasons.
+
+You've already seen the central machinery in the probability chapter: Bayes' theorem. Bayesian inference is what you get when you apply Bayes' theorem to parameters.
+
+\section{Prior, likelihood, posterior}
+
+You have data $\bm{x}$ and a model with parameter $\theta$. Three ingredients:
+
+\paragraph{Prior.} $p(\theta)$ — your beliefs about $\theta$ before seeing the data. Could be informative (you have prior knowledge) or vague (you want to let the data dominate).
+
+\paragraph{Likelihood.} $p(\bm{x} \mid \theta)$ — the probability of the observed data given each value of $\theta$. Same likelihood as in MLE.
+
+\paragraph{Posterior.} $p(\theta \mid \bm{x})$ — your beliefs about $\theta$ after seeing the data.
+
+These are linked by Bayes' theorem:
+\begin{equation}
+  \boxed{p(\theta \mid \bm{x}) = \frac{p(\bm{x} \mid \theta) \cdot p(\theta)}{p(\bm{x})}.}
+  \label{eq:bayes-inference}
+\end{equation}
+The denominator $p(\bm{x}) = \int p(\bm{x} \mid \theta) p(\theta)\, d\theta$ is a normalizing constant. Often we write the relationship as
+\[
+  p(\theta \mid \bm{x}) \propto p(\bm{x} \mid \theta) \cdot p(\theta).
+\]
+Posterior is proportional to likelihood times prior. The data updates the prior to give the posterior. With more data, the likelihood dominates; with less, the prior matters more.
+
+\section{Worked example: estimating a coin's bias}
+
+You want to know the bias $\theta$ of a coin (the probability of heads).
+
+\paragraph{Prior.} Before observing any flips, what do you believe about $\theta$? A reasonable prior is the Beta distribution: $\theta \sim \text{Beta}(\alpha, \beta)$. A flat prior $\text{Beta}(1, 1)$ says all values of $\theta \in [0, 1]$ are equally plausible. A prior favoring fairness, like $\text{Beta}(10, 10)$, concentrates around $\theta = 0.5$.
+
+\paragraph{Likelihood.} You flip the coin $n$ times and observe $k$ heads. The likelihood is binomial:
+\[
+  p(\bm{x} \mid \theta) = \binom{n}{k} \theta^k (1-\theta)^{n-k}.
+\]
+
+\paragraph{Posterior.} Beautifully, the posterior is also Beta:
+\[
+  \theta \mid \bm{x} \sim \text{Beta}(\alpha + k, \beta + n - k).
+\]
+This is a \emph{conjugate prior}: when you multiply the Beta prior by the binomial likelihood, you get a Beta posterior. The hyperparameters update by adding successes to $\alpha$ and failures to $\beta$.
+
+\paragraph{Numerical example.} You start with a flat prior $\text{Beta}(1, 1)$ and observe 8 heads in 10 flips. The posterior is $\text{Beta}(9, 3)$, with mean $9/12 = 0.75$ and 95\% credible interval roughly $(0.48, 0.93)$.
+
+The MLE would just be $\hat\theta = 8/10 = 0.8$. The posterior mean is slightly pulled toward 0.5 because the prior had some weight there. With more data, this shrinkage disappears.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\linewidth]{fig_bayesian.pdf}
+\caption{Bayesian updating in action. Starting with a Beta(2, 2) prior favoring fairness (gray), observing 8 heads in 10 flips produces the likelihood (gold), which combined with the prior yields the Beta(10, 4) posterior (blue). The posterior concentrates around 0.71, reflecting both the prior weight toward 0.5 and the data's pull toward 0.8.}
+\label{fig:bayesian}
+\end{figure}
+
+
+
+\section{Credible intervals vs.\ confidence intervals}
+
+This is where the philosophical difference becomes practical.
+
+A 95\% \textbf{credible interval} is a range that contains the parameter with 95\% posterior probability. The interpretation everyone wants from confidence intervals: ``I'm 95\% sure the parameter is in here.''
+
+A 95\% \textbf{confidence interval} is a procedure such that, repeated many times, 95\% of the resulting intervals contain the parameter. The parameter isn't random; the interval is.
+
+For symmetric posteriors with vague priors, the two coincide numerically. For skewed posteriors or informative priors, they don't. The credible interval is what most consumers of statistics naturally want; the confidence interval is what classical methods produce.
+
+\section{Conjugate priors and beyond}
+
+Some prior-likelihood pairs give posteriors in the same family as the prior. These are called conjugate. Examples:
+
+\begin{itemize}[noitemsep]
+  \item \textbf{Beta-Binomial}: Beta prior, binomial likelihood, Beta posterior.
+  \item \textbf{Normal-Normal} (known variance): Normal prior on the mean, Normal likelihood, Normal posterior.
+  \item \textbf{Gamma-Poisson}: Gamma prior on the rate, Poisson likelihood, Gamma posterior.
+  \item \textbf{Dirichlet-Multinomial}: generalization of Beta-Binomial to several categories.
+\end{itemize}
+
+Conjugacy makes posteriors analytically tractable. For most realistic models, no conjugate prior exists, and you compute posteriors numerically using Markov Chain Monte Carlo (MCMC) methods like Gibbs sampling, Metropolis-Hastings, or Hamiltonian Monte Carlo.
+
+\section{The role of the prior}
+
+The prior is the most contested part of Bayesian analysis.
+
+\paragraph{Subjectivists} embrace the prior. It encodes your beliefs, knowledge, expertise. Different priors give different posteriors, and that's appropriate: different people with different background information reach different conclusions.
+
+\paragraph{Objectivists} use \emph{reference priors} or \emph{Jeffreys priors} that minimize the influence of the prior, letting the data dominate. These are designed to be ``uninformative'' in a precise mathematical sense.
+
+\paragraph{Pragmatists} use weakly informative priors that encode mild beliefs (e.g., ``coefficients are probably between $-10$ and $10$'') to regularize estimates without dominating the data. This has become the dominant approach in applied Bayesian work.
+
+When you have lots of data, the prior matters less. With $n = 1000$ coin flips, almost any reasonable prior gives nearly the same posterior. With $n = 5$, the prior dominates.
+
+\section{Bayesian regression}
+
+The same logic applies to regression coefficients. Put a prior on $\bbeta$, compute the likelihood from the data, multiply, normalize. The posterior gives the joint distribution of all coefficients.
+
+For a normal linear model with normal priors, the posterior is also normal and computable in closed form. For more complex models (logistic, hierarchical, varying-slopes), MCMC samples from the posterior numerically. R packages like \texttt{rstanarm} and \texttt{brms} make this accessible: replace \texttt{lm()} with \texttt{stan\_glm()} and you have Bayesian regression with the same syntax.
+
+\paragraph{Why bother?} Three reasons.
+\begin{enumerate}[noitemsep]
+\item Probabilistic interpretation: ``the probability that the coefficient is positive is 0.97'' is a meaningful Bayesian statement.
+\item Easy uncertainty propagation: posterior samples make it trivial to compute the distribution of any function of parameters.
+\item Hierarchical models: when data has natural grouping (students within schools, patients within hospitals), Bayesian methods handle the partial pooling elegantly.
+\end{enumerate}
+
+\section{Markov Chain Monte Carlo}
+
+Computing posteriors involves integrating over the parameter space, which is intractable for any model with more than a few parameters. MCMC methods sample from the posterior without computing the integrals directly.
+
+The high-level idea: construct a Markov chain whose stationary distribution is the posterior. Run the chain long enough, and the samples it produces are approximately distributed as the posterior. Then use those samples to compute means, quantiles, credible intervals, predictions, anything you want.
+
+The technical details (Metropolis-Hastings, Gibbs sampling, NUTS) matter for implementation but not for understanding the framework. Modern tools (Stan, JAGS, PyMC) handle them automatically.
+
+\begin{keyinsight}
+Bayesian inference treats parameters as random variables and uses Bayes' theorem to update beliefs from prior to posterior using the data.
+
+The posterior distribution is the answer. From it you derive credible intervals (the parameter is in here with 95\% posterior probability), point estimates (posterior mean or median), and predictions (posterior predictive distribution).
+
+The prior is a feature, not a bug. With informative priors and small samples, the prior matters; with lots of data, the likelihood dominates. Either way, the framework is internally consistent.
+\end{keyinsight}
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# Beta-Binomial: estimate a coin's bias
+n <- 10; k <- 8                      # 8 heads in 10 flips
+alpha <- 1; beta <- 1                # flat prior
+
+# Posterior is Beta(alpha + k, beta + n - k)
+post_alpha <- alpha + k
+post_beta  <- beta + n - k
+
+# Posterior mean and 95% credible interval
+post_alpha / (post_alpha + post_beta)            # mean
+qbeta(c(0.025, 0.975), post_alpha, post_beta)    # 95% CI
+
+# Plot prior and posterior
+theta <- seq(0, 1, length.out = 200)
+plot(theta, dbeta(theta, alpha, beta), type = "l",
+     ylim = c(0, 4), col = "gray", lwd = 2,
+     ylab = "density", xlab = expression(theta))
+lines(theta, dbeta(theta, post_alpha, post_beta),
+      col = "blue", lwd = 2)
+legend("topleft", c("Prior", "Posterior"),
+       col = c("gray", "blue"), lwd = 2)
+
+# Bayesian regression with rstanarm
+# install.packages("rstanarm")
+# library(rstanarm)
+# fit <- stan_glm(mpg ~ wt + cyl, data = mtcars)
+# posterior_interval(fit, prob = 0.95)
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item Show that for a Beta$(\alpha, \beta)$ prior and a binomial likelihood with $k$ successes in $n$ trials, the posterior is Beta$(\alpha + k, \beta + n - k)$. (Hint: the posterior is proportional to the likelihood times prior; recognize the kernel of a Beta distribution.)
+  \item For a Beta(2, 2) prior and observed 3 heads in 5 flips, find the posterior mean and 90\% credible interval.
+  \item In R, plot the posterior for a coin's bias starting from Beta(1, 1) prior, after 0, 5, 20, and 100 observations (with $\theta = 0.7$). Watch the prior get overwhelmed.
+  \item Explain in your own words why a 95\% credible interval has the interpretation people \emph{want} from confidence intervals.
+  \item For the Normal-Normal conjugate model with known variance, derive the posterior mean as a precision-weighted average of the prior mean and the sample mean. (Hint: write log posterior, complete the square.)
+  \item When does the prior matter most: with little data or with lots? Why?
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~In your own words, what's the difference between a credible interval and a confidence interval?
+
+\smallskip
+$\triangleright$~The prior is the most criticized part of Bayesian inference. Is the criticism fair? Under what conditions does the prior matter most?
+
+\smallskip
+$\triangleright$~A frequentist and a Bayesian observe the same data. Will they always reach the same conclusion? When and why might they differ?
+\end{reflect}

@@ -1,0 +1,87 @@
+\chapter{What Is Data?}
+\label{ch:data}
+
+\noindent\textsc{Before you do anything else,} look at the spreadsheet. Not at the numbers. At the structure.
+
+Every dataset is a rectangle. Rows are observations---people, countries, time periods, transactions. Columns are variables---things measured about each observation. This sounds so simple it barely seems worth saying, but getting it wrong is the source of a surprising number of mistakes that happen downstream. When someone hands you a dataset and says ``analyze this,'' the first two questions you should ask are: \emph{What is each row?} and \emph{What is each column?}
+
+If you can't answer those questions clearly, you aren't ready to compute anything.
+
+\section{Observations and variables}
+
+A dataset about university students might look like this:
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcccc}
+  \toprule
+  Name & GPA & Hours Studied & Major & Year \\
+  \midrule
+  Alice   & 3.4 & 12 & Economics & Junior \\
+  Bob     & 3.7 & 18 & Biology   & Senior \\
+  Carla   & 2.9 &  8 & History   & Sophomore \\
+  David   & 3.1 & 14 & Economics & Junior \\
+  Elena   & 3.8 & 22 & Physics   & Senior \\
+  \bottomrule
+\end{tabular}
+\caption{Five students, four variables. Each row is one student. Each column is one measurement.}
+\label{tab:student-data}
+\end{table}
+
+Five rows, four columns. The rows are students. The columns are measurements about each student. This is the structure of every dataset you will ever encounter, whether it has five rows or five billion.
+
+\section{Types of variables}
+
+Not all columns are created equal. Some hold numbers you can add and average. Others hold labels that you can count but not meaningfully subtract.
+
+\textbf{Quantitative variables} take numerical values where arithmetic makes sense. GPA, hours studied, income, temperature, blood pressure. You can compute a mean, a standard deviation, a correlation. The numbers carry information about magnitude and distance.
+
+\textbf{Categorical variables} take values from a finite set of labels. Major, eye color, country of residence, blood type. You can count how many fall in each category. You can compute proportions. But the ``mean'' of Economics and Biology is not a meaningful quantity.
+
+The distinction matters because it determines which tools are legal. A histogram requires a quantitative variable. A bar chart requires a categorical one. A regression needs at least one of each (or all quantitative). Use the wrong tool on the wrong type and you'll get numbers that look authoritative and mean nothing.
+
+\paragraph{The gray zone.} Some variables sit in the middle. A Likert scale (1 = strongly disagree, 2 = disagree, \ldots, 5 = strongly agree) looks numerical but the distance between 1 and 2 might not equal the distance between 4 and 5. These are \emph{ordinal}: the values have a meaningful order but not necessarily meaningful distances. Whether to treat them as quantitative or categorical is a judgment call that researchers argue about, usually without resolving anything.
+
+ZIP codes are numbers but they're categorical. Jersey numbers are numbers but they're categorical. If computing the mean doesn't produce a meaningful quantity, the variable isn't quantitative. This test works every time.
+
+\begin{keyinsight}
+Before you analyze data, answer two questions: \emph{What is each row?} and \emph{What is each column?}
+
+The answers determine which tools are appropriate. A histogram on a categorical variable is gibberish. A frequency table on a continuous variable is just a histogram with extra steps.
+\end{keyinsight}
+
+\begin{codelab}
+The first thing you do with any new dataset is inspect its structure.
+\begin{lstlisting}[language=Rlang]
+data(iris)         # a built-in R dataset
+str(iris)          # types of each column
+head(iris)         # first 6 rows
+nrow(iris)         # how many observations
+ncol(iris)         # how many variables
+sapply(iris, class)  # variable types
+\end{lstlisting}
+\texttt{str()} is your best friend. Run it on every dataset before doing anything else. If a column is coded as \texttt{character} when it should be \texttt{numeric}, your analysis will break in ways that are hard to diagnose later.
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item A dataset records for 200 patients: age, blood type (A, B, AB, O), systolic blood pressure, and diabetes status (yes/no). Classify each variable.
+
+  \item A baseball dataset has jersey number, batting average, position, and team. Which columns can you compute a mean on? Why?
+
+  \item In R, load the \texttt{diamonds} dataset from ggplot2. Run \texttt{str(diamonds)}. Identify three categorical and three quantitative variables. Are any categorical variables ordinal?
+
+  \item Find a published paper in your field. In the methods section, identify the dataset structure. What is one row? How many rows? List five variables and classify each.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~In your own words, what makes a variable quantitative rather than categorical?
+
+\smallskip
+$\triangleright$~Why would computing the mean of a categorical variable produce a meaningless number?
+
+\smallskip
+$\triangleright$~You learned that ordinal variables sit between categorical and quantitative. Give an example from your daily life. When would you treat it as one versus the other?
+\end{reflect}
+

@@ -1,0 +1,127 @@
+\chapter{The Shape of Noise}
+\label{ch:noise}
+
+\noindent\textsc{Your brain is lying to you.}
+
+Not maliciously. Your visual system evolved to find patterns, and it is catastrophically good at its job. Show a human being a scatter plot of purely random data and they will find a trend. Show them a random time series and they will see cycles.
+
+This is a survival feature. The ancestors who saw the tiger in the tall grass lived. The ones who waited for statistical significance did not.
+
+The problem is that you aren't looking for tigers anymore. You're looking at data. And data is full of noise that looks, to a pattern-seeking brain, exactly like signal.
+
+\section{What does noise look like?}
+
+Nobody teaches this. That's the core failure of introductory statistics as it's currently taught. Courses spend weeks on the normal distribution, hypothesis tests, confidence intervals. They never once show students what pure randomness looks like so they can calibrate against it.
+
+Think about that for a second. We're asking people to decide whether a pattern in their data is ``real'' or ``just noise,'' and we've never shown them noise. It's like asking someone to spot a counterfeit bill without ever showing them a real one.
+
+So let's fix that.
+
+\begin{figure}[ht]\centering
+  \centering
+  \includegraphics[width=\linewidth]{fig_noise_timeseries.pdf}
+  \caption[Four time series]{Four time series. Top left: white noise---independent draws from a standard normal, no structure at all. Top right: a \emph{random walk}, which is just the cumulative sum of white noise. It looks like it has trends, cycles, momentum. It has none of these things. It is accumulated coin flips. Bottom left: a genuine linear trend buried in noise. Bottom right: a genuine periodic signal in noise. The top-right panel is the dangerous one.}
+  \label{fig:noise-ts}
+\end{figure}
+
+\section{The random walk problem}
+
+The random walk deserves special attention because it fools everyone.
+
+Formally, a random walk is $y_t = y_{t-1} + \varepsilon_t$ where $\varepsilon_t \sim N(0, \sigma^2)$. Each step is random and independent. But the cumulative sum wanders, sometimes far from zero, because positive and negative shocks accumulate rather than canceling. The expected distance from the origin after $n$ steps is proportional to $\sqrt{n}$, not zero.
+
+There are no trends in a random walk. No cycles. No momentum. Only accumulation.
+
+And yet. Hand a random walk to a financial analyst and they will draw trend lines on it. Hand it to a macroeconomist without context and they will identify ``structural breaks.'' Hand it to a journalist and tomorrow's headline writes itself.
+
+This isn't because these people are stupid. It's because the human visual system \emph{cannot} distinguish a random walk from a trend by inspection. The signals look identical. You need a formal test---like the Augmented Dickey-Fuller test, which we'll meet in the econometrics section---or you need a comparison.
+
+Here's the comparison.
+
+\section{The lineup protocol}
+
+In 2009, Buja, Cook, and Swayne published a paper with an idea so simple it should have existed decades earlier. They called it \emph{visual inference}, and it works like a police lineup.
+
+Take your real data and make a plot. Now generate several fake datasets under the null hypothesis---whatever ``nothing interesting is happening'' means for your problem. Make the same kind of plot from each fake dataset. Shuffle all the plots into a grid so you don't know which is real.
+
+Now look.
+
+If you can pick out the real plot, the pattern is detectable. If you can't, the pattern isn't strong enough to distinguish from noise. At least not by eye.
+
+\begin{figure}[ht]\centering
+  \centering
+  \includegraphics[width=\linewidth]{fig_lineup.pdf}
+  \caption[A visual lineup]{Nine scatter plots. One contains a genuine linear relationship ($r \approx 0.7$). The other eight are pure noise. Can you spot it before reading the answer? The answer is Plot~5. If you struggled, that tells you something about the signal strength at this sample size and noise level.}
+  \label{fig:lineup}
+\end{figure}
+
+\subsection{Why this works}
+
+The lineup protocol calibrates your visual system against the null distribution for \emph{your specific data and your specific plot type}. A residual-vs-fitted plot from a well-specified model looks different from a misspecified one. But does the difference look bigger than what random variation could produce? The lineup answers this directly.
+
+A traditional $p$-value answers a related question using a reference distribution that assumes a specific parametric model. The lineup is nonparametric. It works on any plot type, any data structure, any model. And it engages the one computational tool still better than any algorithm at detecting complex visual patterns: the human visual cortex.
+
+\subsection{The math underneath}
+
+You create a lineup of $m$ plots, exactly one from the real data. Under the null hypothesis (no real pattern), a viewer picking at random has probability $1/m$ of selecting the real plot. If $k$ out of $K$ independent viewers all select it, the $p$-value is
+\[
+  p = P(X \geq k), \quad \text{where} \quad X \sim \mathrm{Binomial}\!\left(K, \frac{1}{m}\right).
+\]
+With $m = 20$ plots and $K = 15$ viewers, if 10 of them identify the real plot, the $p$-value from a binomial test with $p_0 = 1/20$ is negligible. The pattern is real.
+
+Majumder, Hofmann, and Cook (2013) formalized this and showed that visual $p$-values track conventional test $p$-values closely for standard problems, but outperform them for detecting departures that standard tests weren't built to catch: nonlinear residual patterns, unusual heteroskedasticity, distributional oddities that escape skewness and kurtosis.
+
+\begin{keyinsight}
+Before you test for a pattern in data, learn what randomness looks like. The lineup protocol gives you a calibrated null: if you can spot the real data among fakes, the pattern is real. If you can't, reserve judgment. Your eyes are good, but they need a comparison to be trustworthy.
+\end{keyinsight}
+
+\section{What this changes about how you work}
+
+Most stats courses teach a workflow that goes: fit a model, run a test, check the $p$-value, declare significance or not. The residual plots are an afterthought. You glance at them, decide they ``look fine,'' and move on.
+
+The lineup protocol flips this. Before fitting any model, look at your data and ask: is the pattern I see real, or could noise produce something that looks just like this?
+
+This is not a replacement for formal tests. It's a complement. The lineup catches things the test misses (nonlinear patterns the $F$-test isn't testing for). The test catches things the lineup misses (small effects in large samples that are real but invisible to the eye). The combination is more powerful than either alone.
+
+\begin{codelab}
+The \texttt{nullabor} R package generates lineups automatically.
+\begin{lstlisting}[language=Rlang]
+# install.packages("nullabor")
+library(nullabor); library(ggplot2)
+set.seed(42)
+real_data <- data.frame(
+  x = runif(60, 0, 10),
+  y = 0.7 * runif(60, 0, 10) + rnorm(60, 0, 2))
+d <- lineup(null_permute("y"), real_data, n = 20)
+ggplot(d, aes(x, y)) +
+  geom_point(alpha = 0.5) +
+  facet_wrap(~ .sample) + theme_minimal()
+attr(d, "pos")   # reveal the answer
+\end{lstlisting}
+Show it to a friend. Don't tell them which panel is real. If they find it, your signal is detectable. If they can't, your effect might be noise---no matter what the $p$-value says.
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item Plot \texttt{rnorm(50)} as a time series five times with different seeds. Do any of the plots ``look like'' they have a trend? They shouldn't, but you'll probably see one that does.
+
+  \item Generate a random walk: \texttt{cumsum(rnorm(100))}. Plot it. Now generate 10 random walks and overlay them. What does the spread of paths tell you about the ``trend'' you saw in the first one?
+
+  \item Build a lineup with a known $r = 0.3$ scatter among 19 null plots. Can you identify it? What about $r = 0.5$? There's a threshold somewhere between these two values where the signal becomes detectable. That threshold is the visual equivalent of statistical power.
+
+  \item A financial blogger claims Bitcoin shows ``clear momentum patterns.'' Design a lineup test: 19 simulated random-walk paths with Bitcoin's daily volatility, one real Bitcoin path. Show to five people. How many find the real one?
+
+  \item Use \texttt{nullabor} to create a residual lineup from a misspecified regression (fit a line to quadratic data). Can viewers spot the real residual plot? This directly replaces the ``eyeball the residual plot'' workflow.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~Your brain finds patterns in pure noise. What does this mean for how you interpret scatter plots in published papers?
+
+\smallskip
+$\triangleright$~Can you think of a domain---finance, medicine, sports analytics---where random walks are routinely misinterpreted as trends?
+
+\smallskip
+$\triangleright$~The lineup protocol uses human perception as a test statistic. What are the advantages over a formula-based test? The disadvantages?
+\end{reflect}
+

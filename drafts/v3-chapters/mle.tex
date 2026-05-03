@@ -1,0 +1,185 @@
+\chapter{Maximum Likelihood Estimation}
+\label{ch:mle}
+
+\noindent\textsc{Almost every estimator} you'll encounter past a basic stats course is, in some sense, a maximum likelihood estimator. OLS is MLE for the normal linear model. Logistic regression is MLE for binary outcomes. Poisson regression, survival models, time-series models, almost everything: all MLE.
+
+The principle is one of the most powerful ideas in statistics. Once you have it, derivations that previously seemed magical become almost mechanical.
+
+\section{The likelihood function}
+
+You have data $\bm{x} = (x_1, \ldots, x_n)$ and a model that says these are independent draws from a distribution with PDF (or PMF) $f(x; \theta)$ depending on a parameter $\theta$. The \emph{likelihood} of $\theta$ given the data is
+\begin{equation}
+  L(\theta \mid \bm{x}) = \prod_{i=1}^{n} f(x_i; \theta).
+  \label{eq:likelihood-defn}
+\end{equation}
+This is the joint probability of the observed data, viewed as a function of the unknown $\theta$.
+
+Note: the likelihood is not a probability distribution over $\theta$. It is a function of $\theta$ for fixed data. Two values of $\theta$ can be compared by their likelihood, but $L$ does not integrate to 1 over $\theta$.
+
+\paragraph{The log-likelihood.} Products are awkward to differentiate. Logarithms turn products into sums:
+\begin{equation}
+  \ell(\theta) = \log L(\theta) = \sum_{i=1}^{n} \log f(x_i; \theta).
+  \label{eq:log-likelihood-mle}
+\end{equation}
+Maximizing $L$ and maximizing $\ell$ are equivalent (log is monotonic), so we always work with $\ell$.
+
+\section{The MLE principle}
+
+The maximum likelihood estimator is
+\begin{equation}
+  \hat\theta_{\text{MLE}} = \arg\max_\theta \, \ell(\theta).
+\end{equation}
+Pick the parameter value that makes the observed data most plausible.
+
+This is not a Bayesian statement. We are not saying $\theta$ is random; we are not putting a prior on it. We are saying: of all values of $\theta$, which one makes the data we actually observed most likely to occur? That value is our estimate.
+
+The first-order condition is
+\begin{equation}
+  \frac{d\ell}{d\theta}(\hat\theta) = 0.
+  \label{eq:score-equation}
+\end{equation}
+The derivative of the log-likelihood is called the \emph{score function}. The MLE is a zero of the score.
+
+\section{Worked example: the normal mean}
+
+$X_1, \ldots, X_n \sim N(\mu, \sigma^2)$, with both $\mu$ and $\sigma^2$ unknown. The PDF is
+\[
+  f(x; \mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\!\left(-\frac{(x - \mu)^2}{2\sigma^2}\right).
+\]
+Log:
+\[
+  \log f(x; \mu, \sigma^2) = -\frac{1}{2}\log(2\pi) - \frac{1}{2}\log\sigma^2 - \frac{(x - \mu)^2}{2\sigma^2}.
+\]
+The full log-likelihood:
+\begin{align}
+  \ell(\mu, \sigma^2)
+    &= -\frac{n}{2}\log(2\pi) - \frac{n}{2}\log\sigma^2 - \frac{1}{2\sigma^2}\sum_{i=1}^{n}(x_i - \mu)^2.
+\end{align}
+
+\paragraph{First-order condition for $\mu$.}
+\[
+  \frac{\partial \ell}{\partial \mu} = \frac{1}{\sigma^2}\sum_{i=1}^{n}(x_i - \mu) = 0 \implies \hat\mu = \bar{x}.
+\]
+The MLE for $\mu$ is the sample mean. This holds regardless of the value of $\sigma^2$.
+
+\paragraph{First-order condition for $\sigma^2$.} Differentiating with respect to $\sigma^2$ (treating $\sigma^2$ as a single variable):
+\[
+  \frac{\partial \ell}{\partial \sigma^2} = -\frac{n}{2\sigma^2} + \frac{1}{2\sigma^4}\sum_{i=1}^{n}(x_i - \mu)^2 = 0.
+\]
+Solve for $\sigma^2$, plugging in $\hat\mu = \bar{x}$:
+\[
+  \hat\sigma^2_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{x})^2.
+\]
+Notice the $1/n$, not $1/(n-1)$. The MLE for $\sigma^2$ is biased (it slightly underestimates the population variance). The standard ``sample variance'' you've been computing is the bias-corrected version. We'll discuss this trade-off shortly.
+
+\section{Worked example: OLS as MLE}
+
+Now the deeper claim: under normal errors, OLS \emph{is} the MLE for regression coefficients.
+
+Model: $y_i = \bbeta^\top \bm{x}_i + \varepsilon_i$ with $\varepsilon_i \sim N(0, \sigma^2)$ independent. Then $y_i \mid \bm{x}_i \sim N(\bbeta^\top \bm{x}_i, \sigma^2)$. The log-likelihood:
+\[
+  \ell(\bbeta, \sigma^2) = -\frac{n}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i - \bbeta^\top \bm{x}_i)^2.
+\]
+The first term doesn't involve $\bbeta$. The second term is, up to a positive constant, the \emph{negative} of the sum of squared residuals. Maximizing $\ell$ with respect to $\bbeta$ is equivalent to minimizing $\sum (y_i - \bbeta^\top \bm{x}_i)^2$. That's OLS.
+
+So under the normal-errors assumption, OLS isn't just convenient. It's optimal in the strong sense of being maximum likelihood. This is the deep reason OLS shows up everywhere.
+
+\section{Properties of MLE}
+
+Under regularity conditions (the parameter space is open, the likelihood is differentiable, the support of the data doesn't depend on the parameter), the MLE has remarkable asymptotic properties:
+
+\paragraph{Consistency.} $\hat\theta_n \to \theta_0$ in probability as $n \to \infty$. The MLE converges to the true parameter.
+
+\paragraph{Asymptotic normality.}
+\[
+  \sqrt{n}(\hat\theta_n - \theta_0) \xrightarrow{d} N\!\left(0, \mathcal{I}(\theta_0)^{-1}\right),
+\]
+where $\mathcal{I}(\theta) = -\E\!\left[\frac{d^2 \ell}{d\theta^2}\right]$ is the \emph{Fisher information}. The MLE is asymptotically normal with a specific (calculable) variance.
+
+\paragraph{Asymptotic efficiency.} The MLE achieves the Cramér-Rao lower bound. No other consistent estimator can have smaller asymptotic variance. The MLE is, in this sense, optimal.
+
+\paragraph{Invariance.} If $\hat\theta$ is the MLE of $\theta$, then $g(\hat\theta)$ is the MLE of $g(\theta)$ for any (smooth) function $g$.
+
+These properties are why MLE is the default. It's not the only good estimator, but it has nearly all the properties you'd want.
+
+\section{Standard errors from the Hessian}
+
+The asymptotic variance of the MLE involves the Fisher information. In practice, you estimate it by the negative Hessian of the log-likelihood at $\hat\theta$:
+\[
+  \widehat{\Var}(\hat\theta) \approx \left[-\frac{d^2 \ell}{d\theta\,d\theta^\top}(\hat\theta)\right]^{-1}.
+\]
+This is what software packages report. R's \texttt{glm()} fits MLEs and reports standard errors from this formula. \texttt{optim()} can return the Hessian if you ask for it; you invert it to get the variance.
+
+\section{Likelihood ratio tests}
+
+To compare nested models, the likelihood ratio statistic is
+\begin{equation}
+  \text{LR} = -2\bigl(\ell_{\text{restricted}} - \ell_{\text{unrestricted}}\bigr).
+  \label{eq:lr-test}
+\end{equation}
+Under the null hypothesis (the restriction holds), LR converges in distribution to $\chi^2_q$, where $q$ is the number of restrictions. This is one of three asymptotically equivalent tests (Wald, score, LR) for comparing models, and it's the most commonly reported.
+
+\begin{keyinsight}
+The MLE picks parameter values that maximize the probability of the observed data.
+
+For the normal linear model, MLE is OLS. For binary outcomes, MLE is logistic regression. For count data, MLE is Poisson regression.
+
+The MLE is consistent, asymptotically normal, and asymptotically efficient. Standard errors come from the Hessian of the log-likelihood. Likelihood ratio tests compare nested models.
+\end{keyinsight}
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# MLE for normal mean and variance
+set.seed(2024)
+data <- rnorm(100, mean = 5, sd = 3)
+
+nll <- function(par) {
+  mu <- par[1]; sigma <- par[2]
+  if (sigma <= 0) return(1e10)
+  -sum(dnorm(data, mu, sigma, log = TRUE))
+}
+
+fit <- optim(par = c(0, 1), fn = nll, hessian = TRUE)
+fit$par                            # MLEs of mu and sigma
+sqrt(diag(solve(fit$hessian)))     # standard errors
+
+# Logistic regression as MLE
+set.seed(7)
+n <- 200
+x <- rnorm(n)
+p <- 1 / (1 + exp(-(0.5 + 1.2 * x)))
+y <- rbinom(n, 1, p)
+
+# Built-in: glm()
+glm(y ~ x, family = binomial)
+
+# Manual MLE for the same problem
+log_lik <- function(beta) {
+  eta <- beta[1] + beta[2] * x
+  p <- 1 / (1 + exp(-eta))
+  -sum(y * log(p) + (1 - y) * log(1 - p))
+}
+optim(c(0, 0), log_lik)$par   # should match glm()
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item Show that the MLE of $p$ for $X_1, \ldots, X_n \sim \text{Bernoulli}(p)$ is $\hat p = \bar{x}$.
+  \item For $X_1, \ldots, X_n \sim \text{Poisson}(\lambda)$, show that the MLE of $\lambda$ is $\bar{x}$.
+  \item For an exponential distribution with rate $\lambda$ ($f(x) = \lambda e^{-\lambda x}$, $x \geq 0$), find the MLE of $\lambda$.
+  \item Why is the MLE of $\sigma^2$ in the normal model $\frac{1}{n}\sum(x_i - \bar{x})^2$ rather than $\frac{1}{n-1}\sum(x_i - \bar{x})^2$? What does this say about the trade-off between MLE and unbiasedness?
+  \item In R, simulate data from a Gamma distribution, then write a function for the negative log-likelihood and use \texttt{optim} to find the MLEs of the shape and rate.
+  \item Prove that maximizing the likelihood is equivalent to maximizing the log-likelihood. Where does the equivalence break down?
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~State the MLE principle in your own words.
+
+\smallskip
+$\triangleright$~Why is MLE called ``maximum likelihood'' rather than ``maximum probability''?
+
+\smallskip
+$\triangleright$~Without looking back, write down the relationship between OLS and MLE for the normal linear model. Why is this the deep reason OLS is so widely used?
+\end{reflect}

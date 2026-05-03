@@ -1,0 +1,143 @@
+\chapter{Regularization}
+\label{ch:regularization}
+
+\noindent\textsc{When you have many predictors,} OLS misbehaves. With $k$ close to $n$, coefficients become wildly unstable; standard errors balloon; predictions on new data are dreadful. The model overfits: it captures noise that doesn't generalize.
+
+The cure is regularization: deliberately bias the estimates toward zero in exchange for lower variance. The bias-variance trade-off is real, and a small bias can produce large gains in predictive accuracy. Three regularization methods—ridge, lasso, and elastic net—dominate practice.
+
+\section{Why OLS fails with many predictors}
+
+The OLS variance for $\hat\bbeta$ is $\sigma^2 (\bm{X}^\top \bm{X})^{-1}$. When predictors are correlated, $\bm{X}^\top \bm{X}$ is nearly singular and its inverse has huge diagonal entries. Coefficient variances explode. Predictions become noisy.
+
+The pure cure is more data, but you usually don't have more data. The pragmatic cure is to constrain the coefficients.
+
+\section{Ridge regression}
+
+Add a penalty on the squared magnitude of the coefficients to the OLS objective:
+\begin{equation}
+  \hat\bbeta_{\text{ridge}} = \arg\min_{\bbeta}\; \|\bm{y} - \bm{X}\bbeta\|^2 + \lambda \sum_{j=1}^{k} \beta_j^2.
+  \label{eq:ridge-objective}
+\end{equation}
+The hyperparameter $\lambda \geq 0$ controls the strength of the penalty. When $\lambda = 0$, you recover OLS. As $\lambda \to \infty$, all coefficients shrink toward zero. In between, you trade some bias for less variance.
+
+The ridge estimator has a closed form:
+\begin{equation}
+  \hat\bbeta_{\text{ridge}} = (\bm{X}^\top \bm{X} + \lambda \bm{I})^{-1} \bm{X}^\top \bm{y}.
+  \label{eq:ridge-estimator}
+\end{equation}
+The added $\lambda \bm{I}$ guarantees the matrix is invertible even when $\bm{X}^\top \bm{X}$ alone isn't. This is why ridge regression works when $k > n$ or when predictors are highly collinear: the penalty regularizes the inverse.
+
+\paragraph{Standardize first.} The penalty depends on the units of $\beta_j$, so standardize predictors (mean 0, variance 1) before fitting. Otherwise variables measured on small scales get penalized less than variables on large scales, for no good reason.
+
+\section{Lasso}
+
+Replace the squared-coefficient penalty with absolute values:
+\begin{equation}
+  \hat\bbeta_{\text{lasso}} = \arg\min_{\bbeta}\; \|\bm{y} - \bm{X}\bbeta\|^2 + \lambda \sum_{j=1}^{k} |\beta_j|.
+  \label{eq:lasso-objective}
+\end{equation}
+The $\ell_1$ penalty does something the $\ell_2$ penalty does not: it pushes some coefficients exactly to zero. The lasso simultaneously shrinks coefficients and performs variable selection.
+
+Geometrically, the $\ell_1$ ball has corners along the axes. As you increase the penalty, the optimal solution gets pulled toward these corners, where some coefficients are exactly zero.
+
+There's no closed form. Lasso is solved by coordinate descent or LARS. R's \texttt{glmnet} package handles this fast even for thousands of predictors.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{fig_regularization.pdf}
+\caption{Coefficient paths as the penalty $\lambda$ varies. Left (ridge): coefficients shrink smoothly toward zero but never reach it. Right (lasso): coefficients hit zero at finite $\lambda$, performing variable selection. Solid lines: truly nonzero coefficients. Dashed lines: truly zero coefficients (noise). Lasso correctly drives the noise coefficients to exactly zero.}
+\label{fig:regularization}
+\end{figure}
+
+
+
+\section{Elastic net}
+
+Combine both penalties:
+\begin{equation}
+  \hat\bbeta_{\text{enet}} = \arg\min_{\bbeta}\; \|\bm{y} - \bm{X}\bbeta\|^2 + \lambda_1 \sum_j |\beta_j| + \lambda_2 \sum_j \beta_j^2.
+\end{equation}
+Combines lasso's variable selection with ridge's stability when predictors are highly correlated. In practice, parameterized as a single $\lambda$ and a mixing parameter $\alpha \in [0, 1]$ (where $\alpha = 1$ is pure lasso and $\alpha = 0$ is pure ridge).
+
+\section{Choosing $\lambda$}
+
+The penalty strength is a hyperparameter. Too small, you overfit; too large, you underfit. Choose by cross-validation:
+
+\begin{enumerate}[noitemsep]
+\item Split the data into $K$ folds (typically $K = 5$ or $10$).
+\item For each candidate $\lambda$ value: fit the model on $K-1$ folds, predict on the held-out fold, record the test error.
+\item Average across folds. The $\lambda$ with the lowest cross-validated error wins.
+\end{enumerate}
+
+The R command \texttt{cv.glmnet()} does this automatically. The result is the value of $\lambda$ that gives the best out-of-sample prediction.
+
+\section{The bias-variance trade-off}
+
+Why do these methods help? The expected prediction error of an estimator decomposes:
+\begin{equation}
+  \E\bigl[(y - \hat y)^2\bigr] = \text{Bias}^2 + \text{Variance} + \text{Irreducible noise}.
+  \label{eq:bias-variance}
+\end{equation}
+OLS is unbiased ($\text{Bias} = 0$) but high variance. Ridge introduces bias to reduce variance. The total prediction error can be lower for the biased estimator, especially when predictors are correlated or $k$ is large relative to $n$.
+
+This is one of the deepest insights in modern statistics. Unbiasedness is not the goal. \emph{Low expected prediction error} is the goal, and a little bias is often the price of getting there.
+
+\begin{keyinsight}
+OLS is unbiased but can have huge variance when predictors are correlated or numerous.
+
+Regularization adds a penalty to the OLS objective, biasing estimates toward zero in exchange for much lower variance. Ridge ($\ell_2$ penalty) shrinks all coefficients smoothly. Lasso ($\ell_1$) shrinks and selects: it sets some coefficients exactly to zero. Elastic net combines both.
+
+Choose the penalty strength $\lambda$ by cross-validation. The bias-variance trade-off means a slightly biased estimator can have lower expected prediction error than the unbiased OLS.
+\end{keyinsight}
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# install.packages("glmnet")
+library(glmnet)
+
+# Simulate a high-dimensional problem
+set.seed(2024)
+n <- 100; p <- 50
+X <- matrix(rnorm(n * p), n, p)
+beta_true <- c(rep(2, 5), rep(0, 45))    # only 5 nonzero
+y <- X %*% beta_true + rnorm(n)
+
+# Ridge
+fit_ridge <- glmnet(X, y, alpha = 0)        # alpha = 0 is ridge
+plot(fit_ridge, xvar = "lambda")            # coefficient paths
+
+# Lasso
+fit_lasso <- glmnet(X, y, alpha = 1)        # alpha = 1 is lasso
+plot(fit_lasso, xvar = "lambda")
+
+# Cross-validation for lambda
+cv_lasso <- cv.glmnet(X, y, alpha = 1)
+plot(cv_lasso)
+cv_lasso$lambda.min                          # best lambda
+cv_lasso$lambda.1se                          # one SE rule
+
+# Coefficients at chosen lambda
+coef(cv_lasso, s = "lambda.min")             # nonzero ones survive
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item Show that the ridge estimator equals $(\bm{X}^\top \bm{X} + \lambda \bm{I})^{-1}\bm{X}^\top \bm{y}$. Take the derivative of the ridge objective and set it to zero.
+  \item For a single-predictor model, show that $\hat\beta_{\text{ridge}} = \hat\beta_{\text{OLS}} \cdot \frac{S_{xx}}{S_{xx} + \lambda}$. Notice that ridge always shrinks toward zero.
+  \item Why does lasso produce exactly-zero coefficients but ridge doesn't? Sketch the constraint sets ($\sum |\beta_j| \leq t$ vs.\ $\sum \beta_j^2 \leq t$) in two dimensions.
+  \item Generate a high-dimensional dataset where only a few predictors matter. Fit OLS, ridge, and lasso. Compare which method recovers the truth and which overfits.
+  \item Why must you standardize predictors before applying regularization? Construct an example where failing to standardize gives misleading coefficient comparisons.
+  \item Use \texttt{cv.glmnet} to choose $\lambda$ for a real or simulated dataset. Compare the model selected by lambda.min vs.\ lambda.1se.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~State the bias-variance trade-off in your own words. Why is unbiasedness not always the goal?
+
+\smallskip
+$\triangleright$~Lasso does variable selection. Ridge does not. What property of the $\ell_1$ penalty makes this happen?
+
+\smallskip
+$\triangleright$~Cross-validation chooses the penalty strength. Why does it work better than just looking at the training error?
+\end{reflect}

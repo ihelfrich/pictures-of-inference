@@ -1,0 +1,186 @@
+\chapter{Simple Linear Regression}
+\label{ch:regression}
+
+\noindent\textsc{A regression line is an opinion.} It is one particular answer to the question ``what does $y$ tend to do when $x$ changes?'' Like any opinion, it can be well-informed or reckless, carefully defended or stubbornly held against the evidence.
+
+The line itself is easy to fit. Two formulas, one for the slope, one for the intercept, and any computer can produce them in microseconds. The hard part---the part that separates someone who runs regressions from someone who understands them---is knowing when the line means something and when it doesn't.
+
+This chapter does both. We'll derive the formulas from scratch, because watching the optimization produce the estimator is how you internalize why OLS does what it does. Then we'll spend just as long on interpretation, because a coefficient without context is just a number.
+
+\section{The setup}
+
+You have $n$ observations, each a pair $(x_i, y_i)$. You believe, or at least you're willing to entertain, that the relationship between $x$ and $y$ is approximately linear:
+\begin{equation}
+  y_i = \beta_0 + \beta_1 x_i + \varepsilon_i, \qquad i = 1, \ldots, n.
+  \label{eq:regression-model}
+\end{equation}
+The parameters $\beta_0$ (intercept) and $\beta_1$ (slope) are unknown constants you want to estimate. The $\varepsilon_i$ are errors: everything that makes $y_i$ deviate from the line. Measurement noise. Omitted variables. Luck.
+
+\section{Why ``least squares''?}
+
+``Best fit'' needs a definition. OLS defines it as the line that minimizes the sum of squared residuals:
+\begin{equation}
+  S(\beta_0, \beta_1) = \sum_{i=1}^{n} \bigl(y_i - \beta_0 - \beta_1 x_i\bigr)^2.
+  \label{eq:sse}
+\end{equation}
+Why squared? Three reasons, each sufficient on its own.
+
+First, squaring penalizes large errors more than small ones. An error of 10 contributes 100 to the sum; an error of 1 contributes 1. This makes OLS allergic to outliers, which is sometimes a feature and sometimes a bug.
+
+Second, the squared-error function is smooth and differentiable everywhere. Absolute errors $|y_i - \hat{y}_i|$ would work too (and lead to median regression, which has real virtues), but the absolute value has a kink at zero that makes calculus harder.
+
+Third---and this is the deep reason---under the assumption that $\varepsilon_i \sim N(0, \sigma^2)$, minimizing the sum of squared errors is equivalent to maximizing the likelihood function. OLS is MLE for the normal linear model. We prove this in the MLE chapter.
+
+\section{Deriving the estimators}
+
+We want to minimize $S(\beta_0, \beta_1)$. Take partial derivatives, set to zero, solve.
+
+\paragraph{First-order condition for $\beta_0$.}
+\begin{equation}
+  \frac{\partial S}{\partial \beta_0} = -2\sum_{i=1}^{n}(y_i - \beta_0 - \beta_1 x_i) = 0.
+  \label{eq:foc-b0}
+\end{equation}
+Divide by $-2n$:
+\begin{equation}
+  \bar{y} = \hat\beta_0 + \hat\beta_1 \bar{x}.
+  \label{eq:line-means}
+\end{equation}
+This says the regression line passes through $(\bar{x}, \bar{y})$. Always. No matter what.
+
+It also says the residuals sum to zero. Not approximately. Exactly.
+
+\paragraph{First-order condition for $\beta_1$.}
+\begin{equation}
+  \frac{\partial S}{\partial \beta_1} = -2\sum_{i=1}^{n} x_i(y_i - \beta_0 - \beta_1 x_i) = 0.
+  \label{eq:foc-b1}
+\end{equation}
+Substitute $\hat\beta_0 = \bar{y} - \hat\beta_1 \bar{x}$ and simplify. The key algebraic identity is that $\sum x_i(y_i - \bar{y}) = \sum (x_i - \bar{x})(y_i - \bar{y})$, which holds because $\sum(y_i - \bar{y}) = 0$.
+
+After the algebra:
+\begin{equation}
+  \boxed{\hat\beta_1 = \frac{\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})^2} = \frac{S_{xy}}{S_{xx}}}
+  \label{eq:beta1}
+\end{equation}
+\begin{equation}
+  \boxed{\hat\beta_0 = \bar{y} - \hat\beta_1 \bar{x}}
+  \label{eq:beta0}
+\end{equation}
+
+That's it. Those are the OLS formulas.
+
+\section{Reading the slope}
+
+The slope $\hat\beta_1$ tells you the predicted change in $y$ for a one-unit increase in $x$. But look at its formula more carefully:
+\[
+  \hat\beta_1 = \frac{\widehat{\Cov}(x, y)}{\widehat{\Var}(x)} = r_{xy} \cdot \frac{s_y}{s_x},
+\]
+where $r_{xy}$ is the sample correlation and $s_x, s_y$ are the standard deviations. The slope is the correlation rescaled by the ratio of standard deviations.
+
+This decomposition is revealing. If $x$ and $y$ have the same units (say, test scores measured on the same scale), the slope is numerically close to the correlation. If the units differ (years of education vs. dollars of income), the rescaling converts the relationship into interpretable units: dollars per year.
+
+It also tells you something subtle: the slope and the correlation carry the same directional information. If $r > 0$, the slope is positive. If $r = 0$, the slope is zero. The slope just puts the relationship in natural units.
+
+\section{The residuals}
+
+The fitted values are $\hat{y}_i = \hat\beta_0 + \hat\beta_1 x_i$. The residuals are $e_i = y_i - \hat{y}_i$.
+
+From the first-order conditions, two things are guaranteed:
+\begin{align}
+  \sum_{i=1}^{n} e_i &= 0, \label{eq:resid-zero} \\
+  \sum_{i=1}^{n} x_i e_i &= 0. \label{eq:resid-ortho}
+\end{align}
+The residuals sum to zero. They are uncorrelated with $x$ in the sample. These are not assumptions. They are algebraic consequences of the optimization. They hold for every dataset, every regression, regardless of whether the model is right.
+
+What they don't guarantee: that the residuals are independent, or that they have constant variance, or that they're normal. Those are assumptions for inference, and you check them with residual plots.
+
+\section{$R^2$: what the line explains}
+
+\begin{figure}[ht]\centering
+  \centering
+  \includegraphics[width=\linewidth]{fig_variance_decomp.pdf}
+  \caption[Variance decomposition]{The Pythagorean decomposition. Left: total deviations from $\bar{y}$ (gold). Center: the part explained by the regression line (sage). Right: the residual part (rust). $R^2$ is the center panel divided by the left panel. In simple regression, $R^2 = r_{xy}^2$.}
+  \label{fig:var-decomp}
+\end{figure}
+
+Total variation in $y$ splits exactly:
+\[
+  \underbrace{\sum(y_i - \bar{y})^2}_{\mathrm{SS_{tot}}}
+  \;=\;
+  \underbrace{\sum(\hat{y}_i - \bar{y})^2}_{\mathrm{SS_{reg}}}
+  \;+\;
+  \underbrace{\sum e_i^2}_{\mathrm{SS_{res}}}.
+\]
+This decomposition is exact. The vectors of fitted deviations and residuals are orthogonal in $\mathbb{R}^n$---that's what the FOCs guarantee. The coefficient of determination is:
+\[
+  R^2 = \frac{\mathrm{SS_{reg}}}{\mathrm{SS_{tot}}} = 1 - \frac{\mathrm{SS_{res}}}{\mathrm{SS_{tot}}}.
+\]
+
+\begin{keyinsight}
+$R^2$ measures the fraction of variance explained. It does not measure whether the model is correct. A model can have $R^2 = 0.95$ and still be badly misspecified (Anscombe's quartet proves this). A model can have $R^2 = 0.10$ and still reveal a genuine, important effect buried in background noise.
+
+Always pair $R^2$ with residual diagnostics. The number tells you how much the model captured. The residual plot tells you whether what it missed has structure.
+\end{keyinsight}
+
+\section{The Gauss-Markov conditions}
+
+Under four assumptions, OLS is the \emph{Best Linear Unbiased Estimator} (BLUE):
+
+\begin{enumerate}
+  \item \textbf{Linearity.} $y = \beta_0 + \beta_1 x + \varepsilon$ is the correct functional form.
+  \item \textbf{Strict exogeneity.} $\E[\varepsilon_i | x_i] = 0$. The errors are uncorrelated with $x$. This is the big one. When it fails, OLS gives you something other than the causal effect. That ``something other'' is omitted variable bias, and it's the reason Part~III of this book exists.
+  \item \textbf{Homoskedasticity.} $\Var(\varepsilon_i | x_i) = \sigma^2$ for all $i$. The error variance doesn't depend on $x$. When this fails, OLS is still unbiased but the standard errors are wrong.
+  \item \textbf{No autocorrelation.} $\Cov(\varepsilon_i, \varepsilon_j) = 0$ for $i \neq j$. Violated in time series by construction.
+\end{enumerate}
+
+Add normality ($\varepsilon_i \sim N(0, \sigma^2)$) and you get exact $t$-distributions for inference. Without normality, you still get asymptotic normality from the CLT when $n$ is large.
+
+The point is: OLS always produces a line. These assumptions tell you whether to believe it.
+
+\begin{codelab}
+Fitting a regression in R takes one line. Understanding the output takes the rest of the chapter.
+\begin{lstlisting}[language=Rlang]
+set.seed(2024)
+x <- runif(100, 0, 10)
+y <- 3 + 1.5 * x + rnorm(100, 0, 2)
+
+fit <- lm(y ~ x)
+summary(fit)       # the money table
+coef(fit)          # just the coefficients
+confint(fit)       # 95% CIs
+plot(fitted(fit), resid(fit))  # the diagnostic
+abline(h = 0, lty = 2)
+
+# Verify the formula by hand
+sxy <- sum((x - mean(x)) * (y - mean(y)))
+sxx <- sum((x - mean(x))^2)
+c(sxy/sxx, mean(y) - sxy/sxx * mean(x))
+\end{lstlisting}
+The two methods give the same answer. They must. They compute the same formula.
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item \textbf{By hand.} Data: $(1, 2.1)$, $(2, 4.0)$, $(3, 5.8)$, $(4, 8.1)$, $(5, 10.3)$. Compute $\bar{x}$, $\bar{y}$, $S_{xx}$, $S_{xy}$, $\hat\beta_1$, $\hat\beta_0$, and $R^2$. Verify in R.
+
+  \item \textbf{Interpretation.} A regression of income (thousands of dollars) on education (years) gives $\hat{y} = 12.4 + 4.8x$. Interpret both the intercept and slope. Is the intercept meaningful? When would it be?
+
+  \item \textbf{Algebra.} Prove from the FOCs that $\sum e_i = 0$ and $\sum x_i e_i = 0$.
+
+  \item \textbf{The connection.} Show algebraically that $\hat\beta_1 = r_{xy} s_y / s_x$, and that $R^2 = r_{xy}^2$.
+
+  \item \textbf{Breaking the model.} In R, generate data where the truth is $y = x^2 + \varepsilon$. Fit a linear regression. Compute $R^2$. Plot residuals vs.\ fitted values. What do you see, and why is $R^2$ misleading?
+
+  \item \textbf{The deep one.} Show that OLS is MLE when $\varepsilon_i \sim N(0, \sigma^2)$. Write the log-likelihood, differentiate w.r.t.\ $\beta_0$ and $\beta_1$, and show it reduces to minimizing $\sum(y_i - \beta_0 - \beta_1 x_i)^2$.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~The slope has two forms: $S_{xy}/S_{xx}$ and $r_{xy} \cdot s_y/s_x$. Write both from memory. What does the second reveal that the first hides?
+
+\smallskip
+$\triangleright$~OLS always produces a line. Under what conditions should you not trust it?
+
+\smallskip
+$\triangleright$~A study reports ``$\hat\beta = 0.03$, $p < 0.001$.'' Name three questions you would ask before concluding the effect is real and important.
+\end{reflect}
+

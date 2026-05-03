@@ -1,0 +1,77 @@
+% Quarto PDF preamble for Pictures of Inference
+% Quarto manages: documentclass, geometry, fonts (default), graphicx,
+% hyperref, microtype, captions, listings, syntax highlighting.
+% This file adds only what the book needs on top.
+
+% --- Math fonts and packages ---
+\usepackage{mathpazo}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{bm}
+
+% --- Callout boxes ---
+\usepackage[breakable,skins]{tcolorbox}
+
+\newtcolorbox{keyinsight}{
+  enhanced, breakable,
+  colframe=orange!70!black, colback=orange!5,
+  fonttitle=\sffamily\bfseries\small, title=Key Insight,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+\newtcolorbox{tryitnow}{
+  enhanced, breakable,
+  colframe=blue!50!black, colback=blue!3,
+  fonttitle=\sffamily\bfseries\small, title=Try It Now,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+\newtcolorbox{inthemath}{
+  enhanced, breakable,
+  colframe=yellow!50!black, colback=yellow!4,
+  fonttitle=\sffamily\bfseries\small, title=Inside the Math,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+\newtcolorbox{codelab}{
+  enhanced, breakable,
+  colframe=green!50!black, colback=green!3,
+  fonttitle=\sffamily\bfseries\small, title=Code Lab,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+\newtcolorbox{expedition}{
+  enhanced, breakable,
+  colframe=teal!60!black, colback=teal!4,
+  fonttitle=\sffamily\bfseries\small, title=Expedition,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+\newtcolorbox{frontiernote}{
+  enhanced, breakable,
+  colframe=purple!50!black, colback=purple!3,
+  fonttitle=\sffamily\bfseries\small, title=Frontier Note,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% --- Custom math commands ---
+\newcommand{\E}{\operatorname{\mathbb{E}}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+\newcommand{\bbeta}{\bm{\beta}}
+\newcommand{\bvarepsilon}{\bm{\varepsilon}}
+\newcommand{\bX}{\bm{X}}
+\newcommand{\bY}{\bm{Y}}
+\newcommand{\bI}{\bm{I}}
+
+% Read-aloud aid for first-appearance notation
+\newcommand{\readas}[2]{#1\;\textit{(read: #2)}}

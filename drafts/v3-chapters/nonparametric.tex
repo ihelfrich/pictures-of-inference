@@ -1,0 +1,157 @@
+\chapter{Nonparametric Methods}
+\label{ch:nonparametric}
+
+\noindent\textsc{Most of what you've learned} assumes the data comes from a specific distribution, usually the normal. When that assumption is wrong, the procedures can give misleading answers. Heavy tails inflate $p$-values, skewness biases means, outliers wreck regressions. Sometimes the assumption is approximately right and the methods work fine; sometimes it isn't and they don't.
+
+Nonparametric methods sidestep distributional assumptions. They work with ranks, signs, or empirical distributions, not with means and variances. The trade-off is that they sacrifice some power when the parametric assumption actually holds. The benefit is that they keep working when it doesn't.
+
+\section{Why ranks?}
+
+Most nonparametric procedures replace the data with its ranks. If your sample is $\{4.2, 7.1, 3.0, 5.8, 6.5\}$, the ranks are $\{2, 5, 1, 3, 4\}$. Two things happen when you do this.
+
+First, you destroy information about magnitude. The rank cannot distinguish $7.1$ from $700$. This is a feature when outliers are unreliable, a bug when magnitudes carry useful information.
+
+Second, you make the sampling distribution of any rank-based statistic exactly known under the null hypothesis. You don't need normality, because ranks are uniform integers regardless of the underlying distribution.
+
+\section{The Wilcoxon signed-rank test}
+
+A nonparametric alternative to the one-sample $t$-test. Tests whether the median of a symmetric distribution equals a hypothesized value $\mu_0$.
+
+\paragraph{Procedure.}
+\begin{enumerate}[noitemsep]
+  \item Compute differences $d_i = x_i - \mu_0$.
+  \item Drop any zeros.
+  \item Rank the absolute values $|d_i|$.
+  \item Sum the ranks where $d_i > 0$ to get $W^+$. Sum the ranks where $d_i < 0$ to get $W^-$.
+  \item The test statistic is $\min(W^+, W^-)$ (or the standard $W^+$, depending on tables).
+\end{enumerate}
+
+Under the null, positive and negative deviations should be symmetric, so $W^+$ and $W^-$ should be similar. Large differences indicate the median differs from $\mu_0$.
+
+For larger samples, the normal approximation is good:
+\[
+  Z = \frac{W^+ - n(n+1)/4}{\sqrt{n(n+1)(2n+1)/24}} \xrightarrow{d} N(0, 1).
+\]
+
+\section{The Mann-Whitney U test}
+
+Also called Wilcoxon rank-sum. The nonparametric alternative to the two-sample $t$-test. Tests whether two independent samples come from the same distribution.
+
+\paragraph{Procedure.}
+\begin{enumerate}[noitemsep]
+  \item Combine both samples into one pool and rank all observations.
+  \item Sum the ranks for sample 1: call this $R_1$.
+  \item Compute $U_1 = R_1 - n_1(n_1+1)/2$, similarly for $U_2$.
+  \item Use $U = \min(U_1, U_2)$ as the test statistic.
+\end{enumerate}
+
+Under $H_0$ (same distribution in both groups), $U$ should be roughly $n_1 n_2 / 2$. Large deviations indicate the distributions differ. The Mann-Whitney is the right tool when you don't trust normality but still want to test ``does group A tend to be larger than group B?''
+
+\paragraph{What it tests, exactly.} Mann-Whitney tests whether $P(X_1 > X_2) = 0.5$. This is a statement about \emph{stochastic dominance}, not specifically about means or medians. If both distributions have the same shape, it's a test of equal medians. If shapes differ, the interpretation is more nuanced.
+
+\section{The Kruskal-Wallis test}
+
+The nonparametric alternative to one-way ANOVA. Tests whether $k$ samples come from the same distribution.
+
+The test statistic is
+\begin{equation}
+  H = \frac{12}{n(n+1)} \sum_{j=1}^{k}\frac{R_j^2}{n_j} - 3(n+1),
+\end{equation}
+where $R_j$ is the sum of ranks in group $j$ over the combined pool. Under the null, $H$ approximately follows $\chi^2_{k-1}$ for moderate samples.
+
+If significant, follow up with pairwise Mann-Whitney tests with multiple-comparisons correction.
+
+\section{The bootstrap}
+
+A different style of nonparametric inference. Instead of replacing data with ranks, the bootstrap resamples \emph{from the data itself}.
+
+\paragraph{The basic bootstrap.}
+\begin{enumerate}[noitemsep]
+  \item Treat your sample of size $n$ as the population.
+  \item Draw a sample of size $n$ \emph{with replacement} from your data. This is a \emph{bootstrap sample}.
+  \item Compute the statistic of interest (mean, median, regression coefficient) on the bootstrap sample.
+  \item Repeat steps 2-3 thousands of times.
+  \item The distribution of the bootstrap statistics approximates the sampling distribution.
+\end{enumerate}
+
+You can use the bootstrap to compute standard errors, confidence intervals, and hypothesis tests for almost any statistic, no matter how complicated. There's no need for closed-form expressions for the sampling distribution.
+
+\paragraph{Bootstrap confidence intervals.} The simplest is the \emph{percentile method}: take the 2.5th and 97.5th percentiles of the bootstrap distribution as the 95\% CI. There are more refined methods (BCa, studentized) for skewed sampling distributions.
+
+\paragraph{Why does this work?} Surprisingly deep. The empirical distribution of your data is a consistent estimator of the population distribution. Sampling from the empirical distribution is, asymptotically, like sampling from the population. The bootstrap distribution converges to the true sampling distribution as $n$ grows.
+
+\paragraph{When it fails.} The bootstrap can struggle with very small samples, with statistics that depend on extreme order statistics (like the maximum), and with highly dependent data (time series, clustered data) unless you use a block bootstrap.
+
+\section{Permutation tests}
+
+Another resampling method. Randomly shuffle group labels and recompute the test statistic many times. The proportion of shuffled values exceeding the observed statistic is the $p$-value.
+
+The logic: under the null hypothesis (no group effect), the labels are exchangeable. Whatever group each observation got assigned is irrelevant to its value. If your observed statistic is extreme relative to the shuffled distribution, the labels must matter.
+
+Permutation tests give exact $p$-values without distributional assumptions. They're the gold standard for hypothesis tests when you can articulate exactly what is being randomized.
+
+\begin{keyinsight}
+Nonparametric methods don't require distributional assumptions like normality.
+
+Rank-based tests (Wilcoxon, Mann-Whitney, Kruskal-Wallis) replace data with ranks and produce exact distributions under the null.
+
+Resampling methods (bootstrap, permutation) use the data itself to approximate sampling distributions for any statistic.
+
+The trade-off: nonparametric tests are slightly less powerful than parametric tests when the parametric assumptions hold, but more reliable when they don't.
+\end{keyinsight}
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# Wilcoxon signed-rank
+x <- c(89, 91, 88, 95, 93, 87, 92, 90)
+wilcox.test(x, mu = 90)
+
+# Mann-Whitney U
+group_a <- c(78, 82, 75, 80, 77, 81)
+group_b <- c(85, 88, 82, 90, 86, 84)
+wilcox.test(group_a, group_b)
+
+# Kruskal-Wallis
+data(PlantGrowth)
+kruskal.test(weight ~ group, data = PlantGrowth)
+
+# Bootstrap CI for the mean
+set.seed(2024)
+x <- rgamma(40, shape = 2, rate = 0.5)
+boot_means <- replicate(5000, mean(sample(x, length(x), replace = TRUE)))
+quantile(boot_means, c(0.025, 0.975))   # percentile CI
+mean(x)                                  # original estimate
+
+# Permutation test for difference in means
+set.seed(7)
+a <- rnorm(20, 0, 1); b <- rnorm(25, 0.5, 1)
+obs_diff <- mean(b) - mean(a)
+pooled <- c(a, b)
+perm_diffs <- replicate(5000, {
+  shuffled <- sample(pooled)
+  mean(shuffled[21:45]) - mean(shuffled[1:20])
+})
+mean(abs(perm_diffs) >= abs(obs_diff))   # p-value
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item For a small sample $\{4, 7, 11, 3, 9\}$, compute the Wilcoxon signed-rank statistic for $H_0\colon \text{median} = 5$.
+  \item Generate two samples in R from skewed distributions with the same shape but different locations. Compare the $t$-test and Mann-Whitney $p$-values. When does the rank-based test win?
+  \item Use the bootstrap to estimate the standard error of the median. Compare to the bootstrap SE of the mean for the same data. Why might these differ?
+  \item Implement a permutation test for the correlation between two variables. Compute the observed $r$, then shuffle one variable many times and compute $r$ each time.
+  \item Why does the bootstrap work? State in your own words why resampling with replacement from the empirical distribution approximates the sampling distribution.
+  \item For very small samples ($n = 5$), the bootstrap can be unreliable. Explain why intuitively.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~When would you choose a Mann-Whitney test over a $t$-test?
+
+\smallskip
+$\triangleright$~The bootstrap and permutation test are both resampling methods. How are they different?
+
+\smallskip
+$\triangleright$~Nonparametric methods sacrifice power when normality holds. What do they gain in return?
+\end{reflect}

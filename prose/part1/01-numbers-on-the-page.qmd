@@ -1,0 +1,7 @@
+---
+title: "Numbers on the page"
+---
+
+*Placeholder. Real content lands when we begin drafting.*
+
+![The fundamental shape of a dataset. Rows are units of observation; columns are measurements about them. Real captions will be longer and will tell the reader what to see.](../../pictures/figures/output/fig_data_rectangle.pdf){#fig-rect width=60%}

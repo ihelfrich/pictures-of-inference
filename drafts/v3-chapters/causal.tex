@@ -1,0 +1,151 @@
+\chapter{Causation versus Correlation}
+\label{ch:causal}
+
+\noindent\textsc{Statistics tells you what moves together.} Causal inference tells you what makes what happen. These are different questions, and confusing them is the most expensive mistake in empirical research.
+
+A regression coefficient is a description of association. Whether that association reflects a causal relationship depends not on the regression but on the design of the study---the way the data was generated.
+
+\section{The fundamental problem}
+
+For each unit (person, firm, country) there are two potential outcomes:
+\begin{itemize}[noitemsep]
+\item $Y_i(1)$: the outcome if unit $i$ is treated
+\item $Y_i(0)$: the outcome if unit $i$ is not treated
+\end{itemize}
+The \emph{individual treatment effect} is $\tau_i = Y_i(1) - Y_i(0)$. The fundamental problem of causal inference is that we never observe both. We observe $Y_i = D_i Y_i(1) + (1 - D_i)Y_i(0)$, where $D_i \in \{0, 1\}$ is the treatment indicator. One of the two potential outcomes is always missing.
+
+The \emph{average treatment effect} (ATE) is
+\begin{equation}
+  \text{ATE} = \E[Y_i(1) - Y_i(0)] = \E[Y_i(1)] - \E[Y_i(0)].
+  \label{eq:ate}
+\end{equation}
+This is what most causal questions ultimately ask. ``Does the program work?'' translates to ``what's the ATE of being in the program?''
+
+\section{Why the naive comparison fails}
+
+The simplest thing to compute is the difference in observed averages:
+\[
+  \E[Y_i \mid D_i = 1] - \E[Y_i \mid D_i = 0].
+\]
+This is the difference between the average outcome among the treated and the average outcome among the untreated. It is generally not the ATE. To see why, decompose:
+\begin{align}
+  \E[Y_i \mid D_i = 1] - \E[Y_i \mid D_i = 0]
+    &= \underbrace{\E[Y_i(1) - Y_i(0) \mid D_i = 1]}_{\text{ATT}} \notag \\
+    &\quad + \underbrace{\E[Y_i(0) \mid D_i = 1] - \E[Y_i(0) \mid D_i = 0]}_{\text{selection bias}}.
+  \label{eq:naive-decomposition}
+\end{align}
+The first term is the average treatment effect on the treated (ATT). The second is the selection bias: how the treated and untreated groups would have differed even without treatment.
+
+If wealthier people are more likely to take a job-training program, and wealthier people would have higher earnings anyway, then the simple comparison overstates the program's effect. The selection bias term is positive, and the difference in observed averages credits the program for what was already true.
+
+\section{Randomization solves it}
+
+When treatment is randomly assigned, $D_i$ is independent of the potential outcomes:
+\[
+  D_i \perp \!\!\! \perp \big(Y_i(0), Y_i(1)\big).
+\]
+This implies $\E[Y_i(0) \mid D_i = 1] = \E[Y_i(0) \mid D_i = 0]$: the treated and untreated groups, on average, would have had the same outcome without treatment. The selection bias term vanishes, and the difference in observed averages is the ATE.
+
+This is the entire scientific case for randomized controlled trials. Random assignment is not the only way to identify causal effects, but it is the cleanest.
+
+\section{Conditional independence and ``controls''}
+
+When randomization isn't possible, the next best thing is \emph{conditional independence}: assume that, conditional on a set of observed covariates $\bm{X}$, treatment is as good as random.
+\[
+  D_i \perp \!\!\! \perp \big(Y_i(0), Y_i(1)\big) \mid \bm{X}_i.
+\]
+This is sometimes called ``selection on observables'' or the ``unconfoundedness assumption.'' If it holds, then within strata defined by $\bm{X}$, the difference in average outcomes between treated and untreated identifies the treatment effect.
+
+Multiple regression is one way to exploit this. Including the right covariates can recover the causal effect---but only if those covariates are sufficient to break the selection bias. If you've omitted a relevant confounder, your regression coefficient is still biased, just in a more sophisticated way.
+
+This is the source of the chronic disagreement between researchers in observational studies. ``Did you control for X?'' is sometimes asked in good faith and sometimes as a way to discredit a result. The honest answer is usually: we controlled for what we could measure, and we hope what we missed isn't too important.
+
+\section{Three structures of bias (DAG view)}
+
+Pearl's causal graphs (DAGs) give a visual language for thinking about this.
+
+\paragraph{Confounder.} A variable $Z$ that affects both $X$ and $Y$:
+\[
+  X \leftarrow Z \rightarrow Y.
+\]
+The unconditional association between $X$ and $Y$ reflects both the direct effect (if any) and the path through $Z$. To recover the direct effect, condition on $Z$.
+
+\paragraph{Mediator.} A variable $M$ on the causal path from $X$ to $Y$:
+\[
+  X \rightarrow M \rightarrow Y.
+\]
+$M$ is part of how $X$ affects $Y$. Conditioning on $M$ blocks the very effect you want to measure. Don't.
+
+\paragraph{Collider.} A variable $C$ that is caused by both $X$ and $Y$:
+\[
+  X \rightarrow C \leftarrow Y.
+\]
+Without conditioning on $C$, $X$ and $Y$ are independent. Conditioning on $C$ \emph{creates} association where there was none---a phenomenon called collider bias or selection bias in the technical sense.
+
+The rule: condition on confounders, not on mediators or colliders. Knowing which is which requires substantive knowledge of the system, not just statistics.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{fig_dags.pdf}
+\caption{Three structures of bias. \textbf{Confounder} $Z$ affects both $X$ and $Y$, creating a non-causal correlation between them; condition on $Z$ to remove the confounding path. \textbf{Mediator} $M$ lies on the causal pathway from $X$ to $Y$; conditioning on $M$ blocks the very effect you want to measure. \textbf{Collider} $C$ is caused by both $X$ and $Y$; conditioning on $C$ creates a spurious association where none existed.}
+\label{fig:dags}
+\end{figure}
+
+
+
+\section{The Rubin model in practice}
+
+For an observational study to support a causal claim, you need to argue:
+\begin{enumerate}[noitemsep]
+\item Conditional on the covariates you have, treatment is as good as random.
+\item The covariates you didn't use don't violate this.
+\item Your statistical model correctly captures the relationship between the covariates and the outcome.
+\end{enumerate}
+Each of these is an assumption, not a fact. Each can be wrong. The strength of a causal claim is the strength of these assumptions, not the size of the coefficient or the smallness of the $p$-value.
+
+\begin{keyinsight}
+Statistics measures association. Causation requires a research design that makes assumptions about how the data was generated.
+
+A regression coefficient is causal if and only if the assumptions behind it (no relevant omitted confounders, correct functional form, no reverse causation) actually hold.
+
+A small $p$-value cannot tell you whether those assumptions hold.
+\end{keyinsight}
+
+\section{What about quasi-experiments?}
+
+When randomization isn't available and you don't trust your covariates to capture all confounding, the modern toolkit offers several approaches that exploit specific kinds of natural variation:
+
+\begin{itemize}
+\item \textbf{Difference-in-differences}: compare changes over time between treated and untreated groups, assuming they would have followed parallel trends absent treatment.
+\item \textbf{Instrumental variables}: use a variable that affects treatment but not the outcome directly, like proximity to a college as an instrument for college attendance.
+\item \textbf{Regression discontinuity}: when treatment is determined by a sharp threshold on a running variable, the people just above and just below the cutoff are essentially identical except for treatment status.
+\item \textbf{Synthetic control}: construct a weighted combination of untreated units that closely mirrors the treated unit's history, then attribute post-treatment differences to the treatment.
+\end{itemize}
+
+Each of these has its own assumptions. None is a magic bullet. The shared logic: find a setting where the variation in treatment is plausibly independent of the unobserved confounders, even though it isn't randomized.
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item Verify Equation~\ref{eq:naive-decomposition} algebraically: start from the difference of conditional means and add and subtract $\E[Y_i(0) \mid D_i = 1]$.
+
+  \item A study finds that people who exercise have lower rates of heart disease. Identify three potential confounders. For each, explain how it could explain the observed correlation without exercise causing lower disease rates.
+
+  \item Draw a DAG for the relationship between coffee consumption and heart attacks. Include possible confounders, mediators, and colliders. Which would you condition on, and why?
+
+  \item In a randomized experiment, why doesn't the inclusion of irrelevant covariates affect the unbiasedness of the treatment-effect estimator? (Hint: think about whether covariates can predict treatment when treatment is randomized.)
+
+  \item A researcher controls for educational attainment when studying the effect of college tuition policy on lifetime earnings. Is this a confounder, a mediator, or something else? What's the likely effect on the estimated treatment effect?
+
+  \item ``Selection on observables'' is the hopeful name for an assumption that often fails in practice. Read about a famous study in your field and identify one observable confounder the authors controlled for, and one unobservable they could not.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~State the fundamental problem of causal inference in your own words.
+
+\smallskip
+$\triangleright$~Without looking back, name three structures of bias and which to condition on.
+
+\smallskip
+$\triangleright$~Why does a randomized controlled trial solve the problem that observational studies struggle with?
+\end{reflect}

@@ -1,0 +1,198 @@
+\chapter{Derivatives}
+\label{ch:derivatives}
+
+\noindent\textsc{Here is a question} that bothers nobody until it suddenly bothers everybody: how fast is something changing \emph{right now}?
+
+Not on average. Not over the last hour. Right now, at this exact instant.
+
+You're driving. The speedometer reads 65\,mph. That number isn't telling you your average speed since you left the house. It's telling you something instantaneous, something about this particular moment on this particular stretch of road. If you held exactly this speed for one hour, you'd go 65 miles. You won't hold it. But the number means something anyway.
+
+Calculus exists because that question turns out to be unreasonably useful. Economists need it for marginal cost, marginal utility, marginal anything. Statisticians need it to find the peak of a likelihood function. Physicists can't write a single law of nature without it. The derivative is the formal answer, and learning to compute it is one of those rare investments that pays compound interest across every quantitative field you'll touch.
+
+\section{From average to instantaneous}
+
+You know how to compute an average rate of change. Rise over run. Two points on a curve, subtract the $y$-values, divide by the difference in $x$-values:
+\[
+  \text{average rate} = \frac{f(b) - f(a)}{b - a}.
+\]
+Nothing exotic. You've been doing this since middle school.
+
+The trouble starts when you ask for the rate of change at a single point. You need two points to compute a slope. One point gives you nothing to subtract from.
+
+So here's the trick. Instead of jumping from $a$ to some distant $b$, you jump from $a$ to $a + h$, where $h$ is small. The slope of the line connecting those two points is
+\[
+  \frac{f(a+h) - f(a)}{h}.
+\]
+This is a \emph{secant line}, from the Latin \emph{secare}, to cut. It cuts the curve at two points. And it gives you the average rate of change over the tiny interval from $a$ to $a+h$.
+
+Now shrink $h$. As $h$ gets smaller, the second point slides along the curve toward the first. The secant line rotates. In the limit, when $h$ reaches zero, the secant becomes a \emph{tangent}: a line that touches the curve at one point, matching its direction exactly there.
+
+The slope of that tangent is the derivative.
+
+\section{The definition}
+
+The derivative of $f$ at the point $x$ is
+\begin{equation}
+  f'(x) \;=\; \lim_{h \to 0} \frac{f(x+h) - f(x)}{h},
+  \label{eq:derivative-def}
+\end{equation}
+provided this limit exists. That's it. The entire edifice of differential calculus is a collection of shortcuts for evaluating this one expression.
+
+But let's grind through it at least once, because watching the machinery work is how you understand why the shortcuts are correct.
+
+\subsection{Example: the derivative of $x^2$}
+
+Take $f(x) = x^2$. Start with the difference quotient:
+\begin{align}
+  \frac{f(x+h) - f(x)}{h}
+    &= \frac{(x+h)^2 - x^2}{h} \notag \\[4pt]
+    &= \frac{x^2 + 2xh + h^2 - x^2}{h} \notag \\[4pt]
+    &= \frac{2xh + h^2}{h} \notag \\[4pt]
+    &= 2x + h.
+  \label{eq:x2-deriv}
+\end{align}
+The $x^2$ terms cancelled. The $h$ in the denominator divided out. What's left is $2x + h$.
+
+Now take the limit as $h \to 0$:
+\[
+  f'(x) = \lim_{h \to 0} (2x + h) = 2x.
+\]
+The derivative of $x^2$ is $2x$. At $x = 3$, the slope of the tangent is $6$. At $x = 0$, the slope is zero---the parabola has a flat bottom at the origin. At $x = -1$, it's $-2$.
+
+\begin{trythis}
+Do the same computation for $f(x) = x^3$. You'll need to expand $(x+h)^3 = x^3 + 3x^2h + 3xh^2 + h^3$. Subtract $x^3$, divide by $h$, take the limit. You should get $f'(x) = 3x^2$.
+
+Then try $x^4$. The pattern will become impossible to miss.
+\end{trythis}
+
+\subsection{Example: the derivative of $1/x$}
+
+Let $f(x) = 1/x$ for $x \neq 0$. This one is slightly nastier:
+\begin{align}
+  \frac{f(x+h) - f(x)}{h}
+    &= \frac{1}{h}\left(\frac{1}{x+h} - \frac{1}{x}\right) \notag \\[4pt]
+    &= \frac{1}{h} \cdot \frac{x - (x+h)}{x(x+h)} \notag \\[4pt]
+    &= \frac{-1}{x(x+h)}.
+\end{align}
+As $h \to 0$, this approaches $-1/x^2$. Notice the derivative is negative for all $x \neq 0$: the function $1/x$ is decreasing everywhere on its domain. The derivative told us this without a graph.
+
+\section{The rules}
+
+Computing derivatives from the definition every time is like computing square roots by hand. Possible. Unnecessary.
+
+\begin{keyinsight}
+\textbf{Power rule.} If $f(x) = x^n$ for any real number $n$, then $f'(x) = nx^{n-1}$.
+
+Bring the exponent down, subtract one from it. Confirmed for $n = 2$ (gives $2x$), for $n = -1$ (gives $-x^{-2} = -1/x^2$), and for $n = 1/2$ (gives $\frac{1}{2}x^{-1/2} = 1/(2\sqrt{x})$).
+
+\medskip
+\textbf{Linearity.} $(f + g)' = f' + g'$ and $(cf)' = cf'$.
+
+Differentiate term by term. Constants pass through.
+
+\medskip
+\textbf{Product rule.} $(fg)' = f'g + fg'$.
+
+Not $f' \cdot g'$. This mistake is the leading cause of wrong answers in first-semester calculus.
+
+\medskip
+\textbf{Chain rule.} $\frac{d}{dx}f(g(x)) = f'(g(x)) \cdot g'(x)$.
+
+Outer derivative evaluated at the inner function, times the inner derivative.
+\end{keyinsight}
+
+\paragraph{Why the product rule works.} I'll show the proof because the same algebraic move---add and subtract a strategic term---reappears in half the proofs in econometrics.
+
+Start with the definition:
+\[
+  (fg)'(x) = \lim_{h \to 0} \frac{f(x{+}h)\,g(x{+}h) - f(x)\,g(x)}{h}.
+\]
+Add and subtract $f(x{+}h)\,g(x)$ in the numerator:
+\begin{align*}
+  &= \lim_{h \to 0} \left[ f(x{+}h) \cdot \frac{g(x{+}h) - g(x)}{h} + g(x) \cdot \frac{f(x{+}h) - f(x)}{h} \right] \\
+  &= f(x)\,g'(x) + g(x)\,f'(x).
+\end{align*}
+The last step uses the fact that $f(x+h) \to f(x)$ as $h \to 0$ (continuity).
+
+\paragraph{The chain rule in action.} Differentiate $h(x) = (3x^2 + 1)^5$.
+
+The outer function is $u^5$, with derivative $5u^4$. The inner function is $u = 3x^2 + 1$, with derivative $6x$. Chain them together:
+\[
+  h'(x) = 5(3x^2 + 1)^4 \cdot 6x = 30x(3x^2 + 1)^4.
+\]
+The chain rule matters because real functions are almost always compositions. The normal density, the logistic function, any exponential of a polynomial---you can't differentiate any of them without it.
+
+\section{Three special derivatives}
+
+These show up so often in statistics and economics that they're worth memorizing separately.
+
+\paragraph{The exponential.} If $f(x) = e^x$, then $f'(x) = e^x$. The function equals its own derivative. This is actually what makes $e$ special: it's the unique base for which the exponential has this property. Combined with the chain rule: $\frac{d}{dx}e^{g(x)} = e^{g(x)} \cdot g'(x)$.
+
+\paragraph{The natural log.} $\frac{d}{dx}\ln x = 1/x$. This pairs beautifully with the exponential as its inverse. If you ever need to differentiate something ugly, take its log first, differentiate, then multiply back. This trick (logarithmic differentiation) is how you prove the power rule for non-integer exponents.
+
+\paragraph{The logistic function.} $\sigma(x) = \frac{1}{1 + e^{-x}}$ has derivative
+\[
+  \sigma'(x) = \sigma(x)\bigl(1 - \sigma(x)\bigr).
+\]
+This formula is the backbone of logistic regression's optimization. If you take one result from this chapter into econometrics, let it be this one.
+
+\section{What this has to do with statistics}
+
+Every estimator you'll meet in this book is the solution to an optimization problem. OLS minimizes the sum of squared residuals. Maximum likelihood maximizes the log-likelihood. Bayesian MAP maximizes the posterior. In every case, ``finding the optimum'' means setting the derivative equal to zero and solving.
+
+Consider the OLS problem. You want $\hat\beta_0, \hat\beta_1$ to minimize
+\[
+  S(\beta_0, \beta_1) = \sum_{i=1}^{n} (y_i - \beta_0 - \beta_1 x_i)^2.
+\]
+The first-order conditions are:
+\begin{align}
+  \frac{\partial S}{\partial \beta_0} &= -2\sum_{i=1}^{n}(y_i - \beta_0 - \beta_1 x_i) = 0, \label{eq:foc-b0-preview} \\[4pt]
+  \frac{\partial S}{\partial \beta_1} &= -2\sum_{i=1}^{n} x_i(y_i - \beta_0 - \beta_1 x_i) = 0. \label{eq:foc-b1-preview}
+\end{align}
+Two equations, two unknowns. Solve them and you get the OLS formulas. We'll do this derivation properly in the regression chapter. The derivative is what turned ``minimize this thing'' into ``solve these equations.''
+
+\begin{codelab}
+Numerical differentiation lets you verify any derivative without algebra.
+
+\begin{lstlisting}[language=Rlang]
+numderiv <- function(f, x, h = 1e-7) {
+  (f(x + h) - f(x - h)) / (2 * h)
+}
+numderiv(function(x) x^2, 3)     # 6
+numderiv(exp, 0)                 # 1
+numderiv(log, 5)                 # 0.2
+numderiv(function(x) 1/x, 2)    # -0.25
+
+# Symbolic (base R, no packages)
+D(expression(x^3 + 2*x), "x")
+\end{lstlisting}
+
+The symmetric formula $\frac{f(x+h) - f(x-h)}{2h}$ has $O(h^2)$ error, much better than the one-sided version. Use $h \approx 10^{-7}$ for double-precision floats.
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item Differentiate: (a)~$f(x) = 7x^4 - 3x^2 + x$, \; (b)~$g(x) = \sqrt{x} + 1/x^3$, \; (c)~$h(x) = e^{2x}$.
+
+  \item Find $\frac{d}{dx}[x^2 \ln x]$ using the product rule. Check at $x = 1$ using the numerical derivative.
+
+  \item Differentiate $f(x) = e^{-(x-\mu)^2/(2\sigma^2)}$ with respect to $x$. You'll recognize this as the core of the normal density.
+
+  \item A firm's cost is $C(q) = 50 + 4q + 0.01q^2$. Find marginal cost $C'(q)$. At what output does marginal cost equal \$6?
+
+  \item Prove the power rule for $f(x) = x^n$ from the limit definition using the binomial theorem.
+
+  \item Show that $\sigma'(x) = \sigma(x)(1 - \sigma(x))$ for $\sigma(x) = (1 + e^{-x})^{-1}$.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~You've seen two ways to compute a derivative: algebraic limits and numerical difference quotients. When would you trust one over the other?
+
+\smallskip
+$\triangleright$~Write down the product rule and chain rule from memory. If you can't, that tells you which needs more practice.
+
+\smallskip
+$\triangleright$~The derivative turns ``minimize this'' into ``solve this equation.'' Why is that conversion so valuable?
+\end{reflect}
+

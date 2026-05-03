@@ -1,0 +1,134 @@
+\chapter{Center and Spread}
+\label{ch:center-spread}
+
+\noindent\textsc{Before you do statistics,} you describe what you have. The two most basic descriptions of any quantitative variable are: where is the data centered, and how spread out is it?
+
+These sound like simple questions. They are not. The choice of which measure of center to use, and which measure of spread, can change the story your data tells. People who don't think carefully about these choices end up making bad decisions based on misleading summaries.
+
+\section{Three measures of center}
+
+\paragraph{Mean.} The arithmetic average:
+\begin{equation}
+  \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i.
+  \label{eq:sample-mean}
+\end{equation}
+The center of mass of the data. If you balanced the dot plot on a fulcrum, the mean is where it would balance. Sensitive to extreme values.
+
+\paragraph{Median.} The middle value when the data is sorted. If $n$ is odd, the middle observation. If $n$ is even, the average of the two middle observations. Insensitive to extreme values.
+
+\paragraph{Mode.} The most frequently occurring value (or values). For continuous data, the mode is more useful for the underlying distribution than for the data itself.
+
+\paragraph{Why this matters.} Bill Gates walks into a bar. The mean income of the bar's patrons skyrockets. The median doesn't move. Same data, two different stories.
+
+In practice, the mean is what most statistical procedures use, because it has nice mathematical properties (unbiased estimator of the population mean, minimum variance among linear estimators when errors are normal). But for skewed distributions or data with outliers, the median is often a better description of ``typical.'' This is why income statistics typically report median household income, not mean.
+
+\section{Three measures of spread}
+
+\paragraph{Range.} Maximum minus minimum. Easy to compute, almost useless. Determined entirely by the two most extreme values, which are often the least reliable.
+
+\paragraph{Interquartile range (IQR).} The distance from the 25th percentile ($Q_1$) to the 75th percentile ($Q_3$):
+\[
+  \text{IQR} = Q_3 - Q_1.
+\]
+The middle 50\% of the data. Robust to outliers. The basis for box plots.
+
+\paragraph{Standard deviation.} The square root of the variance:
+\begin{equation}
+  s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i - \bar{x})^2}.
+  \label{eq:sample-sd}
+\end{equation}
+Roughly, the typical distance from the mean. The denominator is $n-1$ rather than $n$ for technical reasons (Bessel's correction); using $n-1$ makes the estimator unbiased.
+
+\section{Why $n-1$ and not $n$?}
+
+When you compute the sample variance, you use the sample mean $\bar{x}$ in place of the population mean $\mu$. But $\bar{x}$ is itself estimated from the data, and it's positioned to minimize the sum of squared deviations. Dividing by $n$ would systematically underestimate the population variance.
+
+Specifically, you can show that
+\[
+  \E\!\left[\sum_{i=1}^{n}(x_i - \bar{x})^2\right] = (n-1)\sigma^2.
+\]
+So dividing by $n - 1$ instead of $n$ gives an unbiased estimator of $\sigma^2$. The intuition: estimating $\bar{x}$ uses up one degree of freedom from the data.
+
+This is why your calculator has both ``population standard deviation'' (divides by $n$) and ``sample standard deviation'' (divides by $n - 1$). Use $n - 1$ unless you actually have the entire population.
+
+\section{Standardization}
+
+For any value $x_i$, the \emph{$z$-score} is
+\begin{equation}
+  z_i = \frac{x_i - \bar{x}}{s}.
+\end{equation}
+This expresses $x_i$ in standard-deviation units above or below the mean. It's a way to compare values across different variables on different scales.
+
+A SAT score of 1400 and a GRE score of 165 are not directly comparable. But if both have $z$-scores of, say, $+1.5$, then both are 1.5 standard deviations above their respective means---roughly the same percentile in their respective populations.
+
+\section{The empirical rule}
+
+For roughly bell-shaped data:
+\begin{itemize}[noitemsep]
+\item About 68\% of observations fall within 1 standard deviation of the mean.
+\item About 95\% fall within 2 standard deviations.
+\item About 99.7\% fall within 3 standard deviations.
+\end{itemize}
+This is exact for the normal distribution, approximate for many real-world distributions, and useless for very skewed or heavy-tailed data.
+
+The 95\% within 2 SDs is the source of the famous ``two-sigma'' threshold: an observation more than 2 standard deviations from the mean is unusual under normality (about 5\% probability).
+
+\section{Five-number summary}
+
+A compact description: minimum, $Q_1$, median, $Q_3$, maximum. R's \texttt{summary()} function computes this plus the mean. The five-number summary is what a box plot displays graphically.
+
+\begin{keyinsight}
+For symmetric data without outliers, the mean and standard deviation tell you almost everything.
+
+For skewed data or data with outliers, the median and IQR are more honest.
+
+When in doubt, report both. And always plot.
+\end{keyinsight}
+
+\section{Robustness}
+
+A statistic is \emph{robust} if it isn't easily distorted by extreme values. The median is robust; the mean is not. The IQR is robust; the standard deviation is not.
+
+How robust? The \emph{breakdown point} is the proportion of observations that can be made arbitrarily extreme before the statistic itself becomes arbitrary. The mean has a breakdown point of $0$: a single bad value can drag it anywhere. The median has a breakdown point of $1/2$: you can corrupt nearly half the data before the median moves out of the original range.
+
+For exploratory work and reporting on real data, robust measures are usually safer.
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# Salaries (in $K) at a small company
+salary <- c(45, 48, 52, 55, 58, 60, 62, 65, 70, 850)
+#  ^ The CEO
+
+mean(salary)        # 136.5  -- skewed by the CEO
+median(salary)      # 59     -- robust
+sd(salary)          # 248.6  -- huge
+IQR(salary)         # 13.5   -- representative of "typical" range
+
+# Five-number summary
+summary(salary)
+
+# Z-scores
+z <- (salary - mean(salary)) / sd(salary)
+round(z, 2)
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item For the data $\{2, 4, 4, 5, 7, 9, 12, 18, 22, 95\}$, compute the mean, median, range, IQR, and SD. Which measures are most affected by the value 95?
+  \item Show that the sum of $z$-scores is always 0 and that the sum of squared $z$-scores is always $n - 1$.
+  \item A test has $\bar{x} = 75$ and $s = 8$. Convert the scores 60, 75, and 90 to $z$-scores. Which is most unusual?
+  \item Why does the standard deviation use $n - 1$ in the denominator rather than $n$? State Bessel's correction in your own words.
+  \item Generate 1000 observations from an exponential distribution in R. Compute mean and median. Why do they differ? Which is closer to a ``typical'' value?
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~When would you report a mean instead of a median? When the reverse?
+
+\smallskip
+$\triangleright$~A statistic is robust if outliers don't easily distort it. List three robust statistics and three non-robust ones.
+
+\smallskip
+$\triangleright$~The empirical rule (68-95-99.7) holds for normal data. When does it fail?
+\end{reflect}

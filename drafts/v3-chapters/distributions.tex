@@ -1,0 +1,187 @@
+\chapter{Random Variables and Distributions}
+\label{ch:distributions}
+
+\noindent\textsc{A random variable is a number} that depends on the outcome of a random process. The number you get when you roll a die. The height of a randomly chosen person. The number of customers who walk into a store between 2 and 3 PM. Each of these is a function from the sample space (all possible outcomes) to the real numbers.
+
+Once you accept that random variables exist, you can ask about their distributions: how the probability is spread across possible values. The distribution is everything. Once you know it, you know the mean, the variance, the probability of any event involving the variable, and the probability of any function of the variable.
+
+This chapter introduces the half-dozen distributions you'll see most often in statistics and explains what each one is for.
+
+\section{Discrete vs.\ continuous}
+
+Random variables come in two flavors.
+
+\textbf{Discrete} random variables take values in a countable set: $\{0, 1, 2, \ldots\}$ or $\{1, 2, \ldots, 6\}$. The number of phone calls received in an hour. The number of heads in 10 coin flips. We describe the distribution with a \emph{probability mass function} (PMF):
+\[
+  p(x) = P(X = x).
+\]
+It must satisfy $p(x) \geq 0$ for all $x$, and $\sum_x p(x) = 1$.
+
+\textbf{Continuous} random variables take values in a continuous range: any real number, or any positive real number. Height. Weight. Time until a bus arrives. We describe the distribution with a \emph{probability density function} (PDF):
+\[
+  f(x) \quad \text{such that} \quad P(a \leq X \leq b) = \int_a^b f(x)\,dx.
+\]
+The PDF must satisfy $f(x) \geq 0$ and $\int_{-\infty}^{\infty} f(x)\,dx = 1$.
+
+A subtle point: for continuous variables, $P(X = x) = 0$ for any specific $x$. The probability is in the area, not at any point. Asking ``what is the probability that someone is exactly 5'8\hspace{1pt}''?'' has the answer zero. Asking ``what is the probability that someone is between 5'7\hspace{1pt}'' and 5'9\hspace{1pt}''?'' has a nonzero answer.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{fig_distributions.pdf}
+\caption{Six common distributions. Discrete (top): Bernoulli, Binomial, Poisson. Continuous (bottom): Normal, Exponential, Student~$t$. The probability mass functions for discrete distributions show $P(X=k)$ at each integer; the densities for continuous distributions show $f(x)$.}
+\label{fig:distributions}
+\end{figure}
+
+
+
+\section{Expected value and variance}
+
+For any random variable, the \emph{expected value} (mean) is
+\begin{equation}
+  \E[X] = \begin{cases}
+    \sum_x x \cdot p(x) & \text{discrete} \\[2pt]
+    \int_{-\infty}^{\infty} x \cdot f(x)\,dx & \text{continuous}
+  \end{cases}
+  \label{eq:expected-value}
+\end{equation}
+This is the long-run average if you observed $X$ many times. The \emph{variance} is the expected squared deviation from the mean:
+\begin{equation}
+  \Var(X) = \E[(X - \E[X])^2] = \E[X^2] - (\E[X])^2.
+  \label{eq:variance}
+\end{equation}
+The standard deviation is $\sqrt{\Var(X)}$.
+
+Two facts that come up constantly: linearity of expectation gives $\E[aX + b] = a\E[X] + b$, and variance scales quadratically: $\Var(aX + b) = a^2 \Var(X)$.
+
+\section{The Bernoulli distribution}
+
+A Bernoulli random variable takes the value 1 with probability $p$ and 0 with probability $1 - p$. It models a single yes/no trial: a single coin flip, a single survey response, a single item passing or failing inspection.
+\begin{equation}
+  X \sim \text{Bernoulli}(p), \qquad \E[X] = p, \quad \Var(X) = p(1-p).
+\end{equation}
+The variance is maximized at $p = 1/2$ (most uncertainty) and zero at $p = 0$ or $p = 1$ (no uncertainty).
+
+\section{The binomial distribution}
+
+If you sum $n$ independent Bernoulli trials, you get a binomial: the number of successes in $n$ trials. The PMF is
+\begin{equation}
+  P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0, 1, \ldots, n.
+  \label{eq:binomial-pmf}
+\end{equation}
+With $\E[X] = np$ and $\Var(X) = np(1-p)$. The binomial coefficient $\binom{n}{k}$ counts the number of ways to choose which $k$ of the $n$ trials are the successes; the rest of the formula is the probability of any specific arrangement.
+
+\paragraph{Example.} Out of 20 patients, each independently has a 30\% chance of responding to a treatment. What is the probability that exactly 8 respond?
+\[
+  P(X = 8) = \binom{20}{8}(0.3)^8(0.7)^{12} = 125970 \cdot 0.0000656 \cdot 0.01384 \approx 0.114.
+\]
+About 11\%.
+
+\section{The Poisson distribution}
+
+For counting rare events in a fixed time or space interval. Number of phone calls per hour at a call center. Number of car accidents per day at an intersection. Number of typos per page.
+\begin{equation}
+  P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!}, \quad k = 0, 1, 2, \ldots
+  \label{eq:poisson-pmf}
+\end{equation}
+With $\E[X] = \lambda$ and $\Var(X) = \lambda$. The mean and variance are equal: a defining and useful property.
+
+The Poisson is the limit of a binomial when $n \to \infty$ and $p \to 0$ with $np = \lambda$ held constant. Many independent rare opportunities, each with tiny probability of success. The total count is approximately Poisson.
+
+\section{The normal distribution}
+
+The most important continuous distribution. PDF:
+\begin{equation}
+  f(x) = \frac{1}{\sigma\sqrt{2\pi}}\exp\!\left(-\frac{(x-\mu)^2}{2\sigma^2}\right).
+  \label{eq:normal-pdf}
+\end{equation}
+With $\E[X] = \mu$ and $\Var(X) = \sigma^2$. The bell curve. Symmetric about $\mu$. About 68\% of the mass within one standard deviation, 95\% within two, 99.7\% within three.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\linewidth]{fig_normal_rule.pdf}
+\caption{The 68-95-99.7 rule. About 68\% of the area under a normal density falls within one standard deviation of the mean, 95\% within two, 99.7\% within three. This is exact for the normal distribution and approximate for many real-world distributions.}
+\label{fig:normal-rule}
+\end{figure}
+
+
+
+The normal shows up everywhere because of the Central Limit Theorem: sums (and averages) of many independent random variables tend to be approximately normal regardless of the underlying distribution.
+
+\paragraph{Standardization.} If $X \sim N(\mu, \sigma^2)$, then
+\[
+  Z = \frac{X - \mu}{\sigma} \sim N(0, 1).
+\]
+This $Z$-score expresses any observation in standard deviation units. A $Z$ of $+2$ means ``two standard deviations above the mean'' regardless of whether $X$ is heights, IQs, or stock returns. The standard normal table (or \texttt{pnorm} in R) gives probabilities for any range of $Z$.
+
+\section{The $t$, chi-squared, and $F$ distributions}
+
+Three derived distributions that show up in inference:
+
+\paragraph{Student's $t$.} If $Z \sim N(0,1)$ and $V \sim \chi^2_k$ are independent, then $T = Z/\sqrt{V/k} \sim t_k$. Looks like the normal but with heavier tails. Used when estimating $\sigma$ from data adds extra uncertainty (the $t$-test). As $k \to \infty$, $t_k \to N(0, 1)$.
+
+\paragraph{Chi-squared.} The sum of squares of $k$ independent standard normals: $\chi^2_k = Z_1^2 + \cdots + Z_k^2$. Always positive, right-skewed. With $\E[X] = k$ and $\Var(X) = 2k$. Used for variance tests and goodness-of-fit.
+
+\paragraph{$F$-distribution.} The ratio of two scaled chi-squareds. Used for comparing variances and for $F$-tests in regression and ANOVA.
+
+\section{The exponential distribution}
+
+The waiting time between events in a Poisson process. Time until the next phone call, time until a radioactive particle decays, time until a system fails.
+\begin{equation}
+  f(x) = \lambda e^{-\lambda x}, \quad x \geq 0.
+  \label{eq:exponential-pdf}
+\end{equation}
+With $\E[X] = 1/\lambda$ and $\Var(X) = 1/\lambda^2$. A defining property: \emph{memorylessness}. Given that you've already waited $s$ time units, the additional wait is distributed identically to a fresh wait. The exponential is the only continuous distribution with this property.
+
+\begin{keyinsight}
+You don't need to memorize every distribution. You need to know which one fits which situation:
+\begin{itemize}[noitemsep]
+\item Single yes/no trial $\to$ Bernoulli
+\item Number of yes's in $n$ trials $\to$ Binomial
+\item Number of rare events in a fixed window $\to$ Poisson
+\item Continuous, symmetric, bell-shaped $\to$ Normal
+\item Waiting time between events $\to$ Exponential
+\end{itemize}
+\end{keyinsight}
+
+\begin{codelab}
+R has all common distributions. The naming is consistent: prefix \texttt{d} for density/mass, \texttt{p} for cumulative probability, \texttt{q} for quantile (inverse CDF), \texttt{r} for random draws.
+\begin{lstlisting}[language=Rlang]
+# Normal
+dnorm(0, mean = 0, sd = 1)        # density at 0
+pnorm(1.96)                       # P(Z <= 1.96)
+qnorm(0.975)                      # 97.5th percentile = 1.96
+rnorm(10, mean = 100, sd = 15)    # 10 random draws
+
+# Binomial: P(X = 8) for n=20, p=0.3
+dbinom(8, size = 20, prob = 0.3)
+
+# Poisson: P(X = 4) for lambda = 3
+dpois(4, lambda = 3)
+
+# Visualize
+x <- seq(-4, 4, length.out = 200)
+plot(x, dnorm(x), type = "l", lwd = 2, ylab = "density")
+abline(v = c(-1.96, 1.96), lty = 2, col = "red")
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item A coin is flipped 12 times. What is the probability of exactly 7 heads? Use \texttt{dbinom}.
+  \item A call center receives an average of 4 calls per minute. What is the probability of exactly 6 calls in a given minute? Of more than 6?
+  \item For $X \sim N(100, 15^2)$ (an IQ score), find $P(85 < X < 115)$ and $P(X > 130)$.
+  \item Show that for $X \sim \text{Bernoulli}(p)$, the variance equals $p(1-p)$. Hint: use $\E[X^2] - (\E[X])^2$ and note that $X^2 = X$.
+  \item Generate 1000 random samples of size $n = 50$ from an exponential distribution. Compute the sample mean for each. Plot a histogram of the means. Is it approximately normal? Why?
+  \item A standardized test has $\mu = 500$, $\sigma = 100$. Find the score that puts you in the top 10\%. The top 1\%.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~Without looking back, list five distributions and one situation each models.
+
+\smallskip
+$\triangleright$~Why is the variance of a Bernoulli$(p)$ maximized at $p = 1/2$? What does this mean intuitively?
+
+\smallskip
+$\triangleright$~The normal distribution shows up constantly in statistics. Why? What theorem makes it special?
+\end{reflect}

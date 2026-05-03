@@ -1,0 +1,148 @@
+\chapter{The Sampling Distribution}
+\label{ch:sampling}
+
+\noindent\textsc{Here is the single most important idea} in all of inferential statistics, and it is the one students find hardest to internalize: the sample mean is a random variable.
+
+You computed $\bar{x} = 72.3$ from your data. Fine. But if you had drawn a different sample from the same population, you would have gotten a different $\bar{x}$. Maybe 71.8. Maybe 73.1. Every possible sample gives a different number, and those numbers have a distribution. That distribution is the \emph{sampling distribution of the sample mean}, and understanding it is the bridge between ``I computed a number'' and ``I can make a probability statement about the population.''
+
+\section{The setup}
+
+Draw $n$ observations $X_1, X_2, \ldots, X_n$ independently from a population with mean $\mu$ and standard deviation $\sigma$. The sample mean is
+\[
+  \bar{X} = \frac{1}{n}\sum_{i=1}^{n} X_i.
+\]
+This is a random variable because the $X_i$ are random. What are its properties?
+
+\paragraph{Expected value.} By linearity of expectation:
+\begin{equation}
+  \E[\bar{X}] = \E\!\left[\frac{1}{n}\sum X_i\right] = \frac{1}{n}\sum \E[X_i] = \frac{1}{n} \cdot n\mu = \mu.
+  \label{eq:mean-of-xbar}
+\end{equation}
+The sample mean is \emph{unbiased}: on average, across all possible samples, it equals the population mean. This does not mean any single $\bar{x}$ equals $\mu$. It means the sampling distribution is centered at $\mu$.
+
+\paragraph{Variance.} By independence:
+\begin{equation}
+  \Var(\bar{X}) = \Var\!\left(\frac{1}{n}\sum X_i\right) = \frac{1}{n^2}\sum \Var(X_i) = \frac{1}{n^2} \cdot n\sigma^2 = \frac{\sigma^2}{n}.
+  \label{eq:var-of-xbar}
+\end{equation}
+
+\paragraph{Standard error.} The standard deviation of $\bar{X}$ is called the \emph{standard error}:
+\begin{equation}
+  \boxed{\text{SE}(\bar{X}) = \frac{\sigma}{\sqrt{n}}.}
+  \label{eq:se-xbar}
+\end{equation}
+
+This formula is the most consequential in statistics. It says: as $n$ grows, the standard error shrinks. Not linearly---by $\sqrt{n}$. To cut your uncertainty in half, you need four times the data. To cut it by a factor of 10, you need 100 times the data.
+
+\section{The Central Limit Theorem}
+
+The CLT is the reason statistics works.
+
+\begin{keyinsight}
+\textbf{Central Limit Theorem.} If $X_1, \ldots, X_n$ are independent draws from \emph{any} distribution with mean $\mu$ and finite variance $\sigma^2$, then as $n \to \infty$,
+\[
+  \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \;\xrightarrow{d}\; N(0, 1).
+\]
+In words: the sampling distribution of the standardized sample mean converges to a standard normal, regardless of the shape of the population.
+\end{keyinsight}
+
+Read that again. The population can be skewed, bimodal, discrete, heavy-tailed, whatever. As long as the variance is finite and $n$ is large enough, the sampling distribution of $\bar{X}$ is approximately normal.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{fig_clt.pdf}
+\caption{The Central Limit Theorem in action. Top row: a heavily skewed exponential population (same in all three panels). Bottom row: the sampling distribution of $\bar{X}$ for $n = 2$ (still skewed), $n = 10$ (less skewed), and $n = 50$ (essentially normal, even though the population isn't). The red curve is the normal approximation predicted by the CLT.}
+\label{fig:clt}
+\end{figure}
+
+
+
+How large is ``large enough''? For symmetric populations, $n \geq 15$ usually suffices. For moderately skewed populations, $n \geq 30$ is the traditional rule of thumb. For severely skewed or heavy-tailed populations, you might need $n \geq 100$ or more.
+
+\section{From the CLT to confidence intervals}
+
+If $\bar{X}$ is approximately $N(\mu, \sigma^2/n)$, then
+\[
+  P\!\left(-1.96 \leq \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \leq 1.96\right) \approx 0.95.
+\]
+Rearrange the inequality inside the probability:
+\[
+  P\!\left(\bar{X} - 1.96\frac{\sigma}{\sqrt{n}} \leq \mu \leq \bar{X} + 1.96\frac{\sigma}{\sqrt{n}}\right) \approx 0.95.
+\]
+This is a \textbf{95\% confidence interval} for $\mu$:
+\begin{equation}
+  \boxed{\bar{X} \pm 1.96 \cdot \frac{\sigma}{\sqrt{n}}.}
+  \label{eq:ci-known-sigma}
+\end{equation}
+
+In practice, $\sigma$ is unknown, so you replace it with the sample standard deviation $s$ and use a $t$-distribution instead of the normal:
+\begin{equation}
+  \boxed{\bar{X} \pm t^*_{n-1} \cdot \frac{s}{\sqrt{n}},}
+  \label{eq:ci-t}
+\end{equation}
+where $t^*_{n-1}$ is the critical value from the $t$-distribution with $n-1$ degrees of freedom. For large $n$, $t^* \approx 1.96$ and the two formulas converge.
+
+\paragraph{What ``95\% confidence'' actually means.} Not: ``there is a 95\% probability that $\mu$ is in this interval.'' The parameter $\mu$ is fixed. It's either in the interval or it isn't. What 95\% means is: if you repeated this entire procedure---draw a sample, compute $\bar{x}$, build the interval---many times, about 95\% of the intervals would contain $\mu$.
+
+This interpretation bothers everyone the first time they hear it. It should. It's genuinely weird.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{fig_ci.pdf}
+\caption{Thirty 95\% confidence intervals from thirty different samples drawn from the same population. The dashed gold line is the true~$\mu$. About 95\% of the intervals contain~$\mu$; the rust intervals don't. ``95\% confidence'' is a statement about the procedure, not about any single interval.}
+\label{fig:ci-coverage}
+\end{figure}
+
+ Bayesian credible intervals have the interpretation most people want (``95\% probability the parameter is in here''), but they require a prior. We'll get to that.
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# Simulate the sampling distribution
+set.seed(2024)
+pop <- rexp(100000, rate = 0.5) # skewed population!
+mu <- mean(pop); sigma <- sd(pop)
+
+# Draw 5000 samples of size n=30, compute each mean
+xbars <- replicate(5000, mean(sample(pop, 30)))
+
+mean(xbars)        # near mu
+sd(xbars)          # near sigma/sqrt(30)
+sigma / sqrt(30)   # theoretical SE
+
+hist(xbars, breaks = 40, probability = TRUE,
+     main = "Sampling distribution of x-bar (n=30)")
+curve(dnorm(x, mu, sigma/sqrt(30)), add = TRUE,
+      col = "red", lwd = 2)
+# The red curve fits, even though the population is skewed!
+
+# Confidence interval from a single sample
+x <- sample(pop, 30)
+t.test(x)$conf.int
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item A population has $\mu = 100$ and $\sigma = 15$. For $n = 25$, what is the standard error of $\bar{X}$? For $n = 100$? For $n = 400$? Verify the $\sqrt{n}$ scaling.
+
+  \item A sample of $n = 36$ has $\bar{x} = 82$ and $s = 12$. Construct a 95\% confidence interval for $\mu$. Interpret it in words---carefully.
+
+  \item Simulate the sampling distribution of the \emph{median} for $n = 30$ from a standard normal. Is it also approximately normal? What is its standard error compared to the mean's?
+
+  \item Repeat the CLT simulation with $n = 5$ from an exponential population. Is the sampling distribution of $\bar{X}$ approximately normal? Try $n = 50$. At what $n$ does normality kick in?
+
+  \item A 95\% CI is $(14.2, 18.6)$. A colleague says ``there's a 95\% chance that $\mu$ is between 14.2 and 18.6.'' Explain precisely why this statement is wrong under frequentist interpretation.
+
+  \item Prove Equation~\ref{eq:var-of-xbar}: show $\Var(\bar{X}) = \sigma^2/n$ using the properties $\Var(aX) = a^2\Var(X)$ and $\Var(X + Y) = \Var(X) + \Var(Y)$ for independent $X, Y$.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~The standard error shrinks as $\sqrt{n}$, not $n$. Why does this mean that diminishing returns set in quickly?
+
+\smallskip
+$\triangleright$~The CLT says the shape of the population doesn't matter for large $n$. What \emph{does} matter?
+
+\smallskip
+$\triangleright$~Without re-reading, state what ``95\% confidence'' means and what it does not mean.
+\end{reflect}

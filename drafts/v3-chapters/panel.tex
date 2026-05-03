@@ -1,0 +1,152 @@
+\chapter{Panel Data}
+\label{ch:panel}
+
+\noindent\textsc{Panel data follows the same units} (people, firms, countries) over time. The data has two dimensions: cross-sectional and temporal. This structure is more informative than a pure cross-section or pure time series, because it lets you control for things you can't observe.
+
+If unobserved characteristics of each unit are stable over time—innate ability, firm management quality, country culture—you can wipe them out by looking only at within-unit variation. The unit's quirks cancel out when you compare a unit to itself across time.
+
+\section{The basic panel model}
+
+Observations are indexed by unit $i$ and time $t$:
+\begin{equation}
+  y_{it} = \bm{x}_{it}^\top \bbeta + \alpha_i + \varepsilon_{it}.
+  \label{eq:panel-model}
+\end{equation}
+The new ingredient is $\alpha_i$, a unit-specific intercept that captures everything stable about unit $i$. Every person has their own $\alpha$. Every firm has its own $\alpha$. The $\alpha_i$ absorb whatever you can't measure but that's constant within the unit.
+
+The challenge: how do you estimate $\bbeta$ when you can't directly observe $\alpha_i$? Three approaches.
+
+\section{Pooled OLS (the wrong answer, usually)}
+
+Just run OLS ignoring the panel structure. The estimator effectively treats all $\alpha_i$ as zero. If $\alpha_i$ is correlated with the regressors $\bm{x}_{it}$ (which it almost always is), pooled OLS is biased and inconsistent.
+
+This is omitted variable bias. The unit-specific characteristics are the omitted variable. Pooled OLS only works when you're sure the unit effects don't correlate with what you're studying, which is hardly ever.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{fig_panel.pdf}
+\caption{Why fixed effects matter. Left: pooled OLS sees a positive slope because units with higher $y$ also tend to have higher $x$ for unrelated reasons. Right: within each unit, the relationship is negative. The unit-specific intercepts $\alpha_i$ create the spurious positive correlation that pooled OLS picks up.}
+\label{fig:panel}
+\end{figure}
+
+
+
+\section{Fixed effects (the within estimator)}
+
+Subtract each unit's mean from each observation. The math:
+\[
+  y_{it} - \bar y_i = (\bm{x}_{it} - \bar{\bm{x}}_i)^\top \bbeta + (\alpha_i - \alpha_i) + (\varepsilon_{it} - \bar\varepsilon_i).
+\]
+The $\alpha_i$ disappear. Run OLS on the demeaned data, and you get a consistent estimate of $\bbeta$ that doesn't rely on any assumption about how $\alpha_i$ relates to $\bm{x}_{it}$.
+
+This is the \emph{fixed effects} estimator, also called the \emph{within estimator} because it uses only within-unit variation. Equivalent representations:
+\begin{enumerate}[noitemsep]
+\item Demean and regress (above).
+\item Include a dummy variable for each unit.
+\item First-difference: $\Delta y_{it} = \Delta \bm{x}_{it}^\top \bbeta + \Delta \varepsilon_{it}$.
+\end{enumerate}
+All three give the same point estimate. Each has slightly different standard errors and different convenient interpretations.
+
+\paragraph{What fixed effects can't do.} Variables that don't change within a unit are perfectly collinear with the fixed effect and drop out. You cannot use FE to estimate the effect of gender, race, country of birth, or any other time-invariant characteristic. Within-unit variation is the price of admission.
+
+\section{Random effects}
+
+Treat $\alpha_i$ as a random variable with its own distribution, uncorrelated with $\bm{x}_{it}$:
+\[
+  \alpha_i \sim N(0, \sigma_\alpha^2), \quad \alpha_i \perp \!\!\! \perp \bm{x}_{it}.
+\]
+This last assumption is the catch. If $\alpha_i$ is correlated with $\bm{x}_{it}$ (which it usually is), random effects is biased. If the assumption holds, RE is more efficient than FE because it uses both within and between variation.
+
+Random effects matters more in textbooks than in applied work. Most economists default to fixed effects because the random-effects assumption is rarely defensible.
+
+\paragraph{The Hausman test.} A formal test of the RE assumption: compare RE to FE. If they're significantly different, the RE assumption is violated and you should use FE.
+
+\section{Two-way fixed effects}
+
+When you have variation across both units and time, include both kinds of fixed effects:
+\[
+  y_{it} = \bm{x}_{it}^\top \bbeta + \alpha_i + \delta_t + \varepsilon_{it}.
+\]
+The $\alpha_i$ absorb all unit-specific characteristics constant over time. The $\delta_t$ absorb all time-specific shocks common to all units (recessions, policy changes, weather). What's left is variation specific to a particular unit at a particular time, which is where the causal action is.
+
+Two-way fixed effects is the workhorse of modern empirical economics. The standard difference-in-differences estimator is a two-way FE with a treatment indicator.
+
+\section{Standard errors and clustering}
+
+Panel data have correlated errors: shocks to a unit tend to persist over time. Standard error formulas that assume independent errors are wrong.
+
+The fix: \emph{cluster} the standard errors at the unit level. This allows arbitrary correlation within a unit (across time periods) while assuming independence across units. Clustered standard errors are usually larger than naive ones, sometimes much larger.
+
+Cluster at the level of treatment assignment if you're estimating a policy effect. If treatment varies at the state level, cluster at the state level even if your data is at the city level. This is one of the most important practical adjustments in panel-data analysis.
+
+\section{When fixed effects matter most}
+
+Fixed effects are most powerful when:
+\begin{enumerate}[noitemsep]
+\item The unit-specific characteristic is hard or impossible to measure (innate ability, management quality).
+\item This characteristic is plausibly stable over the period studied.
+\item The treatment varies substantially within units, not just across them.
+\end{enumerate}
+If the variable of interest doesn't vary much within units, FE squeezes out almost all the variation, leaving very little to identify the effect. Standard errors balloon. Sometimes you have to choose between absorbing more confounders (FE) and having enough power to detect anything (no FE).
+
+\begin{keyinsight}
+Panel data lets you observe the same units over time. The key benefit is that you can absorb time-invariant unit-specific characteristics that you couldn't measure directly.
+
+The fixed effects estimator demeans the data within each unit, killing $\alpha_i$ and giving consistent estimates of $\bbeta$ even if $\alpha_i$ is correlated with the regressors. Two-way fixed effects also kills time-specific common shocks.
+
+Cluster the standard errors at the unit level. Most cross-sectional standard error formulas are wrong for panel data.
+\end{keyinsight}
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# install.packages(c("plm", "lfe"))
+library(plm)
+
+# Built-in panel dataset
+data("Grunfeld")
+head(Grunfeld)
+# Investment ~ market value + capital, by firm and year
+
+# Pooled OLS
+plm(inv ~ value + capital, data = Grunfeld, model = "pooling")
+
+# Fixed effects (within)
+fe <- plm(inv ~ value + capital, data = Grunfeld, model = "within")
+summary(fe)
+
+# Random effects
+re <- plm(inv ~ value + capital, data = Grunfeld, model = "random")
+
+# Hausman test: FE vs RE
+phtest(fe, re)
+
+# Two-way fixed effects
+plm(inv ~ value + capital, data = Grunfeld,
+    model = "within", effect = "twoways")
+
+# Clustered standard errors
+library(sandwich); library(lmtest)
+coeftest(fe, vcov = vcovHC(fe, cluster = "group"))
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item Show that demeaning by unit gives the same coefficient as including unit dummies.
+  \item Why does fixed effects drop time-invariant variables? Demonstrate this in R: include a dummy for ``firm in California'' and run FE. The coefficient won't be estimable.
+  \item Generate a panel where $\alpha_i$ is correlated with $x_{it}$. Compare pooled OLS, FE, and RE. Which gives the right answer?
+  \item In a wage equation with individual fixed effects, can you estimate the gender wage gap? Why or why not?
+  \item Run a difference-in-differences with two-way fixed effects. What does the treatment $\times$ post coefficient mean? Compare to a simple two-period DiD.
+  \item Why are clustered standard errors usually larger than naive ones in panel data? What happens to inference if you ignore clustering?
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~Why is panel data ``more informative'' than cross-sectional data?
+
+\smallskip
+$\triangleright$~When does fixed effects estimation help, and what's its main limitation?
+
+\smallskip
+$\triangleright$~Why is two-way fixed effects so popular in modern empirical work?
+\end{reflect}

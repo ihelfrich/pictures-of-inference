@@ -1,0 +1,156 @@
+\chapter{Hypothesis Testing}
+\label{ch:hypothesis}
+
+\noindent\textsc{A hypothesis test is a question} posed to data in a very specific format: ``If nothing interesting were happening, how surprising would my data be?''
+
+That's it. The entire framework. Everything else---$p$-values, test statistics, significance levels, power---is machinery for making that question precise and answering it quantitatively.
+
+\section{The structure of every test}
+
+Every hypothesis test has five parts. Always these five, in this order:
+
+\paragraph{1. The null hypothesis ($H_0$).} A specific claim about the population, usually ``no effect'' or ``no difference.'' Examples: $\mu = 0$, $\mu_1 = \mu_2$, $\beta_1 = 0$, $\rho = 0$. The null must be precise enough to determine a probability distribution for the test statistic.
+
+\paragraph{2. The alternative hypothesis ($H_a$).} What you suspect is actually true. $\mu \neq 0$ (two-sided), $\mu > 0$ (one-sided), $\beta_1 \neq 0$, etc.
+
+\paragraph{3. The test statistic.} A number computed from the data that measures how far the data is from what $H_0$ predicts. Common ones:
+\begin{align}
+  z &= \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}}, \quad \text{when $\sigma$ is known} \label{eq:z-test} \\[6pt]
+  t &= \frac{\bar{x} - \mu_0}{s/\sqrt{n}}, \quad \text{when $\sigma$ is unknown (use $s$)} \label{eq:t-test}
+\end{align}
+Under $H_0$, the $z$-statistic follows $N(0,1)$ and the $t$-statistic follows $t_{n-1}$.
+
+\paragraph{4. The $p$-value.} The probability of getting a test statistic at least as extreme as the one you observed, \emph{assuming $H_0$ is true}:
+\begin{equation}
+  p = P(|T| \geq |t_{\text{obs}}| \mid H_0) \quad \text{(two-sided)}.
+  \label{eq:p-value}
+\end{equation}
+A small $p$-value means: ``data this extreme would be very unlikely under $H_0$.'' It does \emph{not} mean: ``$H_0$ is probably false.'' This distinction matters enormously and most people get it wrong.
+
+\paragraph{5. The decision.} If $p < \alpha$ (the significance level, typically 0.05), reject $H_0$. If $p \geq \alpha$, fail to reject $H_0$. ``Fail to reject'' is not the same as ``accept.'' Absence of evidence is not evidence of absence.
+
+\section{A worked example}
+
+A cereal company claims their boxes contain 500g of cereal. You suspect they're underfilling. You weigh $n = 25$ boxes and find $\bar{x} = 496.2$g with $s = 8.4$g.
+
+\paragraph{Step 1.} $H_0\colon \mu = 500$, \quad $H_a\colon \mu < 500$ (one-sided, you suspect underfilling).
+
+\paragraph{Step 2.} Test statistic:
+\[
+  t = \frac{496.2 - 500}{8.4/\sqrt{25}} = \frac{-3.8}{1.68} = -2.262.
+\]
+
+\paragraph{Step 3.} $p$-value: $P(t_{24} \leq -2.262) = 0.0166$.
+
+\paragraph{Step 4.} At $\alpha = 0.05$, $p = 0.017 < 0.05$. Reject $H_0$. The data provides evidence that the boxes are being underfilled.
+
+\section{The two types of error}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lcc}
+\toprule
+ & $H_0$ is true & $H_0$ is false \\
+\midrule
+Reject $H_0$ & \textbf{Type I error} ($\alpha$) & Correct (power) \\
+Fail to reject $H_0$ & Correct & \textbf{Type II error} ($\beta$) \\
+\bottomrule
+\end{tabular}
+\caption{The four possible outcomes of a hypothesis test.}
+\label{tab:errors}
+\end{table}
+
+\textbf{Type I error} ($\alpha$): rejecting $H_0$ when it's actually true. A false alarm. You convict an innocent defendant. The significance level $\alpha$ is the maximum probability of this error that you're willing to tolerate.
+
+\textbf{Type II error} ($\beta$): failing to reject $H_0$ when it's actually false. A miss. You acquit a guilty defendant.
+
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\linewidth]{fig_errors.pdf}
+\caption{Type~I and Type~II errors. The blue curve is the sampling distribution under the null. The red curve is the distribution under a specific alternative. The vertical dashed line is the critical value separating ``reject'' from ``fail to reject.'' Type~I error ($\alpha$): the blue area to the right of the cutoff (rejecting a true null). Type~II error ($\beta$): the red area to the left (failing to reject a false null).}
+\label{fig:errors}
+\end{figure}
+
+\textbf{Power} $= 1 - \beta$: the probability of correctly rejecting $H_0$ when it is false. Power depends on three things: the true effect size (bigger effects are easier to detect), the sample size (more data means more power), and the significance level (lower $\alpha$ means less power, all else equal).
+
+\begin{keyinsight}
+A non-significant result ($p > 0.05$) does not mean the effect doesn't exist. It might mean your sample was too small to detect it. Before interpreting a null result, ask: ``What was the power of this test?'' If power was low (say, 30\%), then failing to reject tells you almost nothing.
+\end{keyinsight}
+
+\section{The $t$-test for two groups}
+
+Comparing two group means is the most common application. Given samples of sizes $n_1$ and $n_2$ with means $\bar{x}_1, \bar{x}_2$ and standard deviations $s_1, s_2$:
+
+\begin{equation}
+  t = \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\dfrac{s_1^2}{n_1} + \dfrac{s_2^2}{n_2}}}.
+  \label{eq:two-sample-t}
+\end{equation}
+
+Under $H_0\colon \mu_1 = \mu_2$, this follows a $t$-distribution with degrees of freedom given by the Welch-Satterthwaite approximation (a messy formula; let R compute it). The numerator is the observed difference. The denominator is the standard error of the difference. The ratio measures how many standard errors apart the two means are.
+
+\section{Effect size: what the test can't tell you}
+
+A $p$-value tells you whether an effect is distinguishable from zero. It says nothing about whether the effect is large enough to matter.
+
+Cohen's $d$ measures effect size in standard-deviation units:
+\begin{equation}
+  d = \frac{\bar{x}_1 - \bar{x}_2}{s_{\text{pooled}}}, \qquad s_{\text{pooled}} = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1 + n_2 - 2}}.
+  \label{eq:cohens-d}
+\end{equation}
+
+Conventional benchmarks: $d = 0.2$ (small), $d = 0.5$ (medium), $d = 0.8$ (large). But these are conventions, not laws. A ``small'' effect of $d = 0.1$ on a variable that affects millions of people can be enormously important. A ``large'' effect of $d = 1.2$ measured on eight people might not replicate.
+
+\emph{Always report both $p$-values and effect sizes.} The $p$-value tells you if the effect is real. The effect size tells you if it matters.
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# One-sample t-test
+x <- c(496.2, 498.1, 494.7, 501.3, 497.8, 499.0,
+       495.5, 493.2, 497.6, 496.0, 498.4, 494.1,
+       496.8, 497.5, 495.3, 499.2, 494.8, 496.6,
+       497.1, 498.0, 493.9, 496.4, 495.7, 497.3, 496.5)
+t.test(x, mu = 500, alternative = "less")
+
+# Two-sample t-test
+set.seed(7)
+group_a <- rnorm(30, mean = 70, sd = 10)
+group_b <- rnorm(30, mean = 75, sd = 10)
+t.test(group_a, group_b)
+
+# Effect size (Cohen's d)
+diff <- mean(group_b) - mean(group_a)
+sp <- sqrt(((29)*var(group_a) + (29)*var(group_b)) / 58)
+cat("Cohen's d =", diff / sp, "\n")
+
+# Power analysis
+power.t.test(n = 30, delta = 5, sd = 10, type = "two.sample")
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item A sample of $n = 16$ has $\bar{x} = 105$ and $s = 12$. Test $H_0\colon \mu = 100$ vs.\ $H_a\colon \mu \neq 100$ at $\alpha = 0.05$. Compute the $t$-statistic, the $p$-value, and state your conclusion. Then compute the 95\% confidence interval and verify it's consistent with your test result.
+
+  \item Two groups: Group A ($n = 20$, $\bar{x} = 78$, $s = 8$), Group B ($n = 25$, $\bar{x} = 83$, $s = 10$). Compute the two-sample $t$-statistic and Cohen's $d$. Is the effect significant? Is it large?
+
+  \item A study finds $p = 0.048$. The researchers declare ``significant at the 5\% level.'' A replication with three times the sample size finds $p = 0.22$. What happened? Which result do you trust more?
+
+  \item Using \texttt{power.t.test()} in R, find the sample size needed to detect an effect of $d = 0.3$ with 80\% power at $\alpha = 0.05$. How does the required $n$ change if you want 90\% power?
+
+  \item A colleague says ``$p = 0.03$, so there's only a 3\% chance the null hypothesis is true.'' Explain why this is wrong. What does $p = 0.03$ actually mean?
+
+  \item Derive the relationship between confidence intervals and hypothesis tests: show that rejecting $H_0\colon \mu = \mu_0$ at level $\alpha$ is equivalent to $\mu_0$ falling outside the $(1-\alpha)$ confidence interval.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~State the five parts of a hypothesis test from memory.
+
+\smallskip
+$\triangleright$~A study has $p = 0.001$ but Cohen's $d = 0.05$ (tiny effect, huge sample). Should you care about the result?
+
+\smallskip
+$\triangleright$~Why is ``fail to reject $H_0$'' not the same as ``accept $H_0$''?
+\end{reflect}

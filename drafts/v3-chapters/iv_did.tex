@@ -1,0 +1,144 @@
+\chapter{Quasi-Experiments}
+\label{ch:iv-did}
+
+\noindent\textsc{When you can't randomize,} you can sometimes find a setting where the variation in treatment is plausibly random. The trick of modern empirical economics is recognizing such settings and using their structure to identify causal effects without an actual experiment.
+
+This chapter introduces three of the most important quasi-experimental designs: instrumental variables, difference-in-differences, and regression discontinuity. Each has a specific assumption that, if true, lets you escape the selection-bias trap from the causal inference chapter.
+
+\section{Instrumental variables}
+
+When an explanatory variable is correlated with the error term (\emph{endogeneity}), OLS is biased. The classic culprits: omitted variables, simultaneous causation, measurement error in $X$.
+
+The instrumental variable (IV) strategy: find a third variable $Z$ that
+\begin{enumerate}[noitemsep]
+\item correlates with the endogenous $X$ (\emph{relevance}: $\Cov(Z, X) \neq 0$), and
+\item affects $Y$ \emph{only} through $X$ (\emph{exogeneity} or \emph{exclusion}: $\Cov(Z, \varepsilon) = 0$).
+\end{enumerate}
+Then $Z$ provides ``clean'' variation in $X$ that you can use to estimate the causal effect.
+
+\paragraph{The IV estimator.} For a single endogenous regressor and a single instrument:
+\begin{equation}
+  \hat\beta_{\text{IV}} = \frac{\Cov(Y, Z)}{\Cov(X, Z)}.
+  \label{eq:iv-estimator}
+\end{equation}
+With multiple instruments, you use \emph{two-stage least squares} (2SLS): regress $X$ on $Z$ (and other exogenous regressors) to get $\hat X$, then regress $Y$ on $\hat X$. The OLS coefficient from the second stage is $\hat\beta_{\text{2SLS}}$.
+
+\paragraph{Classic example: schooling and wages.} Are returns to education biased by ability? Higher-ability people get more schooling \emph{and} earn more, even without the schooling. OLS overstates the causal effect of education.
+
+Angrist and Krueger (1991) used quarter of birth as an instrument. School attendance laws set a cutoff date: if you turned 6 before September, you started kindergarten that year; otherwise you waited a year. Combined with compulsory schooling laws (you can leave at 16), this means people born early in the year ended up with slightly less schooling than those born late. Birth quarter affects schooling but plausibly nothing else about wages.
+
+The IV estimate of returns to schooling was around 8-10\%, comparable to OLS. The instrument was reasonably valid, just very weak: most people don't drop out at exactly 16, so birth quarter only weakly predicts schooling.
+
+\paragraph{Weak instruments.} If $\Cov(X, Z)$ is small, the denominator of Equation~\ref{eq:iv-estimator} is near zero, and the estimator becomes unreliable. The conventional rule: in 2SLS, the first-stage $F$-statistic for the instruments should exceed about 10. Below that, weak-instrument problems can be severe.
+
+\section{Difference-in-differences}
+
+Treatment is implemented somewhere or for somebody, and a comparison group exists. Compare the change in outcomes for the treated group to the change for the comparison group. The double-difference removes any time-invariant differences between groups and any common shocks.
+
+\paragraph{The setup.} Two groups (treated $T$, control $C$), two periods (before and after, denoted 0 and 1). Outcome $Y_{gt}$ for group $g$ in period $t$. The DiD estimator is
+\begin{equation}
+  \hat{\tau}_{\text{DiD}} = (\bar Y_{T,1} - \bar Y_{T,0}) - (\bar Y_{C,1} - \bar Y_{C,0}).
+  \label{eq:did}
+\end{equation}
+Or, in regression form:
+\[
+  Y_{it} = \alpha + \beta \cdot \text{Treated}_i + \gamma \cdot \text{Post}_t + \tau \cdot (\text{Treated}_i \times \text{Post}_t) + \varepsilon_{it}.
+\]
+The interaction coefficient $\hat\tau$ is the DiD estimator.
+
+\paragraph{The parallel-trends assumption.} DiD identifies the causal effect under the assumption that, in the absence of treatment, the treated and control groups would have followed parallel time paths. This is fundamentally untestable, but you can build evidence: did the trends look parallel \emph{before} treatment? If the treated group was already pulling away or falling behind, parallel trends is implausible.
+
+\paragraph{Classic example: Card and Krueger (1994).} New Jersey raised its minimum wage. Pennsylvania (just across the river) didn't. Card and Krueger compared employment changes at fast-food restaurants in NJ to PA. The DiD estimate of the employment effect was approximately zero, contradicting the textbook prediction. The paper launched a thirty-year debate that still isn't fully settled.
+
+\section{Regression discontinuity}
+
+When treatment is determined by whether some \emph{running variable} crosses a threshold, the people just above and just below the cutoff are essentially identical except for their treatment status.
+
+\paragraph{The setup.} A running variable $R$, a cutoff $c$. Treatment $D = \mathbf{1}\{R \geq c\}$ (sharp RD) or $D$ is much more likely above $c$ than below (fuzzy RD). The treatment effect is identified at the cutoff:
+\begin{equation}
+  \tau_{\text{RD}} = \lim_{r \downarrow c} \E[Y \mid R = r] - \lim_{r \uparrow c} \E[Y \mid R = r].
+  \label{eq:rd}
+\end{equation}
+You estimate this by fitting flexible regressions on each side of the cutoff and taking the jump.
+
+\paragraph{The continuity assumption.} Untreated potential outcomes $Y(0)$ are continuous in $R$ at the cutoff. The intuition: someone who just barely qualified is comparable to someone who just barely didn't, except for treatment. Manipulation around the cutoff (e.g., teachers fudging test scores) breaks this.
+
+\paragraph{Classic example: Lee (2008).} U.S.\ House elections. Incumbents who win narrowly are nearly identical to challengers who lose narrowly. The discontinuity in incumbency status at the 50\% vote-share cutoff identifies the causal effect of incumbency on the next election. The estimate: a large advantage, persistent across elections.
+
+\section{What these have in common}
+
+All three designs trade an assumption about the world for a causal estimate.
+
+\begin{itemize}[noitemsep]
+\item IV: ``the instrument affects the outcome only through the treatment.''
+\item DiD: ``the treated and control groups would have followed parallel paths absent treatment.''
+\item RD: ``the running variable doesn't cause the outcome to jump at the cutoff except through treatment.''
+\end{itemize}
+
+Each assumption is plausible in some settings and implausible in others. The art of empirical work is recognizing which design fits the available data and being honest about whether the assumption holds.
+
+\begin{keyinsight}
+Quasi-experimental designs identify causal effects from observational data by exploiting specific kinds of variation that are plausibly independent of confounders.
+
+IV uses an instrument that affects the outcome only through the treatment. DiD compares changes between groups before and after treatment. RD compares units just above and just below a threshold.
+
+Each design rests on a specific identifying assumption. If the assumption holds, the design works. If not, the resulting estimate is just a description of an association.
+\end{keyinsight}
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# 2SLS with the AER package
+# install.packages("AER")
+library(AER)
+data("CigarettesSW")
+# Effect of price on cigarette consumption, instrumented by tax
+fit_iv <- ivreg(log(packs) ~ log(rprice) | log(rtax),
+                data = CigarettesSW, subset = year == "1995")
+summary(fit_iv, diagnostics = TRUE)
+# Look at the F-stat for weak instruments
+
+# DiD with two groups, two periods
+df <- data.frame(
+  y     = c(10, 12, 15, 14),
+  treat = c(1, 1, 0, 0),
+  post  = c(0, 1, 0, 1)
+)
+lm(y ~ treat * post, data = df)   # interaction = DiD estimate
+
+# Regression discontinuity (sharp)
+set.seed(2024)
+n <- 500
+running <- runif(n, -1, 1)
+treat <- as.numeric(running >= 0)
+y <- 1 + 0.5 * running + 1.2 * treat + rnorm(n, 0, 0.4)
+plot(running, y, col = ifelse(treat, "red", "blue"))
+abline(v = 0, lty = 2)
+
+# Local linear regression on each side
+left  <- lm(y ~ running, subset = running < 0)
+right <- lm(y ~ running, subset = running >= 0)
+predict(right, newdata = data.frame(running = 0)) -
+  predict(left,  newdata = data.frame(running = 0))
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item For the IV estimator, prove that $\hat\beta_{\text{IV}}$ is consistent for $\beta$ when the exclusion restriction holds. (Hint: write $\Cov(Y, Z)$ in terms of the structural model.)
+  \item In the DiD setup with two groups and two periods, derive Equation~\ref{eq:did} from the regression form. Show that $\hat\tau$ in the interaction equals the difference in differences.
+  \item Why does the parallel-trends assumption need to hold for DiD to identify the ATT? What goes wrong if treated and control groups had different pre-trends?
+  \item In RD, why is the local linear regression preferred to a simple polynomial fit? What problem does it solve?
+  \item Find a published paper using one of these designs. Identify the assumption and assess its plausibility.
+  \item Show that 2SLS reduces to OLS when the instrument equals the regressor.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~State the two requirements for a valid instrumental variable.
+
+\smallskip
+$\triangleright$~Why does difference-in-differences not require random assignment? What does it require instead?
+
+\smallskip
+$\triangleright$~The RD design treats people just above and just below the cutoff as random. When does this work? When does it fail?
+\end{reflect}

@@ -1,0 +1,11 @@
+# Preface {.unnumbered}
+
+*Working draft. Architecture committed; chapters arrive as they finish.*
+
+This is *Pictures of Inference*. A visual course in statistics, calculus, and econometrics, by Dr. Ian Helfrich and Dr. Elizaveta Gonchar.
+
+The book is built to take a reader from "what is a correlation" to the working knowledge needed to read, evaluate, and contribute to research at the frontier of empirical economics. Four parts: How to See, How to Speak, How to Think, How to Discover. Visualization is primary. Math is taught as a language. Multiple data types are treated as first-class.
+
+For collaborators: see `docs/process.md` for how we build, `docs/voice/charter.md` for what the narrator does and does not do, and `docs/table-of-contents.md` for the chapter map.
+
+For readers: start with chapter 1 ([Numbers on the page](prose/part1/01-numbers-on-the-page.qmd)) and read forward. Each chapter has three layers — a narrative layer that requires no math beyond what came before, a technical layer for derivations and proofs, and a frontier note pointing at current research. Pick the layers that suit you. Come back for more later.

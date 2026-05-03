@@ -1,0 +1,147 @@
+\chapter{Time Series Basics}
+\label{ch:timeseries}
+
+\noindent\textsc{Time series data is data with order.} Economic indicators by month, stock prices by day, temperature by year. The order matters because consecutive observations are usually correlated: today's stock price is closer to yesterday's than to a random price drawn from the historical distribution. This dependence violates the OLS independence assumption and changes almost everything about how you analyze the data.
+
+This chapter introduces the basic vocabulary and the simplest models. Real time-series analysis is a graduate course; this is the runway.
+
+\section{What makes time series different}
+
+In cross-sectional data (one row per individual), shuffling the rows changes nothing. In time series, shuffling destroys the data. The order \emph{is} the information.
+
+The defining feature is \emph{autocorrelation}: $\Cov(Y_t, Y_{t-1})$ is generally not zero. Today depends on yesterday. The deeper the dependence, the more the standard OLS toolkit fails to apply.
+
+Three central concepts organize everything that follows:
+
+\paragraph{Stationarity.} A series is (weakly) stationary if its mean and variance don't change over time and its autocorrelations depend only on the lag, not on $t$. Stationary series fluctuate around a constant level. Most macroeconomic series in raw form are not stationary; they trend.
+
+\paragraph{Autocorrelation.} The correlation between $Y_t$ and $Y_{t-k}$, called the lag-$k$ autocorrelation:
+\[
+  \rho_k = \frac{\Cov(Y_t, Y_{t-k})}{\Var(Y_t)}.
+\]
+The plot of $\rho_k$ against $k$ is the \emph{autocorrelation function} (ACF). For white noise, all $\rho_k$ for $k \geq 1$ are zero (in expectation). For a random walk, $\rho_k$ decays slowly.
+
+\paragraph{Differencing.} If $Y_t$ is non-stationary, $\Delta Y_t = Y_t - Y_{t-1}$ often is. Differencing removes trends. The number of times you have to difference a series to make it stationary is its \emph{order of integration}, written $I(d)$.
+
+\section{The AR(1) model}
+
+The simplest time-series model:
+\begin{equation}
+  Y_t = \phi Y_{t-1} + \varepsilon_t, \quad \varepsilon_t \overset{\text{iid}}{\sim} N(0, \sigma^2).
+  \label{eq:ar1}
+\end{equation}
+Today's value is $\phi$ times yesterday's plus a fresh shock. This is called \emph{autoregressive of order 1}, AR(1).
+
+\paragraph{Stationarity.} The AR(1) is stationary if and only if $|\phi| < 1$. The series fluctuates around zero, and its variance is finite: $\Var(Y_t) = \sigma^2/(1 - \phi^2)$. The autocorrelation function decays geometrically: $\rho_k = \phi^k$.
+
+\paragraph{Random walk.} When $\phi = 1$, the AR(1) becomes
+\[
+  Y_t = Y_{t-1} + \varepsilon_t,
+\]
+which is the random walk. The series is non-stationary: its variance grows with $t$ ($\Var(Y_t) = t \sigma^2$ if $Y_0 = 0$). The first difference $\Delta Y_t = \varepsilon_t$ is white noise. So a random walk is $I(1)$.
+
+\paragraph{Explosive.} When $|\phi| > 1$, the series explodes: shocks compound rather than decay. Real economic series rarely look like this for long; mean reversion or feedback eventually kicks in.
+
+\section{Why this matters: spurious regression}
+
+Run a regression of one random walk on another, independent random walk. The truth is no relationship. OLS will, with high probability, return a large slope and a small $p$-value anyway. This is the \emph{spurious regression} problem, and it broke decades of empirical macroeconomics before economists figured out what was happening.
+
+The fix has two parts:
+\begin{enumerate}[noitemsep]
+\item Test for stationarity (Augmented Dickey-Fuller test, KPSS test).
+\item If both series are non-stationary, either work in differences or use cointegration methods.
+\end{enumerate}
+
+In differences, the spurious correlation disappears, because $\Delta Y_t$ for an independent random walk is just white noise.
+
+\section{Moving average and ARMA models}
+
+The MA(1) model:
+\[
+  Y_t = \varepsilon_t + \theta \varepsilon_{t-1}.
+\]
+The current observation is the current shock plus a fraction of the previous shock. ACF is zero beyond lag 1.
+
+ARMA combines AR and MA components:
+\[
+  Y_t = \phi_1 Y_{t-1} + \cdots + \phi_p Y_{t-p} + \varepsilon_t + \theta_1 \varepsilon_{t-1} + \cdots + \theta_q \varepsilon_{t-q}.
+\]
+This is ARMA($p, q$). ARIMA($p, d, q$) is the same model applied to the $d$-th difference of $Y$. The Box-Jenkins methodology is a workflow for identifying $(p, d, q)$ from data: examine the ACF and partial ACF (PACF), guess a model, check residuals, iterate.
+
+\section{Trend, seasonality, and cycles}
+
+Real time series are usually a mix of:
+\begin{itemize}[noitemsep]
+\item \textbf{Trend}: long-run direction (population growing, prices rising)
+\item \textbf{Seasonality}: regular cycles tied to calendar (holiday retail, agricultural output)
+\item \textbf{Cyclical fluctuations}: irregular but persistent (business cycles)
+\item \textbf{Noise}: idiosyncratic shocks
+\end{itemize}
+Decomposing a series into these components (e.g., STL decomposition) is a standard preprocessing step. Once decomposed, you can model each component separately.
+
+\section{Forecasting}
+
+The point of time series modeling is often forecasting: $\hat Y_{t+h \mid t}$. For an AR(1):
+\[
+  \hat Y_{t+1 \mid t} = \hat\phi \cdot Y_t.
+\]
+Two-step ahead:
+\[
+  \hat Y_{t+2 \mid t} = \hat\phi \cdot \hat Y_{t+1\mid t} = \hat\phi^2 \cdot Y_t.
+\]
+And so on. As $h$ grows, the forecast decays toward zero (the unconditional mean), and the forecast variance grows. Long-run forecasts have wide intervals.
+
+\begin{keyinsight}
+Time series differs from cross-section because consecutive observations are typically correlated.
+
+A series is stationary if its statistical properties don't change over time. Most economic data must be differenced or detrended before it becomes stationary. Running regressions on non-stationary series produces spurious results.
+
+The simplest model is AR(1): today equals $\phi$ times yesterday plus noise. Stationary when $|\phi| < 1$, random walk when $\phi = 1$, explosive when $|\phi| > 1$.
+\end{keyinsight}
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# Simulate AR(1) processes
+set.seed(2024)
+n <- 200
+phi_values <- c(0.3, 0.9, 1.0, -0.7)
+
+par(mfrow = c(2, 2))
+for (phi in phi_values) {
+  y <- numeric(n)
+  for (t in 2:n) y[t] <- phi * y[t-1] + rnorm(1)
+  plot(y, type = "l", main = paste("AR(1), phi =", phi))
+}
+
+# ACF and PACF
+y <- arima.sim(list(ar = 0.7), n = 300)
+par(mfrow = c(1, 2))
+acf(y); pacf(y)
+
+# Fit ARIMA
+fit <- arima(y, order = c(1, 0, 0))
+fit
+forecast::forecast(fit, h = 20)   # forecasts with intervals
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item Simulate an AR(1) with $\phi = 0.5$ and one with $\phi = 0.95$. Plot both. Which one looks more like ``noise''? Which looks more like a trend? They are the same kind of model.
+  \item For an AR(1) with $\phi = 0.8$ and $\sigma^2 = 1$, find $\Var(Y_t)$ in steady state and the lag-3 autocorrelation.
+  \item Generate two independent random walks of length 200. Regress one on the other. Repeat 100 times and look at the distribution of $\hat\beta$ and the $p$-values. Why are most of them ``significant''?
+  \item Take the differences of a random walk. Plot the differenced series and its ACF. What do you see, and why?
+  \item Decompose a real time series (try \texttt{co2} or \texttt{AirPassengers} in R) using \texttt{stl()}. Identify the trend, seasonal, and remainder components.
+  \item Fit AR(1), AR(2), and AR(3) models to a simulated AR(2) series. Compare AIC values. Does the lowest AIC correctly identify the true model?
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~What does it mean for a time series to be stationary? Why do we care?
+
+\smallskip
+$\triangleright$~The AR(1) with $\phi = 1$ is the random walk. Why does this single value of $\phi$ change everything about the model's behavior?
+
+\smallskip
+$\triangleright$~Why is regressing one non-stationary series on another dangerous? What does ``spurious regression'' mean?
+\end{reflect}

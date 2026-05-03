@@ -1,0 +1,191 @@
+% ============================================================
+% Pictures of Inference - shared LaTeX preamble
+% Imported by main.tex and any standalone chapter compile
+% ============================================================
+
+\documentclass[11pt,twoside,openany]{book}
+
+% --- Geometry ---
+\usepackage[
+  letterpaper,
+  inner=1.2in, outer=1.0in, top=1.0in, bottom=1.0in,
+  marginparwidth=0pt, marginparsep=0pt
+]{geometry}
+
+% --- Fonts ---
+\usepackage{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\linespread{1.08}
+
+% --- Math ---
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{bm}
+
+% --- Headers ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\small\itshape\nouppercase{\leftmark}}
+\fancyhead[RO]{\small\itshape\nouppercase{\rightmark}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{
+  \fancyhf{}\fancyfoot[C]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+% --- Chapter titling ---
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}
+  {\chaptertitlename\ \thechapter}{12pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-20pt}{30pt}
+
+% --- Graphics ---
+\usepackage{graphicx}
+% Graphics paths cover both build-from-prose and build-from-root scenarios
+\graphicspath{
+  {../pictures/figures/output/}%
+  {../../pictures/figures/output/}%
+  {pictures/figures/output/}%
+  {figures/}%
+}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage[font=small,labelfont=bf,labelsep=period]{caption}
+
+% --- Code ---
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{codebg}{HTML}{f8f5f0}
+\definecolor{codeframe}{HTML}{d4c9b0}
+\definecolor{codekey}{HTML}{1a4f7a}
+\definecolor{codecomment}{HTML}{7a7a7a}
+\definecolor{codestr}{HTML}{b85c38}
+\lstset{
+  basicstyle=\small\ttfamily,
+  keywordstyle=\bfseries\color{codekey},
+  commentstyle=\itshape\color{codecomment},
+  stringstyle=\color{codestr},
+  backgroundcolor=\color{codebg},
+  frame=single,
+  rulecolor=\color{codeframe},
+  breaklines=true,
+  xleftmargin=8pt, xrightmargin=8pt,
+  aboveskip=10pt, belowskip=10pt,
+  columns=flexible,
+  framesep=6pt,
+}
+
+\lstdefinelanguage{Rlang}{
+  morekeywords={function,if,else,for,while,in,return,library,
+    lm,summary,plot,hist,mean,sd,var,rnorm,set.seed,
+    replicate,sample,data.frame,c,TRUE,FALSE,NULL,
+    rbinom,ifelse,cat,str,head,nrow,ncol,sapply,class,
+    cor,data,par,abline,curve,dnorm,t.test,sqrt,
+    rexp,dpois,pnorm,qnorm,dbinom,polygon,seq,lines,glm,
+    optim,solve,diag,binomial,IQR,median,summary,vif,anova,
+    integrate,optimize,arima,arima.sim,acf,pacf,ivreg,subset,
+    predict,exp,log,as.numeric,confint,coef,runif,points},
+  morecomment=[l]{\#}, morestring=[b]", sensitive=true,
+}
+
+\lstdefinelanguage{Stata}{
+  morekeywords={generate,gen,replace,drop,keep,merge,reshape,
+    regress,reg,xtreg,ivregress,probit,logit,oprobit,
+    if,by,sort,bysort,egen,collapse,summarize,sum,
+    tabulate,tab,correlate,corr,predict,margins,
+    program,syntax,version,clear,use,save,export,import,
+    local,global,scalar,matrix,foreach,forvalues,while,
+    return,exit,display,disp},
+  morecomment=[l]{*}, morecomment=[l]{//},
+  morestring=[b]", sensitive=true,
+}
+
+% --- Callout boxes ---
+\usepackage[breakable,skins]{tcolorbox}
+
+% Key Insight: the core idea (orange)
+\newtcolorbox{keyinsight}{
+  enhanced, breakable,
+  colframe=orange!70!black, colback=orange!5,
+  fonttitle=\sffamily\bfseries\small, title=Key Insight,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% Try It Now: an exercise the reader does in real time (blue)
+\newtcolorbox{tryitnow}{
+  enhanced, breakable,
+  colframe=blue!50!black, colback=blue!3,
+  fonttitle=\sffamily\bfseries\small, title=Try It Now,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% Inside the Math: deeper formal treatment (gold)
+\newtcolorbox{inthemath}{
+  enhanced, breakable,
+  colframe=yellow!50!black, colback=yellow!4,
+  fonttitle=\sffamily\bfseries\small, title=Inside the Math,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% Code Lab: working code, usually R or Python (green)
+\newtcolorbox{codelab}{
+  enhanced, breakable,
+  colframe=green!50!black, colback=green!3,
+  fonttitle=\sffamily\bfseries\small, title=Code Lab,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% Expedition: open-ended exploration with a real dataset (teal)
+\newtcolorbox{expedition}{
+  enhanced, breakable,
+  colframe=teal!60!black, colback=teal!4,
+  fonttitle=\sffamily\bfseries\small, title=Expedition,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% Frontier Note: connection to current research (purple)
+\newtcolorbox{frontiernote}{
+  enhanced, breakable,
+  colframe=purple!50!black, colback=purple!3,
+  fonttitle=\sffamily\bfseries\small, title=Frontier Note,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% --- Misc ---
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  urlcolor=blue!50!black,
+  citecolor=green!50!black
+}
+
+% --- Custom commands ---
+\newcommand{\E}{\operatorname{\mathbb{E}}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+\newcommand{\bbeta}{\bm{\beta}}
+\newcommand{\bvarepsilon}{\bm{\varepsilon}}
+\newcommand{\bX}{\bm{X}}
+\newcommand{\bY}{\bm{Y}}
+\newcommand{\bI}{\bm{I}}
+
+% Convenient parsing aid: read-aloud notation
+% Use \readas{notation}{spoken form} for first appearance
+\newcommand{\readas}[2]{#1\;\textit{(read: #2)}}

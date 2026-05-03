@@ -1,0 +1,55 @@
+# LaTeX intermediate files
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.bbl
+*.blg
+*.idx
+*.ilg
+*.ind
+
+# Build outputs
+build/
+prose/build/
+prose/main.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Generated figures (regenerable from scripts; keep out of git for cleanliness)
+pictures/figures/output/
+!pictures/figures/output/.gitkeep
+
+# Local data (large or licensed)
+data/.local/
+data/**/raw/
+*.parquet
+*.feather
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# Quarto output (when we migrate)
+_site/
+.quarto/
+
+# Claude Code session artifacts
+.claude/sessions/

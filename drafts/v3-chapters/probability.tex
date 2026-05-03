@@ -1,0 +1,149 @@
+\chapter{Probability as Area}
+\label{ch:probability}
+
+\noindent\textsc{Here is one way to think about probability} that will serve you better than any formula: probability is area.
+
+Draw a rectangle. Call it ``everything that could happen.'' Now shade in the portion where event $A$ occurs. The fraction of the rectangle you shaded is $P(A)$.
+
+That's not a metaphor. When we write $P(A) = 0.3$, we're saying that $A$ covers 30\% of the possible outcomes. When we write $P(A \cap B)$, we're asking how much area falls in both the $A$ region and the $B$ region simultaneously. When we write $P(A \mid B)$, we're zooming into the $B$ region and asking what fraction of \emph{it} is also in $A$.
+
+Every formula in probability theory is a statement about areas. Once you see this, the formulas stop being things you memorize and start being things you can re-derive on the spot.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{fig_venn.pdf}
+\caption{Probability as area. The outer rectangle is the sample space~$\Omega$. Events $A$ and $B$ are subsets. Their intersection $A \cap B$ is the overlap. The probability of any event is the area of its region as a fraction of the total area.}
+\label{fig:venn}
+\end{figure}
+
+
+
+\section{The axioms}
+
+Kolmogorov's axioms (1933) are three rules that any probability measure must satisfy. They're surprisingly minimal.
+
+\begin{enumerate}
+  \item $P(A) \geq 0$ for every event $A$. Areas are non-negative.
+  \item $P(\Omega) = 1$, where $\Omega$ is the entire sample space. The total area is 1.
+  \item If $A$ and $B$ are mutually exclusive ($A \cap B = \varnothing$), then $P(A \cup B) = P(A) + P(B)$. Non-overlapping areas add.
+\end{enumerate}
+
+Everything else follows. $P(A^c) = 1 - P(A)$, because the complement fills whatever area $A$ doesn't. $P(\varnothing) = 0$, because an empty event has no area. $P(A \cup B) = P(A) + P(B) - P(A \cap B)$ for overlapping events, because you counted the overlap twice and need to subtract it once.
+
+\section{Conditional probability}
+
+Conditioning is the act of zooming in. When you compute $P(A \mid B)$, you're not asking ``what fraction of the whole space is $A$?'' You're asking ``given that we're already in $B$, what fraction of $B$ is also $A$?''
+
+The formula:
+\begin{equation}
+  P(A \mid B) = \frac{P(A \cap B)}{P(B)}, \qquad P(B) > 0.
+  \label{eq:cond-prob}
+\end{equation}
+
+In the area picture, $P(A \cap B)$ is the overlap region, and $P(B)$ is the total area of $B$. The ratio is the fraction of $B$ occupied by $A$. That's all conditioning does: it changes the denominator from ``the whole space'' to ``the event we're conditioning on.''
+
+\paragraph{Why this matters for statistics.} Almost everything in inferential statistics is a conditional probability. A $p$-value is the probability of the observed data (or more extreme) \emph{given that the null hypothesis is true}: $P(\text{data} \mid H_0)$. A confidence interval is constructed so that $P(\hat\beta \in \text{CI} \mid \beta)$ equals some target level. Regression coefficients estimate $\E[Y \mid X = x]$, the conditional expectation. Conditioning is not a topic in statistics. It is the operating system.
+
+\section{Bayes' theorem}
+
+Bayes' theorem is one line of algebra:
+\begin{equation}
+  P(A \mid B) = \frac{P(B \mid A) \cdot P(A)}{P(B)}.
+  \label{eq:bayes}
+\end{equation}
+It follows immediately from the definition of conditional probability applied twice: $P(A \mid B) \cdot P(B) = P(A \cap B) = P(B \mid A) \cdot P(A)$. Divide by $P(B)$ and you're done.
+
+What makes Bayes' theorem powerful is not the algebra. It's the interpretation. You can read Equation~\ref{eq:bayes} as an updating rule: $P(A)$ is what you believed about $A$ before seeing $B$ (the prior). $P(B \mid A)$ is how likely $B$ would be if $A$ were true (the likelihood). $P(A \mid B)$ is what you should believe about $A$ after seeing $B$ (the posterior).
+
+\paragraph{The diagnostic test example.} A disease has prevalence 1\% ($P(\text{disease}) = 0.01$). A test has sensitivity 95\% ($P(\text{positive} \mid \text{disease}) = 0.95$) and specificity 90\% ($P(\text{negative} \mid \text{healthy}) = 0.90$, so $P(\text{positive} \mid \text{healthy}) = 0.10$).
+
+If you test positive, what's the probability you're actually sick?
+
+\begin{align*}
+  P(\text{disease} \mid +)
+    &= \frac{P(+ \mid \text{disease}) \cdot P(\text{disease})}{P(+)} \\[4pt]
+    &= \frac{0.95 \times 0.01}{0.95 \times 0.01 + 0.10 \times 0.99} \\[4pt]
+    &= \frac{0.0095}{0.0095 + 0.099} \\[4pt]
+    &\approx 0.088.
+\end{align*}
+
+About 8.8\%. You tested positive and there's still a 91\% chance you're fine.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{fig_bayes_tree.pdf}
+\caption{Tree diagram for the disease-testing problem. Each branch carries the conditional probability of that step. The probability of any leaf is the product of probabilities along the path. The four leaves sum to 1: $0.0095 + 0.0005 + 0.0990 + 0.8910 = 1$. To find $P(\text{disease} \mid +)$, divide the ``D, +'' leaf by the total probability of a positive test: $0.0095 / (0.0095 + 0.0990) \approx 0.088$.}
+\label{fig:bayes-tree}
+\end{figure}
+
+
+
+This result shocks people every time. It's the most important application of Bayes' theorem in everyday life, and it explains why mass screening for rare diseases produces mostly false alarms. The prior probability was so low (1\%) that even a good test can't overcome it with a single positive result.
+
+\section{Independence}
+
+Two events are independent if knowing one happened tells you nothing about the other:
+\[
+  P(A \mid B) = P(A), \qquad \text{equivalently,} \quad P(A \cap B) = P(A) \cdot P(B).
+\]
+
+Independent events have a joint probability that factors into the product of the marginals. This is the formal statement of ``no relationship between $A$ and $B$.''
+
+Independence is an assumption, not a fact about the world. In probability theory, you posit it or derive it. In statistics, you test for it. In practice, it's wrong more often than it's right---which is why the standard errors from an OLS regression that assumes independent errors can be drastically wrong when the errors are actually correlated.
+
+\begin{keyinsight}
+Probability is area. Conditioning is zooming in. Bayes' theorem is an updating rule. Independence is the special case where zooming in changes nothing.
+
+Every formula in this chapter is a consequence of the three axioms. If you understand the axioms, you can reconstruct any formula you forget.
+\end{keyinsight}
+
+\begin{codelab}
+Simulating probability is the most direct way to build intuition.
+\begin{lstlisting}[language=Rlang]
+set.seed(2024)
+B <- 100000
+
+# P(at least one 6 in 4 rolls)
+sims <- replicate(B, any(sample(1:6, 4, TRUE) == 6))
+mean(sims)       # empirical
+1 - (5/6)^4      # theoretical
+
+# Bayes: disease testing
+prior <- 0.01; sens <- 0.95; spec <- 0.90
+false_pos <- 1 - spec
+p_pos <- sens * prior + false_pos * (1 - prior)
+posterior <- sens * prior / p_pos
+cat("P(disease | positive) =", posterior, "\n")
+
+# Verify by simulation
+disease <- rbinom(B, 1, prior)
+test <- ifelse(disease, rbinom(B, 1, sens),
+               rbinom(B, 1, false_pos))
+mean(disease[test == 1])  # should match posterior
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item Roll two dice. Compute $P(\text{sum} = 7)$ by enumeration. Then verify by simulating 100{,}000 rolls in R.
+
+  \item A bag has 3 red and 7 blue marbles. Draw 2 without replacement. Find $P(\text{both red})$.
+
+  \item Prove that $P(A \cup B) = P(A) + P(B) - P(A \cap B)$ using only the three axioms.
+
+  \item A second test for the disease in the Bayes example is administered (assume independent of the first given disease status). Both are positive. What is $P(\text{disease} \mid \text{two positives})$? How much did the second test change things?
+
+  \item A jury pool has 60\% women and 40\% men. Women vote to convict 70\% of the time; men vote to convict 50\% of the time. A randomly chosen juror votes to convict. What is the probability the juror is a woman?
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~In your own words, what does it mean to condition on an event?
+
+\smallskip
+$\triangleright$~The disease-testing example produces a result most people find counterintuitive. What drives the low posterior despite the ``good'' test?
+
+\smallskip
+$\triangleright$~Independence is an assumption, not a fact. Name a pair of events from your daily life that are (a) plausibly independent and (b) definitely not independent.
+\end{reflect}
+

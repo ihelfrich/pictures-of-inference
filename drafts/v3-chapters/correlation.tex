@@ -1,0 +1,222 @@
+\chapter{Covariance and Correlation}
+\label{ch:correlation}
+
+\noindent\textsc{Two variables can move together} without one causing the other. Income and education rise together. Ice cream sales and drowning deaths rise together. The first relationship might be causal. The second definitely isn't. But both show up as positive numbers when you compute the right statistic.
+
+That statistic is correlation, and it is probably the most used and most abused number in all of empirical research.
+
+\section{Covariance: the raw measure}
+
+Start with the intuition. You have $n$ paired observations $(x_1, y_1), \ldots, (x_n, y_n)$. For each pair, compute the product of their deviations from their respective means:
+\[
+  (x_i - \bar{x})(y_i - \bar{y}).
+\]
+When $x_i$ is above its mean \emph{and} $y_i$ is above its mean, this product is positive. When both are below their means, the product is also positive (negative times negative). When one is above and the other below, the product is negative.
+
+The sample covariance averages these products:
+
+\begin{equation}
+\boxed{s_{xy} = \frac{1}{n-1}\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y}).}
+\label{eq:sample-cov}
+\end{equation}
+
+If $x$ and $y$ tend to be above their means at the same time, the covariance is positive. If one tends to be high when the other is low, the covariance is negative. If there's no systematic pattern, the covariance is near zero.
+
+The problem with covariance is that its magnitude depends on the units of measurement. The covariance between height in centimeters and weight in kilograms is a completely different number from the covariance between height in inches and weight in pounds, even though the relationship hasn't changed. You can't compare covariances across different datasets or different variable pairs unless you standardize.
+
+\section{The Pearson correlation coefficient}
+
+The Pearson correlation coefficient fixes this by dividing the covariance by the product of the standard deviations:
+
+\begin{equation}
+\boxed{r_{xy} = \frac{s_{xy}}{s_x \cdot s_y} = \frac{\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\displaystyle\sum_{i=1}^{n}(x_i - \bar{x})^2} \;\cdot\; \sqrt{\displaystyle\sum_{i=1}^{n}(y_i - \bar{y})^2}}.}
+\label{eq:pearson-r}
+\end{equation}
+
+This is the most important formula in descriptive statistics. Let's unpack what it does.
+
+\paragraph{Boundedness.} The Cauchy-Schwarz inequality guarantees that $-1 \leq r \leq 1$. Always. For any data. The proof: define vectors $\mathbf{a} = (x_1 - \bar{x}, \ldots, x_n - \bar{x})$ and $\mathbf{b} = (y_1 - \bar{y}, \ldots, y_n - \bar{y})$. Then $r = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\|\,\|\mathbf{b}\|}$, which is the cosine of the angle between the two vectors. Cosines live in $[-1, 1]$.
+
+\paragraph{Interpretation of extreme values.}
+\begin{itemize}[nosep]
+  \item $r = 1$: perfect positive linear relationship. Every point falls exactly on a line with positive slope.
+  \item $r = -1$: perfect negative linear relationship. Every point on a line with negative slope.
+  \item $r = 0$: no \emph{linear} relationship. This does not mean no relationship. A perfect parabola $y = x^2$ has $r = 0$ when $x$ is symmetric around zero. Correlation measures linearity, not association in general.
+\end{itemize}
+
+\paragraph{Units.} The correlation is dimensionless. It doesn't matter whether you measure height in inches or centimeters, weight in pounds or kilograms. The standardization absorbs the units. This is why $r$ is comparable across studies in a way that covariance is not.
+
+\paragraph{What $r$ does not tell you.}
+
+It doesn't tell you the slope of the relationship. A correlation of $r = 0.8$ between education and income tells you the relationship is strong and positive but says nothing about how many dollars each year of education buys you. For that, you need regression.
+
+It doesn't tell you about nonlinear relationships. Anscombe's quartet (which we'll see shortly) has four datasets with identical $r = 0.816$ but wildly different shapes.
+
+It doesn't tell you about causation. At all. Ever.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{fig_correlation_scatter.pdf}
+\caption{Eight scatter plots showing different correlations. Top row: strong positive ($r=0.95$), moderate positive ($r=0.70$), weak positive ($r=0.30$), and uncorrelated ($r=0.00$). Bottom row: weak negative, moderate negative, strong negative, and a perfect parabola where $r$ is approximately 0 \emph{but the relationship is obvious}. The last panel is the cautionary tale of correlation.}
+\label{fig:correlation-scatter}
+\end{figure}
+
+
+
+\section{Computing $r$ from scratch}
+
+Here's a worked example with five observations.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{cccccc}
+\toprule
+$i$ & $x_i$ & $y_i$ & $x_i - \bar{x}$ & $y_i - \bar{y}$ & $(x_i - \bar{x})(y_i - \bar{y})$ \\
+\midrule
+1 & 2 & 4 & $-2$ & $-2.4$ & 4.8 \\
+2 & 3 & 5 & $-1$ & $-1.4$ & 1.4 \\
+3 & 4 & 7 & 0 & 0.6 & 0 \\
+4 & 5 & 8 & 1 & 1.6 & 1.6 \\
+5 & 6 & 8 & 2 & 1.6 & 3.2 \\
+\midrule
+ & $\bar{x}=4$ & $\bar{y}=6.4$ & & & $\sum = 11.0$ \\
+\bottomrule
+\end{tabular}
+\caption{Computing $r$ by hand.}
+\label{tab:r-by-hand}
+\end{table}
+
+Now compute:
+\begin{align*}
+  S_{xx} &= \sum(x_i - \bar{x})^2 = 4 + 1 + 0 + 1 + 4 = 10, \\[3pt]
+  S_{yy} &= \sum(y_i - \bar{y})^2 = 5.76 + 1.96 + 0.36 + 2.56 + 2.56 = 13.2, \\[3pt]
+  S_{xy} &= \sum(x_i - \bar{x})(y_i - \bar{y}) = 11.0, \\[3pt]
+  r &= \frac{11.0}{\sqrt{10} \cdot \sqrt{13.2}} = \frac{11.0}{11.49} \approx 0.957.
+\end{align*}
+Strong positive correlation. Not surprising from the data, but now you can say \emph{how} strong.
+
+\section{The connection to regression}
+
+This is one of the most elegant relationships in statistics. Recall from the regression chapter that the OLS slope is:
+\[
+  \hat\beta_1 = \frac{S_{xy}}{S_{xx}}.
+\]
+And the correlation is:
+\[
+  r = \frac{S_{xy}}{\sqrt{S_{xx}} \cdot \sqrt{S_{yy}}}.
+\]
+A bit of algebra gives:
+\begin{equation}
+  \hat\beta_1 = r \cdot \frac{s_y}{s_x}.
+  \label{eq:slope-from-r}
+\end{equation}
+The regression slope is the correlation rescaled by the ratio of standard deviations. And:
+\begin{equation}
+  R^2 = r^2.
+  \label{eq:r2-from-r}
+\end{equation}
+In simple regression, $R$-squared is literally the square of the Pearson correlation. The fraction of variance in $y$ explained by $x$ is the square of their correlation. This is why $r = 0.7$ means $R^2 = 0.49$: roughly half the variance explained.
+
+\section{Anscombe's quartet: why you must plot}
+
+In 1973, Frank Anscombe constructed four datasets that are statistically identical: same $n$, same $\bar{x}$, same $\bar{y}$, same $s_x$, same $s_y$, same $r$, same regression line, same $R^2$. And yet the four scatter plots look nothing alike. One is a clean linear relationship. One is a perfect parabola. One is a perfect line with a single outlier pulling the regression. One has all $x$-values identical except one point that single-handedly determines the slope.
+
+The lesson is not subtle: \textbf{never compute a correlation without looking at the scatter plot first.} The number is a summary, and summaries destroy information. The plot shows you what the number hides.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\linewidth]{fig_anscombe.pdf}
+\caption{Anscombe's quartet (1973). Four datasets with identical $\bar{x}, \bar{y}, s_x, s_y, r, \hat\beta_0, \hat\beta_1, R^2$ and yet four very different stories. Set~I is well-behaved. Set~II is a perfect curve. Set~III is a perfect line with one outlier. Set~IV has all $x$ identical except one extreme point that determines everything.}
+\label{fig:anscombe}
+\end{figure}
+
+
+
+\begin{keyinsight}
+The Pearson correlation measures the strength and direction of the \emph{linear} relationship between two variables. It is bounded between $-1$ and $1$, is unitless, and equals the cosine of the angle between the deviation vectors. In simple regression, $R^2 = r^2$.
+
+But $r$ is blind to nonlinearity, blind to outlier leverage, and blind to causation. Always plot first. Compute second.
+\end{keyinsight}
+
+\section{Other correlation measures}
+
+Pearson isn't the only game in town. Two alternatives show up regularly:
+
+\paragraph{Spearman's rank correlation ($\rho_s$).} Replace each $x_i$ and $y_i$ with its rank among the other $x$'s and $y$'s, then compute the Pearson $r$ on the ranks. This measures monotonic association (whether $y$ tends to increase when $x$ increases), not just linear association. It's robust to outliers and works for ordinal data.
+
+\paragraph{Kendall's $\tau$.} Count the number of \emph{concordant pairs} (both $x$ and $y$ increase) minus the number of \emph{discordant pairs} (one increases while the other decreases), divided by the total number of pairs. It's more interpretable than Spearman for small samples and is the standard for ordinal-ordinal association in some fields.
+
+For continuous data with no obvious outliers, Pearson is the default. When the relationship might be monotone but not linear, or when outliers could distort things, use Spearman. When you have ordinal data, consider Kendall.
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+x <- c(2, 3, 4, 5, 6)
+y <- c(4, 5, 7, 8, 8)
+
+# Pearson
+cor(x, y)                           # 0.957
+
+# By hand
+sxy <- sum((x - mean(x)) * (y - mean(y)))
+sxx <- sum((x - mean(x))^2)
+syy <- sum((y - mean(y))^2)
+sxy / sqrt(sxx * syy)               # same
+
+# Spearman (on ranks)
+cor(x, y, method = "spearman")
+
+# Kendall
+cor(x, y, method = "kendall")
+
+# Anscombe's quartet (built into R!)
+data(anscombe)
+par(mfrow = c(2, 2))
+for (i in 1:4) {
+  xi <- anscombe[, i]; yi <- anscombe[, i + 4]
+  plot(xi, yi, pch = 19, main = paste("Set", i))
+  abline(lm(yi ~ xi), col = "red")
+}
+# All four have r = 0.816 and the same regression line
+\end{lstlisting}
+\end{codelab}
+
+\section{Hypothesis testing for correlation}
+
+Is the observed $r$ significantly different from zero? Under the null $H_0\colon \rho = 0$ (population correlation is zero), the test statistic
+\begin{equation}
+  t = \frac{r\sqrt{n-2}}{\sqrt{1-r^2}}
+  \label{eq:t-test-r}
+\end{equation}
+follows a $t$-distribution with $n - 2$ degrees of freedom. With $n = 5$ and $r = 0.957$:
+\[
+  t = \frac{0.957\sqrt{3}}{\sqrt{1 - 0.916}} = \frac{1.658}{0.290} \approx 5.72.
+\]
+For $t_3$, this gives $p \approx 0.011$. Significant at 5\%, just barely not at 1\%.
+
+Notice how a ``huge'' correlation of 0.957 is only barely significant with five observations. Sample size matters enormously for inference about $r$.
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item For the data $(1, 10), (2, 8), (3, 6), (4, 4), (5, 2)$: compute $r$ by hand. What should you expect geometrically?
+
+  \item Compute $r$ for $(1, 1), (2, 4), (3, 9), (4, 16), (5, 25)$. The relationship is $y = x^2$, which is perfectly predictable. Is $r = 1$? Why or why not?
+
+  \item In R, generate 50 points from $y = x^2 + \varepsilon$ where $x \sim \text{Uniform}(-5, 5)$ and $\varepsilon \sim N(0, 1)$. Compute $r$. Now compute Spearman's $\rho$. Which better captures the association? Why?
+
+  \item Prove Equation~\ref{eq:slope-from-r}: show that $\hat\beta_1 = r \cdot s_y / s_x$ starting from the definitions.
+
+  \item A study reports $r = 0.15$ with $n = 10{,}000$ and $p < 0.001$. Another reports $r = 0.85$ with $n = 8$ and $p = 0.007$. Which finding is more scientifically meaningful? Why does this question have no clean answer?
+
+  \item Run \texttt{cor.test(x, y)} in R on the five-point example. Compare the $t$-statistic and $p$-value to your hand calculation.
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~In your own words, what does the Pearson $r$ measure, and what does it miss?
+
+\smallskip
+$\triangleright$~Without looking back, write the formula for $r$ from memory. Then write the formula connecting $r$ to the regression slope.
+
+\smallskip
+$\triangleright$~Why does a perfect quadratic relationship have $r = 0$? What does this tell you about the scope of correlation as a tool?
+\end{reflect}

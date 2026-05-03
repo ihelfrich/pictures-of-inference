@@ -1,0 +1,139 @@
+\chapter{Logistic Regression}
+\label{ch:logistic}
+
+\noindent\textsc{Half the outcomes you care about} are binary. Did the patient survive? Did the customer churn? Did the loan default? Did the voter turn out? Linear regression on a 0/1 outcome works mechanically but produces nonsense: predicted probabilities below zero or above one, residuals that are heteroskedastic by construction, and standard errors that are wrong.
+
+Logistic regression is the right tool. It is to binary outcomes what OLS is to continuous outcomes: the default model, the one you reach for first, the one whose coefficients have a standard interpretation.
+
+\section{The model}
+
+You have a binary outcome $Y_i \in \{0, 1\}$ and predictors $\bm{x}_i$. The model says
+\begin{equation}
+  P(Y_i = 1 \mid \bm{x}_i) = \sigma(\bm{x}_i^\top \bbeta) = \frac{1}{1 + \exp(-\bm{x}_i^\top \bbeta)},
+  \label{eq:logistic-model}
+\end{equation}
+where $\sigma$ is the logistic (sigmoid) function. The probability lives between zero and one because $\sigma$ does. As $\bm{x}^\top \bbeta \to +\infty$, the probability approaches 1; as it goes to $-\infty$, the probability approaches 0; at $\bm{x}^\top\bbeta = 0$, the probability is exactly $1/2$.
+
+\paragraph{The log-odds form.} Equivalently:
+\begin{equation}
+  \log\!\left(\frac{P(Y_i=1)}{1 - P(Y_i=1)}\right) = \bm{x}_i^\top \bbeta.
+  \label{eq:log-odds}
+\end{equation}
+The \emph{log-odds} (also called the \emph{logit}) is linear in the predictors. This is the cleanest way to think about logistic regression: it is a linear model for the log-odds.
+
+\section{Interpreting coefficients}
+
+The coefficient $\beta_j$ has a specific meaning: a one-unit increase in $x_j$ multiplies the odds of $Y = 1$ by $e^{\beta_j}$, holding other variables constant. This is the \emph{odds ratio}.
+
+If $\hat\beta_j = 0.4$, then a one-unit increase in $x_j$ multiplies the odds by $e^{0.4} \approx 1.49$. If $\hat\beta_j = -0.4$, it multiplies the odds by $e^{-0.4} \approx 0.67$ (cuts them by about a third). If $\hat\beta_j = 0$, no effect.
+
+For small $\beta$, the odds ratio is approximately $1 + \beta$, and you can interpret $\beta$ as a percentage change in odds. For $\beta = 0.05$, odds increase by about 5\%.
+
+\section{Estimation: MLE}
+
+Logistic regression is fit by maximum likelihood. Given independent observations, the likelihood is
+\[
+  L(\bbeta) = \prod_{i=1}^{n} p_i^{y_i}(1 - p_i)^{1 - y_i}, \quad p_i = \sigma(\bm{x}_i^\top \bbeta).
+\]
+The log-likelihood:
+\begin{equation}
+  \ell(\bbeta) = \sum_{i=1}^{n} \bigl[y_i \log p_i + (1 - y_i)\log(1 - p_i)\bigr].
+  \label{eq:logistic-ll}
+\end{equation}
+This is also called the \emph{cross-entropy} or \emph{log-loss}. Minimizing the negative log-likelihood is the same as maximizing $\ell$.
+
+Unlike OLS, there's no closed form. The MLE is found numerically using iteratively reweighted least squares (IRLS) or Newton's method. R's \texttt{glm()} does this in milliseconds.
+
+\section{The score equations}
+
+Even without a closed form, the structure of the solution is illuminating. The first-order conditions are
+\[
+  \frac{\partial \ell}{\partial \bbeta} = \sum_{i=1}^{n}(y_i - p_i)\bm{x}_i = 0.
+\]
+At the MLE, the residuals $y_i - \hat p_i$ are orthogonal to every predictor. This is the same orthogonality you saw in OLS. The structure recurs.
+
+\section{Worked example: pass/fail by study hours}
+
+Suppose you have data on whether students passed an exam ($Y = 1$ for pass, $Y = 0$ for fail) given how many hours they studied. Fit the model
+\[
+  \log\!\left(\frac{P(\text{pass})}{P(\text{fail})}\right) = \beta_0 + \beta_1 \cdot \text{hours}.
+\]
+After fitting, suppose you get $\hat\beta_0 = -3.0$ and $\hat\beta_1 = 0.6$.
+
+Interpretation: each additional hour of studying multiplies the odds of passing by $e^{0.6} \approx 1.82$. So an additional hour roughly doubles your odds.
+
+The probability of passing for a student who studies 5 hours is
+\[
+  \hat p = \sigma(-3.0 + 0.6 \cdot 5) = \sigma(0) = 0.5.
+\]
+For a student who studies 7 hours, $\sigma(1.2) \approx 0.77$.
+
+\section{Why not OLS on a 0/1 outcome?}
+
+You can run OLS on a binary outcome (it's called a \emph{linear probability model}, LPM). It will produce coefficients you can interpret as changes in probability rather than changes in odds. For some purposes this is fine.
+
+But three problems:
+\begin{enumerate}[noitemsep]
+\item Predictions can fall outside $[0, 1]$, which is meaningless as probabilities.
+\item Errors are necessarily heteroskedastic: $\Var(\varepsilon \mid \bm{x}) = p(1-p)$, which depends on $\bm{x}$.
+\item The constant marginal effect implied by the linear form is wrong: the effect of an extra year of education on the probability of voting should be smaller for someone already at 99\% likely to vote than for someone at 50\%.
+\end{enumerate}
+
+For prediction with extreme probabilities, descriptive analyses, or simple causal arguments, the LPM can be acceptable (and is popular in economics). For most other purposes, logistic regression is the principled choice.
+
+\begin{keyinsight}
+Logistic regression models the log-odds as linear in the predictors. Coefficients are interpreted as multiplicative effects on odds: a coefficient of $\beta$ means a one-unit increase in $x$ multiplies the odds of $Y = 1$ by $e^{\beta}$.
+
+The model is fit by maximum likelihood. The score equations have the same orthogonality structure as OLS: predictors are uncorrelated with residuals at the optimum.
+\end{keyinsight}
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# Pass/fail by study hours
+set.seed(2024)
+hours <- runif(100, 0, 10)
+log_odds <- -3 + 0.6 * hours
+p <- 1 / (1 + exp(-log_odds))
+pass <- rbinom(100, 1, p)
+
+fit <- glm(pass ~ hours, family = binomial)
+summary(fit)
+
+# Odds ratios
+exp(coef(fit))
+exp(confint(fit))   # 95% CIs on the odds ratios
+
+# Predict probabilities for new data
+predict(fit, newdata = data.frame(hours = c(2, 5, 8)),
+        type = "response")
+
+# Plot the fitted curve
+plot(hours, pass, pch = 19, col = "gray60",
+     xlab = "Hours studied", ylab = "Pass (0/1)")
+xx <- seq(0, 10, length.out = 100)
+yy <- predict(fit, newdata = data.frame(hours = xx),
+              type = "response")
+lines(xx, yy, lwd = 2, col = "blue")
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item Show that the derivative of $\sigma(x)$ is $\sigma(x)(1 - \sigma(x))$. Use this to derive the score equations.
+  \item A logistic regression of voting on age has $\hat\beta_{\text{age}} = 0.04$. Interpret. By what factor do the odds of voting change for each additional year of age?
+  \item In R, simulate data where $\log(p/(1-p)) = -1 + 0.5 x$. Fit a logistic regression and compare your estimates to the truth.
+  \item Why does logistic regression require numerical optimization but linear regression has a closed form?
+  \item For a logistic model with $\hat\beta_0 = -2$, $\hat\beta_1 = 1$, find the value of $x$ at which the predicted probability equals 0.5. (Hint: this is where the linear predictor equals 0.)
+  \item Fit both a linear probability model and a logistic regression to the same binary outcome. Compare the coefficients and predictions. When do they tell you the same story? When do they disagree?
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~State the logistic regression model in two equivalent forms.
+
+\smallskip
+$\triangleright$~How do you interpret a logistic regression coefficient? In what units?
+
+\smallskip
+$\triangleright$~Why is OLS on a binary outcome a flawed approach? What goes wrong?
+\end{reflect}

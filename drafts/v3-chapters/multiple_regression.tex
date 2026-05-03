@@ -1,0 +1,161 @@
+\chapter{Multiple Regression}
+\label{ch:multiple-regression}
+
+\noindent\textsc{Real-world relationships} rarely involve just two variables. Wages depend on education, experience, gender, industry, location, and a dozen other things. Trying to capture all of that with a single $x$ variable is like trying to describe a city with a single coordinate. You need more dimensions.
+
+Multiple regression is simple linear regression generalized to many predictors:
+\begin{equation}
+  y_i = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + \cdots + \beta_k x_{ki} + \varepsilon_i.
+  \label{eq:multiple-regression}
+\end{equation}
+
+The mathematics is essentially the same. The interpretation is fundamentally different.
+
+\section{Matrix form}
+
+With $k$ predictors and $n$ observations, the model is most cleanly written in matrix notation. Let $\bm{y}$ be the $n \times 1$ vector of outcomes, $\bm{X}$ the $n \times (k+1)$ design matrix (a column of ones for the intercept, then one column per predictor), $\bbeta$ the $(k+1) \times 1$ coefficient vector, and $\bm{\varepsilon}$ the $n \times 1$ error vector:
+\begin{equation}
+  \bm{y} = \bm{X}\bbeta + \bm{\varepsilon}.
+\end{equation}
+The OLS objective is:
+\[
+  S(\bbeta) = (\bm{y} - \bm{X}\bbeta)^\top(\bm{y} - \bm{X}\bbeta).
+\]
+Setting the gradient with respect to $\bbeta$ to zero and solving gives the OLS estimator:
+\begin{equation}
+  \boxed{\hat\bbeta = (\bm{X}^\top \bm{X})^{-1} \bm{X}^\top \bm{y}.}
+  \label{eq:ols-matrix}
+\end{equation}
+
+This is the most important formula in econometrics. Memorize it. The simple regression formulas you learned are special cases when there's a single predictor plus an intercept.
+
+\section{What ``controlling for'' actually means}
+
+Here's the interpretation that separates people who understand regression from people who run it:
+
+\begin{quote}
+The coefficient $\hat\beta_j$ is the predicted change in $y$ for a one-unit change in $x_j$, \emph{holding all other predictors constant}.
+\end{quote}
+
+This is sometimes called the \emph{partial effect} or \emph{ceteris paribus} effect. ``All else equal,'' as economists say.
+
+How does the regression actually do this? It does not require you to find observations that are identical except in $x_j$. It uses an algebraic trick called the Frisch-Waugh-Lovell theorem:
+\begin{enumerate}
+  \item Regress $y$ on all predictors \emph{except} $x_j$. Save the residuals: $\tilde{y}$.
+  \item Regress $x_j$ on all the other predictors. Save those residuals: $\tilde{x}_j$.
+  \item Regress $\tilde{y}$ on $\tilde{x}_j$. The slope is exactly $\hat\beta_j$ from the full regression.
+\end{enumerate}
+The two ``residualized'' variables capture the parts of $y$ and $x_j$ that the other predictors can't explain. The coefficient on $x_j$ is the relationship between those leftover pieces.
+
+\section{The omitted variable bias formula}
+
+Suppose the true model is $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \varepsilon$, but you only fit $y = \alpha_0 + \alpha_1 x_1 + u$ (omitting $x_2$). What does $\hat\alpha_1$ estimate?
+\begin{equation}
+  \E[\hat\alpha_1] = \beta_1 + \beta_2 \cdot \frac{\Cov(x_1, x_2)}{\Var(x_1)}.
+  \label{eq:omitted-variable-bias}
+\end{equation}
+
+The bias has two parts: the effect of the omitted variable on $y$ ($\beta_2$), and the relationship between the omitted variable and the included one ($\Cov(x_1, x_2)/\Var(x_1)$). Both must be nonzero for omission to bias your coefficient.
+
+\paragraph{Direction of the bias.} If $\beta_2 > 0$ and $x_1, x_2$ are positively correlated, the bias is positive: your estimate is too large. If they're negatively correlated, the bias is negative. This is what economists are doing when they argue that ``omitted ability bias'' makes the OLS return to schooling an overestimate (assuming ability raises wages and is positively correlated with schooling).
+
+\section{Multicollinearity}
+
+When predictors are highly correlated with each other, the regression has trouble assigning credit. The coefficients become unstable: their standard errors blow up, and small changes in the data can flip signs.
+
+The diagnostic is the \emph{variance inflation factor} (VIF):
+\begin{equation}
+  \text{VIF}_j = \frac{1}{1 - R_j^2},
+  \label{eq:vif}
+\end{equation}
+where $R_j^2$ is from regressing $x_j$ on all the other predictors. A VIF of 1 means $x_j$ is uncorrelated with the others. A VIF above 5 or 10 is conventionally problematic.
+
+When two predictors are nearly identical, their joint information is fine, but distinguishing their separate effects is impossible. The coefficient on either depends heavily on which other variables are in the model.
+
+\section{Adjusted $R^2$}
+
+Adding more predictors to a regression \emph{always} increases $R^2$, even if the new predictors are pure noise. To penalize complexity, the adjusted $R^2$ is
+\begin{equation}
+  R^2_{\text{adj}} = 1 - \frac{n-1}{n-k-1}(1 - R^2).
+  \label{eq:adj-r2}
+\end{equation}
+This goes up only if the new predictor improves the fit by more than would be expected by chance.
+
+Adjusted $R^2$ is better than $R^2$ for comparing models with different numbers of predictors. It is not perfect; modern model selection often uses AIC or BIC instead.
+
+\section{$F$-tests for joint significance}
+
+Sometimes you want to test whether multiple coefficients are jointly zero, not just individually:
+\[
+  H_0\colon \beta_2 = \beta_3 = \cdots = \beta_q = 0.
+\]
+The $F$-statistic compares the sum of squared residuals from the restricted (smaller) model to the full model:
+\begin{equation}
+  F = \frac{(\text{SSR}_{\text{R}} - \text{SSR}_{\text{UR}})/q}{\text{SSR}_{\text{UR}}/(n-k-1)},
+  \label{eq:f-test}
+\end{equation}
+where $q$ is the number of restrictions and $k$ is the number of predictors in the unrestricted model. Under $H_0$, this follows $F_{q, n-k-1}$.
+
+If the $F$ is large, the additional predictors collectively improve the fit beyond what chance would explain. The overall ``regression $F$-statistic'' that R reports tests whether \emph{all} the slope coefficients are zero.
+
+\begin{keyinsight}
+A multiple regression coefficient measures the partial effect of one predictor, holding the others constant.
+
+But ``holding constant'' is an algebraic operation, not a real-world intervention. If your data doesn't actually contain variation in one variable that's independent of the others, the coefficient can be very precisely estimated and still mean nothing causal.
+
+This is why ``controlling for'' is not the same as ``causally identifying.''
+\end{keyinsight}
+
+\begin{codelab}
+\begin{lstlisting}[language=Rlang]
+# Wage equation
+set.seed(2024)
+n <- 200
+educ <- rnorm(n, 14, 2.5)
+exper <- rnorm(n, 10, 4)
+female <- rbinom(n, 1, 0.5)
+wage <- 5 + 0.5*educ + 0.1*exper - 0.8*female + rnorm(n, 0, 1.5)
+
+fit <- lm(wage ~ educ + exper + female)
+summary(fit)              # full output
+
+# Manual matrix calculation
+X <- cbind(1, educ, exper, female)
+beta_hat <- solve(t(X) %*% X) %*% t(X) %*% wage
+beta_hat                  # matches lm() exactly
+
+# Variance inflation factors
+library(car)              # install.packages("car") first
+vif(fit)
+
+# Test joint significance: do exper and female matter?
+fit_r <- lm(wage ~ educ)
+anova(fit_r, fit)         # F-test
+\end{lstlisting}
+\end{codelab}
+
+\section{Practice problems}
+
+\begin{enumerate}
+  \item Show by direct calculation that $\hat\bbeta = (\bm{X}^\top \bm{X})^{-1}\bm{X}^\top \bm{y}$ minimizes $(\bm{y} - \bm{X}\bbeta)^\top(\bm{y} - \bm{X}\bbeta)$. Take the gradient with respect to $\bbeta$ and set it to zero.
+
+  \item In a wage regression, including a control for ``years of experience'' changes the coefficient on ``years of education'' from 0.12 to 0.08. What does this tell you about the relationship between education and experience?
+
+  \item Generate two predictors with correlation 0.95, then run a multiple regression. Examine the standard errors. Now drop one predictor and rerun. What changed and why?
+
+  \item Verify the Frisch-Waugh-Lovell theorem in R: take a multiple regression with three predictors. Residualize $y$ and one predictor against the other two, then regress the residuals against each other. The slope should match the original coefficient.
+
+  \item Derive the omitted variable bias formula (Equation~\ref{eq:omitted-variable-bias}). Hint: write $\hat\alpha_1$ in terms of the original $y$ and $x_1$, then substitute the true model.
+
+  \item Why does adjusted $R^2$ penalize the number of predictors but $R^2$ does not?
+\end{enumerate}
+
+\begin{reflect}
+$\triangleright$~``Controlling for $X$'' has a precise mathematical meaning. State it.
+
+\smallskip
+$\triangleright$~When does ``controlling for'' identify a causal effect, and when does it not?
+
+\smallskip
+$\triangleright$~If two predictors are highly correlated, what happens to their individual coefficients? What does this mean for interpretation?
+\end{reflect}
