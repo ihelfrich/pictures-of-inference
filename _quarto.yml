@@ -15,6 +15,7 @@ book:
     - part: "How to See"
       chapters:
         - prose/part1/01-numbers-on-the-page.qmd
+        - prose/part1/02-probability-as-area.qmd
   search: true
   page-navigation: true
 

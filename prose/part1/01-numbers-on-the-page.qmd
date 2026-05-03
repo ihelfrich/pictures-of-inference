@@ -45,13 +45,13 @@ A column, on the other hand, is one variable measured across all the rows. The "
 
 ![The fundamental shape of a dataset. The horizontal stripe marks one row, which is one observation, in this case one country-pair-year. The vertical stripe marks one column, which is one variable measured across every observation. Whatever the size of the rectangle, the meaning of rows and columns does not change.](../../pictures/figures/output/fig_data_rectangle.pdf){#fig-rect width=70%}
 
-Burn this image into your visual cortex now. It will not change for the rest of the book. Whatever you are looking at, however many variables and however many observations, the rectangle is the underlying shape. The skill the book teaches is what to do once you see it.
+Burn this image into your visual cortex now. You will need it for the rest of the book. Whatever you are looking at, however many variables and however many observations, the rectangle is the underlying shape. The skill the book teaches is what to do once you see it.
 
 ## What lives in a column
 
 Columns come in flavors. The flavor matters because it determines what arithmetic the column will support.
 
-The simplest distinction is between columns of **numbers** and columns of **labels**. The dollar value of exports is a number. The country code USA is a label. You can take the average of a number column and have it mean something. You cannot take the average of a column of country codes; the "average country" between USA and DEU is not a sensible thing. The exports-weighted average distance between trade partners, by contrast, is a real quantity that some people compute on purpose.
+The simplest distinction is between columns of **numbers** and columns of **labels**. Dollar value of exports: number. Country code USA: label. You can take the average of a number column and have it mean something. You cannot take the average of a column of country codes; the "average country" between USA and DEU is not a sensible thing. The exports-weighted average distance between trade partners, by contrast, is a real quantity that some people compute on purpose.
 
 Statisticians divide variables into four flavors, and the difference between them comes down to what operations the values support.
 
@@ -65,8 +65,72 @@ Statisticians divide variables into four flavors, and the difference between the
 
 A common trap, especially when you are reading other people's data: things that look like numbers and aren't. ZIP codes. Phone numbers. Survey response IDs. The numeric country code 840 used for the United States in some bilateral databases. These are stored as integers, and a careless analyst will compute the mean ZIP code of a sample, get a result that is mathematically valid and substantively meaningless, and not notice. The number is a label that happens to look like a number. The statistical operation has to match what the column actually represents, not what its storage type happens to be.
 
-The opposite trap also exists: things that don't look like numbers and are. Yes/no answers, encoded as 0 and 1. Dummy variables for whether a row meets some condition. The "common_language" column in our slice is one of these. It is a yes/no, encoded as 0 or 1, and you can absolutely compute its average. The mean of a 0/1 column is the proportion of rows where the value is 1. We use this constantly.
+Now the opposite trap: things that don't look like numbers and are. Yes/no answers, encoded as 0 and 1. Dummy variables for whether a row meets some condition. The "common_language" column in our slice is one of these. It is a yes/no, encoded as 0 or 1, and you can absolutely compute its average. The mean of a 0/1 column is the proportion of rows where the value is 1. We use this constantly.
 
 ![A small taxonomy of variable types. Quantitative variables come in continuous and discrete varieties; categorical variables come in ordered (ordinal) and unordered (nominal) varieties. Examples on the right are the kinds of columns you actually meet in working datasets.](../../pictures/figures/output/fig_variable_types.pdf){#fig-types width=60%}
 
 You will spend more of your statistical life than you would guess just figuring out what kind of variable each column is. It is the foundation for everything that follows, and it is almost never written down explicitly in the dataset itself. Doing it carefully is one of the easy wins of getting good at this.
+
+## First questions
+
+Every time you sit down with a new dataset, before any analysis, run a short list of questions through your head. The list takes ten minutes for a small dataset and an afternoon for a serious one. It is the difference between an analysis you can defend and an analysis that quietly breaks underneath you.
+
+Eight questions. Memorize the list.
+
+**1. What is one row?** We did this already. Until you can name the unit of analysis without thinking, you cannot do anything else correctly. In our trade slice, one row is one country-pair-year.
+
+**2. How many rows, how many columns?** For our slice, 300 rows and 9 columns. This sounds like trivia. It is not. The shape sets the cost of mistakes. With 300 rows you can eyeball almost anything; with 300 million you cannot. You will adopt different tools, do different sanity checks, and worry about different things as the row count grows.
+
+**3. What is the type of each column?** Number or label. If number, continuous or discrete. If label, ordered or unordered. Walk every column. Be specific about borderline cases (the `common_language` column is technically categorical but encoded as 0/1 so you can average it, and you will).
+
+**4. What are the units?** "Exports" is meaningless without "USD millions, current prices." "Distance" needs "kilometers." "GDP" needs "trillions of USD" and ideally "nominal vs. real, base year." A staggering fraction of bad analyses come from someone forgetting that the units in two columns don't match. The codebook in `data/trade/codebook.md` is the source of truth for our slice. Read it.
+
+**5. What is the time period? What is the geographic scope?** Our slice covers 2014 to 2023, six countries chosen for size and student recognizability. Limited. A real bilateral trade panel covers 200 territories and goes back decades. Whatever your slice is, the scope is part of every claim you can make.
+
+**6. Where did the data come from, and what survived the journey?** Raw data is messy. Clean data is the result of decisions: which observations to drop, which variables to re-code, which missing values to impute, which outliers to keep or remove. Every one of those decisions is a place where signal can leak. The processing script is part of the data. So is the person who wrote it.
+
+**7. What is missing?** The thing the dataset doesn't have is often more important than the thing it does. Our slice has six countries. Missing: every country except those six, every year before 2014, every product category, every direction of investment. Any conclusion drawn from this slice is conditional on those exclusions. A good analyst names the absences before drawing the inferences.
+
+**8. What looks weird?** Look at the data. Sort by exports, find the smallest and largest values, check whether they make sense. Look at the distance column, find the row where two countries are improbably close or far, ask why. Look at the GDP columns, look for off-by-1000 unit confusion. The first ten minutes of weirdness-hunting saves the next ten hours.
+
+These eight questions will not catch every problem. They will catch most. Run them every time. The discipline is what separates analysis from rationalization.
+
+::: {.callout-note title="Inside the math: tidy data, formally"}
+
+The rectangular structure described in this chapter is one specific arrangement called *tidy data*, formalized by Wickham (2014). A dataset is tidy when:
+
+1. Each variable forms a column.
+2. Each observation forms a row.
+3. Each type of observational unit forms a table.
+
+These three conditions are equivalent to a special kind of relational normal form. The first two are the rectangular structure we have been discussing. The third is the rule that distinct kinds of things (countries, country-pairs, years) live in distinct tables, joined by keys, rather than crammed into a single table with mixed grain.
+
+Many real datasets are not tidy. Wide-format panels, wide-format surveys, and aggregated tables encountered in the wild often fail one or more conditions. Most data analysis begins with tidying: reshaping data into the rectangular form. Most data analysis errors begin with someone forgetting which form they are in.
+
+The reference is Hadley Wickham, "Tidy Data," *Journal of Statistical Software*, 59(10), 2014.
+
+:::
+
+::: {.callout-tip title="Try this"}
+
+Open `data/trade/clean/bilateral_panel.csv` in any tool you like (a spreadsheet, R, Python, or your text editor of choice; the file is small).
+
+Run the eight-question audit on it. Write your answers down. The point is not to be exhaustive; the point is to make the questions habitual. When you finish, two things should be true: you can describe the dataset to someone in three sentences, and you can list at least one thing you wish were in there but is not.
+
+If you want a stretch question: compute the average bilateral exports for each year, plot the result, and notice what happens around 2020. Speculate about why.
+
+:::
+
+::: {.callout-important title="Frontier note"}
+
+The discipline of asking what data is and where it came from has a formal name in modern empirical work: *data provenance*. A growing literature in measurement theory and metascience argues that most published quantitative claims are weaker than they appear because the chain from raw observation to reported number is opaque, and that openness about that chain (raw data, processing scripts, documented decisions) should be a precondition for citation.
+
+Two places to follow this if you care: the Berkeley Initiative for Transparency in the Social Sciences (BITSS), and the literature growing out of the credibility revolution in economics. Both have produced practical tools and standards for the kind of provenance work this chapter has gestured toward.
+
+:::
+
+::: {.callout-warning title="Key insight"}
+
+Data is rectangular. Rows are observations, columns are variables, and the unit of analysis is the question that has to be answered before anything else. The eight-question audit is the discipline that turns a stack of numbers into evidence.
+
+:::
