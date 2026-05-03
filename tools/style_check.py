@@ -115,13 +115,17 @@ def check_file(path: Path) -> list[tuple[int, str]]:
 
 
 def main():
-    tex_files = list(PROSE.rglob("*.tex"))
-    if not tex_files:
-        print("No .tex files found in", PROSE)
+    prose_files = sorted(
+        list(PROSE.rglob("*.tex")) + list(PROSE.rglob("*.qmd"))
+    )
+    # Also scan top-level .qmd files (index, preface, etc.).
+    prose_files += sorted(REPO.glob("*.qmd"))
+    if not prose_files:
+        print("No prose files found in", PROSE)
         return 0
 
     total = 0
-    for f in sorted(tex_files):
+    for f in prose_files:
         violations = check_file(f)
         if violations:
             relative = f.relative_to(REPO)

@@ -77,8 +77,10 @@ def main() -> None:
                 same_lang = int(lang_ex == lang_im)
                 same_border = int((ex, im) in BORDERS or (im, ex) in BORDERS)
                 # Gravity-flavored synthetic exports.
+                # Gravity intercept tuned so USA-CHN 2023 lands near
+                # ~$150 billion (real-ballpark) for plausibility.
                 log_ex = (
-                    -3.5
+                    7.0
                     + 0.95 * math.log(gdp_ex)
                     + 0.85 * math.log(gdp_im)
                     - 0.85 * math.log(dist)

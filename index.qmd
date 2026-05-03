@@ -8,4 +8,4 @@ The book is built to take a reader from "what is a correlation" to the working k
 
 For collaborators: see `docs/process.md` for how we build, `docs/voice/charter.md` for what the narrator does and does not do, and `docs/table-of-contents.md` for the chapter map.
 
-For readers: start with chapter 1 ([Numbers on the page](prose/part1/01-numbers-on-the-page.qmd)) and read forward. Each chapter has three layers — a narrative layer that requires no math beyond what came before, a technical layer for derivations and proofs, and a frontier note pointing at current research. Pick the layers that suit you. Come back for more later.
+For readers: start with chapter 1 ([Numbers on the page](prose/part1/01-numbers-on-the-page.qmd)) and read forward. Each chapter has a narrative layer that goes straight through and requires no math beyond what came before. Underneath that, technical sections develop the derivations and proofs for readers who want them. At the end, a short frontier note points at where current research is arguing. Read the layers that suit you, and come back for the others later.

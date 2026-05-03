@@ -2,6 +2,71 @@
 title: "Numbers on the page"
 ---
 
-*Placeholder. Real content lands when we begin drafting.*
+## What you just did
 
-![The fundamental shape of a dataset. Rows are units of observation; columns are measurements about them. Real captions will be longer and will tell the reader what to see.](../../pictures/figures/output/fig_data_rectangle.pdf){#fig-rect width=60%}
+Here is a small piece of a real-shaped dataset: bilateral trade flows for six countries observed over a decade, one row per pair-of-countries per year. Look at it for ten seconds before reading on.
+
+| year | exporter | importer | exports (USD millions) | exporter GDP (USD T) | importer GDP (USD T) | distance (km) | common language | common border |
+|------|----------|----------|-----------------------:|---------------------:|---------------------:|--------------:|:---------------:|:-------------:|
+| 2023 | USA      | CHN      | 85,058                 | 27.36                | 17.79                | 11,587        | 0               | 0             |
+| 2023 | USA      | DEU      | 28,039                 | 27.36                | 4.46                 | 7,850         | 0               | 0             |
+| 2023 | USA      | JPN      | 27,112                 | 27.36                | 4.21                 | 9,997         | 0               | 0             |
+| 2023 | USA      | GBR      | 34,137                 | 27.36                | 3.34                 | 6,979         | 1               | 0             |
+| 2023 | USA      | KOR      | 9,602                  | 27.36                | 1.71                 | 10,534        | 0               | 0             |
+| 2023 | CHN      | USA      | 145,847                | 17.79                | 27.36                | 11,587        | 0               | 0             |
+
+Ten seconds. What did your eye do?
+
+It found the rows and the columns. It noticed each row contained the same kinds of things in the same order. It registered that some columns held names (USA, CHN, DEU) and some held numbers, and that the numbers came in different magnitudes. It parsed "85,058" as eighty-five thousand of something, possibly more if you bothered to figure out the units, possibly the size of an entire country's exports to another country in a year. You probably started asking questions. Why does China export almost twice as much to the United States as the United States exports back? Why does the US export more to the much smaller economies of Germany and Japan than to Korea? What does "common language" mean as a number rather than as a word, and why is it 1 for the US-UK row and 0 for everyone else?
+
+Nobody taught you to do any of that. You just did it.
+
+This book is about the difference between doing it instinctively and doing it deliberately. Most people who say they are bad at math, or at any of the disciplines that wear quantitative clothes, are not bad at the seeing. They are bad at the next step, the one where what your eye noticed gets written down precisely enough to argue with. Here is the claim the rest of this book will try to demonstrate: the gap between those two skills is much smaller than it looks, and bridging it does not require you to become a different kind of person. You already do most of the work. We are going to slow down and notice how.
+
+Chapter 1 is the easiest one. It establishes a single fact about almost every dataset you will ever meet, that data is rectangular and the rectangle is not a notational accident, and then catalogs the kinds of things that can live in a column. By the end of this chapter you will have a vocabulary for talking about any dataset, the way you already have one for talking about a paragraph of text. The vocabulary lets you decompose a dataset into parts, ask what each part is doing, and figure out which questions are worth asking before any analysis happens. The trade slice on this page is going to be a recurring character. By chapter five you will know it as well as you know your own kitchen.
+
+A note on how to read this book before we start. You can read at three depths. The narrative goes straight through and requires no math beyond what came before. If you want the math, the technical sections develop it properly without interrupting the narrative. At the end of every chapter, a short frontier note points at what current research is fighting about. Pick the depths that suit you, and come back for the others later.
+
+One more thing. When you encounter an equation, read it aloud. Out loud. Even if you do not yet know what every symbol means. Equations are sentences with a subject, a verb, and modifiers, and pretending they are not is the single biggest mistake students make in their first statistics course. We are going to fix that one immediately.
+
+## The shape
+
+Every dataset you will ever look at is a rectangle. Some rectangles are tiny, two rows by three columns. Some are vast, millions of rows by hundreds of columns. The rule is the same at any size. Each row is one thing being observed. Each column is one thing being measured about it.
+
+In our trade slice, every row is one country's exports to one other country in one specific year. The first row, USA to CHN in 2023, is one observation. Just one. The next row is a different observation, USA to DEU in 2023, with its own values for everything. The columns describe the attributes you can attach to a row: the year, the exporter, the importer, the dollar value of exports, the GDP of each side, the great-circle distance between them, whether they share a language, whether they share a border.
+
+This sounds obvious. It is not. The first question to ask of any dataset, before any analysis, is: *what is one row?* Until you answer that, you cannot do anything correctly with the data, because the same numbers can mean wildly different things depending on what the row represents.
+
+Take our slice. One row is one country-pair-year. Three hundred rows total, six countries with five trading partners each over ten years. Suppose we instead aggregated to one-country-year. We would have sixty rows (six countries times ten years), and "exports" would mean each country's total exports to the world rather than to a specific partner. Aggregate further to one-country and we would have six rows. Summarize to one-year and we would have ten. Same underlying facts, four different shapes, four different statistical worlds.
+
+The unit of analysis is not a notational detail. It is a substantive choice that decides everything downstream. A regression run on country-year data answers different questions than a regression run on dyad-year data, and the same coefficient labeled "the effect of distance on trade" means almost incomparable things in the two settings. When you read a paper, the first thing to figure out is what one row of their dataset is. When you write your own analysis, the first thing to decide is what you want one row to be.
+
+A column, on the other hand, is one variable measured across all the rows. The "distance_km" column has the same definition in every row, namely how far apart the two countries are. In our slice that number is the same every time the same pair appears, which is itself a clue about the data. Distance does not depend on the year. It is redundant across the time dimension. (We will come back to that. It matters for how regression standard errors should behave when observations within a country-pair are correlated, which they are.)
+
+![The fundamental shape of a dataset. The horizontal stripe marks one row, which is one observation, in this case one country-pair-year. The vertical stripe marks one column, which is one variable measured across every observation. Whatever the size of the rectangle, the meaning of rows and columns does not change.](../../pictures/figures/output/fig_data_rectangle.pdf){#fig-rect width=70%}
+
+Burn this image into your visual cortex now. It will not change for the rest of the book. Whatever you are looking at, however many variables and however many observations, the rectangle is the underlying shape. The skill the book teaches is what to do once you see it.
+
+## What lives in a column
+
+Columns come in flavors. The flavor matters because it determines what arithmetic the column will support.
+
+The simplest distinction is between columns of **numbers** and columns of **labels**. The dollar value of exports is a number. The country code USA is a label. You can take the average of a number column and have it mean something. You cannot take the average of a column of country codes; the "average country" between USA and DEU is not a sensible thing. The exports-weighted average distance between trade partners, by contrast, is a real quantity that some people compute on purpose.
+
+Statisticians divide variables into four flavors, and the difference between them comes down to what operations the values support.
+
+**Categorical, unordered (nominal).** The values are names with no built-in ranking: country codes, sex, eye color, whether someone owns a passport. The only sensible operations are counting how often each value appears and asking whether two rows share the same value. USA and DEU are different. There is no answer to "is USA bigger than DEU."
+
+**Categorical, ordered (ordinal).** Order matters, but the gaps between adjacent values do not. Education levels (high school, college, graduate). Survey responses from strongly-disagree to strongly-agree. Movie ratings out of five. The difference between "agree" and "strongly agree" is not necessarily the same size as the difference between "neutral" and "agree." You can sort the values. You can talk about medians. Treating the numbers as if they were dollars and computing an average is a substantive choice that needs defending in print.
+
+**Quantitative, discrete.** Counts of things. The number of children in a household, the number of trade partners a country has in a given year. The values are real numbers and arithmetic works, but the values can only be whole numbers. You cannot have 2.4 children. The Poisson distribution, which we will meet in chapter three, is the natural home of this kind of variable.
+
+**Quantitative, continuous.** Dollars, distances, time intervals, temperatures. Arithmetic works fully. The exports column in our slice is continuous, and so is GDP, and so is distance.
+
+A common trap, especially when you are reading other people's data: things that look like numbers and aren't. ZIP codes. Phone numbers. Survey response IDs. The numeric country code 840 used for the United States in some bilateral databases. These are stored as integers, and a careless analyst will compute the mean ZIP code of a sample, get a result that is mathematically valid and substantively meaningless, and not notice. The number is a label that happens to look like a number. The statistical operation has to match what the column actually represents, not what its storage type happens to be.
+
+The opposite trap also exists: things that don't look like numbers and are. Yes/no answers, encoded as 0 and 1. Dummy variables for whether a row meets some condition. The "common_language" column in our slice is one of these. It is a yes/no, encoded as 0 or 1, and you can absolutely compute its average. The mean of a 0/1 column is the proportion of rows where the value is 1. We use this constantly.
+
+![A small taxonomy of variable types. Quantitative variables come in continuous and discrete varieties; categorical variables come in ordered (ordinal) and unordered (nominal) varieties. Examples on the right are the kinds of columns you actually meet in working datasets.](../../pictures/figures/output/fig_variable_types.pdf){#fig-types width=60%}
+
+You will spend more of your statistical life than you would guess just figuring out what kind of variable each column is. It is the foundation for everything that follows, and it is almost never written down explicitly in the dataset itself. Doing it carefully is one of the easy wins of getting good at this.
