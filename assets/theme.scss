@@ -1,35 +1,265 @@
 /*-- scss:defaults --*/
-// Pictures of Inference Bootstrap variant — overrides for cosmo
+//
+// Pictures of Inference — light theme.
+// Editorial / academic-press feel. Serif body, sans headings, warm
+// cream paper, ink-blue accent, restrained.
+//
 
-$body-bg:        #f8f5f0;
-$body-color:     #2a2a2a;
-$primary:        #1a4f7a;
-$secondary:      #b85c38;
-$success:        #5a7247;
-$warning:        #b8941e;
-$info:           #3a8a99;
-$danger:         #b85c38;
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-$font-family-sans-serif: "Newsreader", "Source Serif Pro", Georgia, serif;
-$font-family-serif:      "Newsreader", "Source Serif Pro", Georgia, serif;
-$font-family-monospace:  "JetBrains Mono", "IBM Plex Mono", Menlo, monospace;
+// ---- Palette ------------------------------------------------------
 
-$headings-color:        #1a4f7a;
+$poi-paper:   #f8f5f0;
+$poi-ink:     #1a4f7a;
+$poi-rust:    #b85c38;
+$poi-sage:    #5a7247;
+$poi-gold:    #b8941e;
+$poi-violet:  #6a5acd;
+$poi-dim:     #8a8a8a;
+$poi-teal:    #3a8a99;
+
+$body-bg:    $poi-paper;
+$body-color: #2a2a2a;
+$primary:    $poi-ink;
+$secondary:  $poi-rust;
+$success:    $poi-sage;
+$info:       $poi-teal;
+$warning:    $poi-gold;
+$danger:     $poi-rust;
+
+// ---- Typography ---------------------------------------------------
+
+$font-family-serif:      "Source Serif 4", "Source Serif Pro",
+                         "Newsreader", "Iowan Old Style",
+                         "Palatino", Georgia, serif;
+$font-family-sans-serif: "Inter", -apple-system, BlinkMacSystemFont,
+                         "Segoe UI", Roboto, "Helvetica Neue", Arial,
+                         sans-serif;
+$font-family-monospace:  "JetBrains Mono", "IBM Plex Mono",
+                         "Source Code Pro", Menlo, Consolas, monospace;
+$font-family-base:       $font-family-serif;
+
+$font-size-base:   1.06rem;
+$line-height-base: 1.65;
+
+// Headings: sans-serif, weight 600, ink-blue
+$headings-color:        $poi-ink;
+$headings-font-family:  $font-family-sans-serif;
 $headings-font-weight:  600;
-$headings-font-family:  "Newsreader", "Source Serif Pro", Georgia, serif;
+$headings-line-height:  1.25;
 
-$link-color:            #1a4f7a;
-$link-hover-color:      #b85c38;
-$link-decoration:       underline;
+$h1-font-size: 2.4rem;
+$h2-font-size: 1.7rem;
+$h3-font-size: 1.3rem;
+$h4-font-size: 1.1rem;
 
-$border-radius:         3px;
-$border-radius-sm:      2px;
-$border-radius-lg:      4px;
+// Links
+$link-color:           $poi-ink;
+$link-decoration:      none;
+$link-hover-color:     $poi-rust;
+$link-hover-decoration: underline;
+
+// Borders & radii
+$border-radius:        4px;
+$border-radius-sm:     3px;
+$border-radius-lg:     6px;
+
+// Code
+$code-color:           $poi-ink;
+$code-bg:              #efe9da;
+$pre-color:            #2a2a2a;
+$pre-bg:               #fbf8f1;
+
+// Tables
+$table-border-color:   #e6dfd2;
+$table-color:          $body-color;
 
 /*-- scss:rules --*/
 
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap');
-
+// Optical-sized Source Serif 4: enable smart kerning + ligatures
 body {
   font-feature-settings: "kern", "liga", "onum";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+// Headings: small letter-spacing fix; emphasize hierarchy via weight + size
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.01em;
+}
+h1.title { font-weight: 700; }
+
+h2 {
+  margin-top: 2.6rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid #e6dfd2;
+}
+h3 {
+  margin-top: 2.0rem;
+}
+
+// Body emphasis: italic stays italic, but bold gets ink-blue tint
+strong, b { color: $poi-ink; }
+
+// Inline code: subtle warm chip
+code:not(pre code) {
+  font-family: $font-family-monospace;
+  background: $code-bg;
+  color: #5a3022;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.9em;
+  border: 1px solid #ddd1b4;
+}
+
+// Code blocks
+pre {
+  background: $pre-bg;
+  border: 1px solid #e6dfd2;
+  border-left: 3px solid $poi-ink;
+  padding: 0.85em 1.1em;
+  font-size: 0.92em;
+  line-height: 1.55;
+  border-radius: 3px;
+}
+
+// Translucent navbar (the stesiam touch)
+.navbar {
+  background-color: rgba(248, 245, 240, 0.86) !important;
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 1px 12px rgba(0,0,0,0.04);
+}
+
+// Title block: flatten the gradient banner so it matches the paper
+.quarto-title-banner {
+  background: $body-bg !important;
+  color: $body-color !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding-top: 1.5rem !important;
+  padding-bottom: 1rem !important;
+}
+.quarto-title-banner .quarto-title h1.title {
+  color: $poi-ink !important;
+  font-family: $font-family-sans-serif;
+}
+
+// Sidebar: warmer, less corporate
+.sidebar-title { color: $poi-ink; font-weight: 600; }
+.sidebar nav[role="doc-toc"] ul > li > a:hover { color: $poi-rust; }
+.sidebar-item-text { font-family: $font-family-sans-serif; font-size: 0.95rem; }
+
+// Tables: book typography
+table {
+  border-collapse: collapse;
+  margin: 1.7em auto;
+  font-size: 0.96em;
+  font-feature-settings: "tnum";  // tabular numerals so columns align
+}
+thead tr { border-top: 2px solid $poi-ink; border-bottom: 1px solid $poi-ink; }
+tbody tr { border-bottom: 1px solid #e6dfd2; }
+tbody tr:last-child { border-bottom: 2px solid $poi-ink; }
+th { color: $poi-ink; font-weight: 600; padding: 0.45em 0.9em; text-align: left; }
+td { padding: 0.4em 0.9em; }
+
+// Figures: full-width by default, subtle separation, italic captions
+figure { margin: 2.0em auto; }
+figure img,
+figure svg,
+.cell-output-display img,
+.cell-output-display svg,
+.figure img,
+.figure svg {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+figcaption,
+.figure-caption,
+.quarto-figure figcaption,
+p.caption {
+  font-family: $font-family-sans-serif;
+  font-size: 0.88em;
+  color: #5a5a5a;
+  font-weight: 400;
+  text-align: left;
+  margin-top: 0.7em;
+  line-height: 1.55;
+  max-width: 100%;
+}
+
+// Section dividers (used as <hr/>)
+hr {
+  border: none;
+  border-top: 1px solid #d8cfb8;
+  width: 28%;
+  margin: 2.4em auto;
+}
+
+// Margin column (for sidenotes / small figures)
+.column-margin {
+  font-family: $font-family-sans-serif;
+  font-size: 0.86em;
+  color: #5a5a5a;
+  line-height: 1.5;
+}
+.column-margin figure { margin-top: 0.4em; }
+
+// Selection
+::selection {
+  background: $poi-ink;
+  color: white;
+}
+
+// Callouts: tighten the default look, add palette colors
+.callout {
+  border: 1px solid #e6dfd2;
+  border-radius: 4px;
+  background: #fdfaf3;
+  margin: 1.8em 0;
+  overflow: hidden;
+}
+.callout .callout-header {
+  font-family: $font-family-sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: white;
+  padding: 0.5em 1em;
+}
+.callout-body { padding: 0.95em 1.2em; line-height: 1.6; }
+
+.callout-warning,
+.callout.callout-warning { border-left: 4px solid $poi-gold; }
+.callout-warning > .callout-header { background: $poi-gold; }
+
+.callout-tip,
+.callout.callout-tip { border-left: 4px solid $poi-sage; }
+.callout-tip > .callout-header { background: $poi-sage; }
+
+.callout-note,
+.callout.callout-note { border-left: 4px solid $poi-ink; }
+.callout-note > .callout-header { background: $poi-ink; }
+
+.callout-important,
+.callout.callout-important { border-left: 4px solid $poi-rust; }
+.callout-important > .callout-header { background: $poi-rust; }
+
+.callout-caution,
+.callout.callout-caution { border-left: 4px solid $poi-violet; }
+.callout-caution > .callout-header { background: $poi-violet; }
+
+// Math (KaTeX): give it room to breathe
+.math.display { margin: 1.6em 0; }
+.katex { font-size: 1.05em; }
+
+// Page width
+main.content { max-width: 920px; }
+
+// Smooth scrolling
+html { scroll-behavior: smooth; }

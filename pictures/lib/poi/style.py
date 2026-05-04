@@ -86,58 +86,83 @@ FIG_OUTPUT.mkdir(parents=True, exist_ok=True)
 # ------------------------------------------------------------
 
 def apply_defaults() -> None:
-    """Apply book-wide matplotlib defaults. Called by @poi_style."""
+    """Apply book-wide matplotlib defaults. Called by @poi_style.
+
+    Font policy: stick with matplotlib's reliable defaults (DejaVu Sans
+    for sans, DejaVu Serif for serif). The HTML book's typography is
+    handled by Quarto/CSS; figures don't need to share the typeface
+    because they live in their own visual frame. Avoiding system
+    Palatino also dodges the 'Zapf NOT subset' warnings on macOS.
+    """
     matplotlib.rcParams.update({
         # PDF compatibility
         "pdf.fonttype": 42,
         "ps.fonttype": 42,
+        "svg.fonttype": "none",  # keep text as text in SVG output
 
-        # Typography
-        "font.family": "serif",
-        "font.serif": ["Palatino", "Palatino Linotype", "DejaVu Serif",
-                       "serif"],
-        "font.size": 10,
-        "axes.titlesize": 11,
-        "axes.labelsize": 10,
-        "xtick.labelsize": 9,
-        "ytick.labelsize": 9,
-        "legend.fontsize": 9,
-        "figure.titlesize": 12,
+        # Typography: clean sans-serif everywhere, matplotlib defaults.
+        "font.family": "sans-serif",
+        "font.sans-serif": ["DejaVu Sans", "Helvetica", "Arial",
+                            "sans-serif"],
+        "font.size": 11.5,
+        "axes.titlesize": 13,
+        "axes.titleweight": "regular",
+        "axes.titlepad": 12,
+        "axes.labelsize": 11.5,
+        "axes.labelweight": "regular",
+        "axes.labelpad": 6,
+        "xtick.labelsize": 10.5,
+        "ytick.labelsize": 10.5,
+        "legend.fontsize": 10.5,
+        "legend.frameon": False,
+        "figure.titlesize": 14,
 
-        # Lines and markers
-        "lines.linewidth": 1.6,
-        "lines.markersize": 4,
-        "patch.linewidth": 0.7,
+        # Math: use matplotlib's mathtext, not LaTeX (faster, portable).
+        "mathtext.fontset": "dejavusans",
+        "mathtext.default": "regular",
 
-        # Spines
+        # Lines and markers (heavier so figures read on big screens)
+        "lines.linewidth": 1.9,
+        "lines.markersize": 5,
+        "patch.linewidth": 0.8,
+
+        # Spines: minimal, slightly heavier so they don't disappear
         "axes.spines.top": False,
         "axes.spines.right": False,
-        "axes.linewidth": 0.7,
+        "axes.linewidth": 0.9,
+        "axes.edgecolor": "#444444",
 
-        # Grid
+        # Ticks: outward, light
+        "xtick.direction": "out",
+        "ytick.direction": "out",
+        "xtick.major.size": 4,
+        "ytick.major.size": 4,
+        "xtick.major.width": 0.8,
+        "ytick.major.width": 0.8,
+        "xtick.color": "#444444",
+        "ytick.color": "#444444",
+
+        # Grid: subtle, not dominant
         "axes.grid": True,
-        "grid.alpha": 0.25,
-        "grid.linewidth": 0.5,
+        "axes.grid.axis": "both",
+        "grid.alpha": 0.22,
+        "grid.linewidth": 0.6,
+        "grid.color": "#888888",
 
-        # Color cycle defaults to the palette
+        # Color cycle defaults to the POI palette
         "axes.prop_cycle": matplotlib.cycler(color=[
             INK, RUST, SAGE, GOLD, VIOLET, TEAL, DIM
         ]),
 
-        # Saving
-        "savefig.dpi": 200,
+        # Saving: high DPI for crisp rendering
+        "savefig.dpi": 300,
         "savefig.bbox": "tight",
-        "savefig.pad_inches": 0.15,
+        "savefig.pad_inches": 0.18,
         "savefig.transparent": False,
-        "figure.dpi": 110,
-
-        # Title / label sizes scaled up for the new larger default
-        "axes.titlesize": 12,
-        "axes.labelsize": 11,
-        "xtick.labelsize": 10,
-        "ytick.labelsize": 10,
-        "legend.fontsize": 10,
-        "figure.titlesize": 13,
+        "savefig.facecolor": "white",
+        "figure.dpi": 150,
+        "figure.facecolor": "white",
+        "figure.edgecolor": "white",
     })
 
 

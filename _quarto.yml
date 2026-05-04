@@ -27,14 +27,18 @@ book:
   search: true
   page-navigation: true
 
+highlight-style: a11y
+
 format:
   html:
     theme:
       light: [cosmo, assets/theme.scss]
-      dark: darkly
+      dark:  [cosmo, assets/dark.scss]
     css: assets/styles.css
+    respect-user-color-scheme: true
     toc: true
     toc-depth: 3
+    toc-location: right
     fig-format: svg
     fig-width: 9
     fig-height: 5.5
@@ -42,30 +46,35 @@ format:
     fig-cap-location: bottom
     code-copy: true
     code-overflow: wrap
+    code-link: true
     smooth-scroll: true
     citations-hover: true
     crossrefs-hover: true
+    link-external-newwindow: true
+    title-block-banner: true
+    html-math-method: katex
     include-in-header:
-      text: |
-        <script>
-        window.MathJax = {
-          tex: {
-            macros: {
-              E: ["\\operatorname{\\mathbb{E}}"],
-              Var: ["\\operatorname{Var}"],
-              Cov: ["\\operatorname{Cov}"],
-              Corr: ["\\operatorname{Corr}"],
-              bx: ["\\boldsymbol{x}"],
-              by: ["\\boldsymbol{y}"],
-              bbeta: ["\\boldsymbol{\\beta}"],
-              bvarepsilon: ["\\boldsymbol{\\varepsilon}"],
-              bX: ["\\boldsymbol{X}"],
-              bY: ["\\boldsymbol{Y}"],
-              bI: ["\\boldsymbol{I}"]
+      - text: |
+          <meta name="color-scheme" content="light dark">
+          <script>
+          window.MathJax = {
+            tex: {
+              macros: {
+                E: ["\\operatorname{\\mathbb{E}}"],
+                Var: ["\\operatorname{Var}"],
+                Cov: ["\\operatorname{Cov}"],
+                Corr: ["\\operatorname{Corr}"],
+                bx: ["\\boldsymbol{x}"],
+                by: ["\\boldsymbol{y}"],
+                bbeta: ["\\boldsymbol{\\beta}"],
+                bvarepsilon: ["\\boldsymbol{\\varepsilon}"],
+                bX: ["\\boldsymbol{X}"],
+                bY: ["\\boldsymbol{Y}"],
+                bI: ["\\boldsymbol{I}"]
+              }
             }
-          }
-        };
-        </script>
+          };
+          </script>
   pdf:
     documentclass: scrbook
     classoption: [11pt, twoside, openany]

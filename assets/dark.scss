@@ -1,0 +1,102 @@
+/*-- scss:defaults --*/
+//
+// Pictures of Inference — dark theme.
+// Mirrors light theme: same hierarchy, inverted background.
+//
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+$poi-paper:   #1a1814;
+$poi-ink:     #7eb3d8;
+$poi-rust:    #d8895c;
+$poi-sage:    #8fa777;
+$poi-gold:    #d8b347;
+$poi-violet:  #9085db;
+$poi-dim:     #888888;
+$poi-teal:    #5fb5c7;
+
+$body-bg:    $poi-paper;
+$body-color: #e8e2d4;
+$primary:    $poi-ink;
+$secondary:  $poi-rust;
+$success:    $poi-sage;
+$info:       $poi-teal;
+$warning:    $poi-gold;
+$danger:     $poi-rust;
+
+$font-family-serif:      "Source Serif 4", "Newsreader", Georgia, serif;
+$font-family-sans-serif: "Inter", -apple-system, sans-serif;
+$font-family-monospace:  "JetBrains Mono", Menlo, monospace;
+$font-family-base:       $font-family-serif;
+
+$font-size-base:   1.06rem;
+$line-height-base: 1.65;
+
+$headings-color:        $poi-ink;
+$headings-font-family:  $font-family-sans-serif;
+$headings-font-weight:  600;
+
+$link-color:           $poi-ink;
+$link-hover-color:     $poi-rust;
+
+$code-color:           #d6c7a3;
+$code-bg:              #2a261f;
+$pre-color:            #e8e2d4;
+$pre-bg:               #221f1a;
+
+/*-- scss:rules --*/
+
+body {
+  font-feature-settings: "kern", "liga", "onum";
+  -webkit-font-smoothing: antialiased;
+}
+
+strong, b { color: $poi-ink; }
+
+h2 {
+  margin-top: 2.6rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid #38322a;
+}
+
+code:not(pre code) {
+  background: #2a261f;
+  color: #e0a88c;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid #38322a;
+}
+
+pre {
+  background: $pre-bg;
+  border: 1px solid #38322a;
+  border-left: 3px solid $poi-ink;
+}
+
+.navbar {
+  background-color: rgba(26, 24, 20, 0.86) !important;
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.quarto-title-banner {
+  background: $body-bg !important;
+  color: $body-color !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+::selection { background: $poi-rust; color: white; }
+
+.callout {
+  border: 1px solid #38322a;
+  background: #221f1a;
+}
+.callout-warning { border-left: 4px solid $poi-gold; }
+.callout-tip { border-left: 4px solid $poi-sage; }
+.callout-note { border-left: 4px solid $poi-ink; }
+.callout-important { border-left: 4px solid $poi-rust; }
+.callout-caution { border-left: 4px solid $poi-violet; }
+
+main.content { max-width: 920px; }
+html { scroll-behavior: smooth; }
