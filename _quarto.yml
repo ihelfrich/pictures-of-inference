@@ -26,13 +26,16 @@ book:
 format:
   html:
     theme:
-      light: cosmo
+      light: [cosmo, assets/theme.scss]
       dark: darkly
+    css: assets/styles.css
     toc: true
     toc-depth: 3
     fig-format: svg
-    fig-width: 7
-    fig-height: 4
+    fig-width: 9
+    fig-height: 5.5
+    fig-align: center
+    fig-cap-location: bottom
     code-copy: true
     code-overflow: wrap
     smooth-scroll: true
@@ -69,8 +72,10 @@ format:
       - bottom=1.0in
     include-in-header: prose/_quarto-preamble.tex
     fig-format: pdf
-    fig-width: 6
-    fig-height: 4
+    fig-width: 7
+    fig-height: 4.5
+    fig-align: center
+    fig-cap-location: bottom
 
 execute:
   freeze: auto

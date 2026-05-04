@@ -16,7 +16,7 @@ The recipe was named by Leland Wilkinson in 1999 in *The Grammar of Graphics*, a
 
 That is the entire vocabulary. A scatter plot is *data + position-x + position-y + point*. A bar chart is *data + position-x + length-y + bar*. A line chart is *data + position-x + position-y + line*. A faceted small-multiples plot is the same with one extra aesthetic, usually called *facet*, that splits the data into panels.
 
-![Anatomy of a single chart, exploded into the three layers of the grammar. The data is a small slice of trade flows. One row maps to one geometric mark (a point). The aesthetics map columns of the data to visual properties of the mark: x-position, y-position, color. Change the geometry and you get a different chart from the same data and aesthetics.](../../pictures/figures/output/fig_grammar.pdf){#fig-grammar width=80%}
+![Anatomy of a single chart, exploded into the three layers of the grammar. The data is a small slice of trade flows. One row maps to one geometric mark (a point). The aesthetics map columns of the data to visual properties of the mark: x-position, y-position, color. Change the geometry and you get a different chart from the same data and aesthetics.](../../pictures/figures/output/fig_grammar.pdf){#fig-grammar .column-page}
 
 Once the grammar is in your head, "what kind of chart should I make" stops being a question about chart types and becomes a question about which aesthetic each of your variables should get mapped to. That is the right question. The answer depends on what you want the reader to see, and on what the human visual system is good at.
 
@@ -36,7 +36,7 @@ The hierarchy, from most accurate to least, was established by Cleveland and McG
 
 This means that the same number, encoded as a position on a scatter plot's y-axis, is read more accurately than the same number encoded as the height of a bar (which is length), much more accurately than the same number encoded as the area of a circle, and far more accurately than the same number encoded as the lightness of a color.
 
-![The same five values rendered five ways: as positions on a common axis, as bar lengths, as pie-slice angles, as circle areas, and as color values. Cleveland and McGill's experiments asked subjects to compare encoded values; accuracy fell off in roughly that order. Position is read accurately. Color is read poorly.](../../pictures/figures/output/fig_perceptual_hierarchy.pdf){#fig-perceptual-hierarchy width=85%}
+![The same five values rendered five ways: as positions on a common axis, as bar lengths, as pie-slice angles, as circle areas, and as color values. Cleveland and McGill's experiments asked subjects to compare encoded values; accuracy fell off in roughly that order. Position is read accurately. Color is read poorly.](../../pictures/figures/output/fig_perceptual_hierarchy.pdf){#fig-perceptual-hierarchy .column-page}
 
 The implication is brutal and important. When you have a choice, encode the variable you most want the reader to read accurately as a position. When you do not have a choice (because position is already taken by other variables), use length next. Use area only when ranking the values matters but precise comparison does not. Use color hue last, and only when the variable is categorical or the question is about rough categories.
 
@@ -48,7 +48,7 @@ When you have one extra variable beyond what x and y are encoding, you face a ch
 
 Splitting into panels is called *faceting*, or *small multiples*, and it has a strong claim to being the most underused visualization technique in working analysis. The design move: instead of overlaying everything on one chart, repeat the chart structure across panels, with each panel showing a slice of the data.
 
-![A scatter of bilateral exports against importer GDP, faceted by exporter country. Each panel uses the same axes and the same encoding; only the panel-defining variable changes. The pattern in any one panel is easy to read, and so is the contrast across panels. The same data overlaid in one panel with color-by-country would be a tangled mess.](../../pictures/figures/output/fig_faceting.pdf){#fig-faceting width=85%}
+![A scatter of bilateral exports against importer GDP, faceted by exporter country. Each panel uses the same axes and the same encoding; only the panel-defining variable changes. The pattern in any one panel is easy to read, and so is the contrast across panels. The same data overlaid in one panel with color-by-country would be a tangled mess.](../../pictures/figures/output/fig_faceting.pdf){#fig-faceting .column-page}
 
 Small multiples work because they use position (the panel grid is a position encoding) for the splitting variable, and they keep the within-panel encoding clean. They also support the eye in moving across panels: if all panels share axes, the visual comparison is doing the same kind of work as a scatter plot of summary statistics, except every individual data point is visible.
 
@@ -68,7 +68,7 @@ This book uses a fixed set of seven colors, and each one carries meaning. The me
 | **DIM** | `#8a8a8a` | background, de-emphasized, support |
 | **TEAL** | `#3a8a99` | alternative or secondary contrast |
 
-![The book's palette as swatches with semantic labels. By chapter five you will recognize the colors without thinking. A new figure with INK and RUST tells you, before you read the caption, that there is a primary story and a contrast. A figure where INK fades to DIM tells you which thing is being de-emphasized.](../../pictures/figures/output/fig_palette.pdf){#fig-palette width=70%}
+![The book's palette as swatches with semantic labels. By chapter five you will recognize the colors without thinking. A new figure with INK and RUST tells you, before you read the caption, that there is a primary story and a contrast. A figure where INK fades to DIM tells you which thing is being de-emphasized.](../../pictures/figures/output/fig_palette.pdf){#fig-palette}
 
 This is unusual in textbooks. Most books pick colors per chapter, often from a default palette that has no meaning attached. The result is that the reader processes color afresh on every figure, which slows reading and dilutes argument. The palette here is doing real work, and so are you when you respect its conventions while making your own figures.
 
@@ -76,7 +76,7 @@ This is unusual in textbooks. Most books pick colors per chapter, often from a d
 
 Here is one small dataset rendered as four different geometries. The data is identical. The aesthetic mappings (which column maps to x and which to y) are identical. Only the geometry changes.
 
-![One small dataset rendered four ways: scatter, bar, dot plot, slope graph. Each one is correct. Each one privileges a different question. The scatter is good for "how do x and y relate." The bar chart is good for "rank these from largest to smallest." The dot plot is the same comparison without the visual weight of bars. The slope graph is good for "how did things change between two points in time."](../../pictures/figures/output/fig_same_data_four_ways.pdf){#fig-same-data width=90%}
+![One small dataset rendered four ways: scatter, bar, dot plot, slope graph. Each one is correct. Each one privileges a different question. The scatter is good for "how do x and y relate." The bar chart is good for "rank these from largest to smallest." The dot plot is the same comparison without the visual weight of bars. The slope graph is good for "how did things change between two points in time."](../../pictures/figures/output/fig_same_data_four_ways.pdf){#fig-same-data .column-page}
 
 Each one is correct. Each one is also, in a sense, wrong, because each one privileges a particular kind of question. The lesson is not that one of these is the best. The lesson is that the choice of geometry is a substantive choice about which question the chart is designed to answer.
 

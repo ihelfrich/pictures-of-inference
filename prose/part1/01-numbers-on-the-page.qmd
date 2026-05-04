@@ -43,7 +43,7 @@ The unit of analysis is not a notational detail. It is a substantive choice that
 
 A column, on the other hand, is one variable measured across all the rows. The "distance_km" column has the same definition in every row, namely how far apart the two countries are. In our slice that number is the same every time the same pair appears, which is itself a clue about the data. Distance does not depend on the year. It is redundant across the time dimension. (We will come back to that. It matters for how regression standard errors should behave when observations within a country-pair are correlated, which they are.)
 
-![The fundamental shape of a dataset. The horizontal stripe marks one row, which is one observation, in this case one country-pair-year. The vertical stripe marks one column, which is one variable measured across every observation. Whatever the size of the rectangle, the meaning of rows and columns does not change.](../../pictures/figures/output/fig_data_rectangle.pdf){#fig-rect width=70%}
+![The fundamental shape of a dataset. The horizontal stripe marks one row, which is one observation, in this case one country-pair-year. The vertical stripe marks one column, which is one variable measured across every observation. Whatever the size of the rectangle, the meaning of rows and columns does not change.](../../pictures/figures/output/fig_data_rectangle.pdf){#fig-rect}
 
 Burn this image into your visual cortex now. You will need it for the rest of the book. Whatever you are looking at, however many variables and however many observations, the rectangle is the underlying shape. The skill the book teaches is what to do once you see it.
 
@@ -67,7 +67,7 @@ A common trap, especially when you are reading other people's data: things that 
 
 Now the opposite trap: things that don't look like numbers and are. Yes/no answers, encoded as 0 and 1. Dummy variables for whether a row meets some condition. The "common_language" column in our slice is one of these. It is a yes/no, encoded as 0 or 1, and you can absolutely compute its average. The mean of a 0/1 column is the proportion of rows where the value is 1. We use this constantly.
 
-![A small taxonomy of variable types. Quantitative variables come in continuous and discrete varieties; categorical variables come in ordered (ordinal) and unordered (nominal) varieties. Examples on the right are the kinds of columns you actually meet in working datasets.](../../pictures/figures/output/fig_variable_types.pdf){#fig-types width=60%}
+![A small taxonomy of variable types. Quantitative variables come in continuous and discrete varieties; categorical variables come in ordered (ordinal) and unordered (nominal) varieties. Examples on the right are the kinds of columns you actually meet in working datasets.](../../pictures/figures/output/fig_variable_types.pdf){#fig-types}
 
 You will spend more of your statistical life than you would guess just figuring out what kind of variable each column is. It is the foundation for everything that follows, and it is almost never written down explicitly in the dataset itself. Doing it carefully is one of the easy wins of getting good at this.
 

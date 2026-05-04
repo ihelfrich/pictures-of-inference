@@ -24,7 +24,7 @@ Now suppose you do $n$ independent Bernoulli trials with the same $p$ and count 
 
 When $n$ is small, the binomial is asymmetric and lumpy. When $n$ is large, it starts to look like a bell curve centered at $np$ with width controlled by $\sqrt{np(1-p)}$. We will return to that "starts to look like" later in the book, because it is one of the most important facts in statistics. For now, recognize the shape.
 
-![Top: a Bernoulli distribution at three values of p (0.2, 0.5, 0.8). It is just two bars, one at 0 and one at 1. Bottom: a Binomial(20, p) at the same three values. Notice how the binomial spreads, peaks near np, and is symmetric only when p = 0.5.](../../pictures/figures/output/fig_bernoulli_binomial.pdf){#fig-bernoulli-binomial width=80%}
+![Top: a Bernoulli distribution at three values of p (0.2, 0.5, 0.8). It is just two bars, one at 0 and one at 1. Bottom: a Binomial(20, p) at the same three values. Notice how the binomial spreads, peaks near np, and is symmetric only when p = 0.5.](../../pictures/figures/output/fig_bernoulli_binomial.pdf){#fig-bernoulli-binomial .column-page}
 
 Where you meet binomials in the wild: anything counted from a fixed number of trials. Test scores out of 50. Free throws made in 10 attempts. People in a sample of 1,000 who report a given opinion. The story is always "fixed $n$, fixed $p$, count the yeses."
 
@@ -34,7 +34,7 @@ A different story. You are not running a fixed number of trials; you are watchin
 
 The distribution of that count is called *Poisson*, written Poisson($\lambda$). Its single parameter $\lambda$ is the average number of events expected in the window. Values live on the non-negative integers (0, 1, 2, ...), with a characteristic shape that peaks near $\lambda$, drops off on both sides, and never quite reaches zero.
 
-![Poisson PMFs at three values of $\lambda$. Small $\lambda$ produces a heavily right-skewed shape with most of the mass at zero or one. As $\lambda$ grows, the distribution shifts right and starts to look more like a bell.](../../pictures/figures/output/fig_poisson.pdf){#fig-poisson width=70%}
+![Poisson PMFs at three values of $\lambda$. Small $\lambda$ produces a heavily right-skewed shape with most of the mass at zero or one. As $\lambda$ grows, the distribution shifts right and starts to look more like a bell.](../../pictures/figures/output/fig_poisson.pdf){#fig-poisson}
 
 The Poisson story is the answer to "how many rare independent events in a fixed window?" When you see count data and the events are not all going to be yes-or-no with a fixed $n$, the Poisson is usually the right starting point. Many real count distributions are not exactly Poisson but are close enough that the Poisson is the right idealization.
 
@@ -48,7 +48,7 @@ The story: a normal distribution arises whenever the value you are measuring is 
 
 A normal distribution is fully described by two numbers: its mean (where it is centered) and its standard deviation (how wide it is). The shape is symmetric about the mean, drops off rapidly on both sides, and has the characteristic 68-95-99.7 property: about 68% of the area is within one standard deviation of the mean, about 95% within two, about 99.7% within three.
 
-![A standard normal distribution with the 68-95-99.7 bands shaded. Reading the figure: roughly two-thirds of the area falls inside the inner band, ninety-five percent inside the middle band, and almost all the rest inside the outer band. The thresholds at $\pm 2\sigma$ and $\pm 3\sigma$ are the natural reference points for any normal-shaped data.](../../pictures/figures/output/fig_normal_68_95_99.pdf){#fig-normal width=70%}
+![A standard normal distribution with the 68-95-99.7 bands shaded. Reading the figure: roughly two-thirds of the area falls inside the inner band, ninety-five percent inside the middle band, and almost all the rest inside the outer band. The thresholds at $\pm 2\sigma$ and $\pm 3\sigma$ are the natural reference points for any normal-shaped data.](../../pictures/figures/output/fig_normal_68_95_99.pdf){#fig-normal}
 
 The 68-95-99.7 rule is worth memorizing. It lets you do quick sanity checks on any normal-shaped data: if a value is more than 2 sd from the mean, it is in the top or bottom 2.5% of the distribution. More than 3 sd, top or bottom 0.15%. The thresholds become natural after a few uses.
 
@@ -60,7 +60,7 @@ The *exponential* distribution is the story of waiting. You are watching for the
 
 The *log-normal* distribution is the story of multiplied effects. Suppose a quantity is built up not by adding many small things but by multiplying them. The size of a city is roughly the product of historical advantages, each one acting as a multiplier. Income is roughly the product of skill, opportunity, market timing, and luck, each multiplying the previous. The log of such a quantity is a sum of small things, which (by the previous section's story) is approximately normal. So the original quantity is the exponential of a normal, called *log-normal*.
 
-![Left: an exponential distribution. Most of the mass is at small values; a thin tail stretches to the right. Right: a log-normal distribution. Heavier on the right than the exponential; a small fraction of values are extreme. Income, city populations, file sizes, reaction times in psychology: all approximately log-normal.](../../pictures/figures/output/fig_exp_lognormal.pdf){#fig-exp-lognormal width=85%}
+![Left: an exponential distribution. Most of the mass is at small values; a thin tail stretches to the right. Right: a log-normal distribution. Heavier on the right than the exponential; a small fraction of values are extreme. Income, city populations, file sizes, reaction times in psychology: all approximately log-normal.](../../pictures/figures/output/fig_exp_lognormal.pdf){#fig-exp-lognormal .column-page}
 
 The first move when you see right-skew data is usually to take the log and see if the result looks normal. Often it does. Once it does, all the tools you have for working with normal distributions become available, applied on the log scale. Coefficients of regressions on log-transformed outcomes have a natural interpretation as percentage changes, which we will use heavily in the regression chapters.
 
@@ -70,7 +70,7 @@ One last shape. The *Student's t* distribution, which looks almost like a normal
 
 The story: when you compute the mean of a small sample, you do not actually know the population standard deviation; you have to estimate it from the data. That estimate has its own uncertainty, especially when the sample is small. The t distribution is the correct accounting for the extra uncertainty. It looks like a normal but with heavier tails, the heaviness controlled by a parameter called *degrees of freedom* that essentially equals the sample size minus one.
 
-![The t distribution overlaid on a standard normal. At $df = 2$, the t is dramatically heavier-tailed than the normal: substantially more mass beyond $\pm 2$. At $df = 10$ the difference is smaller but still visible. By $df = 30$ the t is almost indistinguishable from the normal.](../../pictures/figures/output/fig_t_vs_normal.pdf){#fig-t-vs-normal width=75%}
+![The t distribution overlaid on a standard normal. At $df = 2$, the t is dramatically heavier-tailed than the normal: substantially more mass beyond $\pm 2$. At $df = 10$ the difference is smaller but still visible. By $df = 30$ the t is almost indistinguishable from the normal.](../../pictures/figures/output/fig_t_vs_normal.pdf){#fig-t-vs-normal}
 
 When the sample is large (say, $n > 30$), the t is indistinguishable from the normal. When the sample is small (say, $n = 5$), the t has noticeably fatter tails: more probability of extreme values, to account for the fact that the standard deviation estimate could itself be off. As $n$ grows, the t converges to the normal.
 

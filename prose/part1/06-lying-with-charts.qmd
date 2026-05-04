@@ -14,7 +14,7 @@ The chapter ends with a short list of honest defaults that prevent most of these
 
 The most common visual lie. A bar chart shows that quantity X went from 100 to 102, but the y-axis starts at 99 and ends at 103. Visually, the second bar looks much taller than the first: maybe four times taller. Numerically, X grew by 2%.
 
-![Same data, two y-axes. On the left, the y-axis starts at zero, and a 2% growth looks like a 2% growth. On the right, the y-axis starts at 99, and the same 2% growth looks like the second value is several times larger than the first. The data is identical. The visual story is opposite.](../../pictures/figures/output/fig_truncated_axis.pdf){#fig-truncated width=85%}
+![Same data, two y-axes. On the left, the y-axis starts at zero, and a 2% growth looks like a 2% growth. On the right, the y-axis starts at 99, and the same 2% growth looks like the second value is several times larger than the first. The data is identical. The visual story is opposite.](../../pictures/figures/output/fig_truncated_axis.pdf){#fig-truncated .column-page}
 
 The defensive move: always check where the y-axis starts. If it does not start at zero on a bar chart of magnitudes, the chart is amplifying or muting differences relative to a chart that does start at zero. Sometimes that amplification is editorially fine (small changes in CPI matter; you would not want to start at zero for a chart of historical CPI, because zero CPI is a meaningless reference). More often it is dishonest.
 
@@ -24,7 +24,7 @@ A useful rule. Bar charts should almost always start at zero, because the visual
 
 The same time series can tell completely different stories depending on which part of it you show. Pick a starting point near a peak and you get a downward trend. Pick a starting point near a trough and you get an upward one. Both are honest in the sense that the data shown is real. Both are dishonest in the sense that the choice of window is the editorial argument, and a chart that does not show the longer context is hiding the argument behind a curated frame.
 
-![A 30-year time series with a clear upward trend. On the left, the full series. On the right, a five-year window selected from the same series, chosen to suggest decline. Both panels show real data. Only one tells the truth about what is going on.](../../pictures/figures/output/fig_cherry_pick.pdf){#fig-cherry-pick width=85%}
+![A 30-year time series with a clear upward trend. On the left, the full series. On the right, a five-year window selected from the same series, chosen to suggest decline. Both panels show real data. Only one tells the truth about what is going on.](../../pictures/figures/output/fig_cherry_pick.pdf){#fig-cherry-pick .column-page}
 
 The defensive move: ask why this window. If the chart shows five years and you suspect more data exists, look for it. If the chart starts at a suspiciously specific date, check what was happening just before. Markets, climate series, public-health metrics, all of these have natural reference points (a peak, a recession, a prior policy change) that are deliberately included or excluded to shape the story.
 
@@ -32,7 +32,7 @@ The defensive move: ask why this window. If the chart shows five years and you s
 
 A bar twice as tall has twice the height. A circle twice the diameter has four times the area. A sphere twice the diameter has eight times the volume. When a chart encodes a quantity as the area of a circle (a "bubble chart" or "infographic") or as the volume of a 3D shape, the visual sense of magnitude grows faster than the underlying number, and the reader systematically overestimates differences.
 
-![Two bars representing 100 and 200. On the left, only the height changes (the honest encoding). On the right, the second bar is also drawn twice as wide, so its area is four times larger than the first bar's, even though the underlying number is only twice as large. The reader's eye overestimates by a factor of two.](../../pictures/figures/output/fig_area_distortion.pdf){#fig-area-distortion width=80%}
+![Two bars representing 100 and 200. On the left, only the height changes (the honest encoding). On the right, the second bar is also drawn twice as wide, so its area is four times larger than the first bar's, even though the underlying number is only twice as large. The reader's eye overestimates by a factor of two.](../../pictures/figures/output/fig_area_distortion.pdf){#fig-area-distortion}
 
 This goes wrong in two ways in the wild. One is genuine area encoding ("this circle represents 100 million people; this circle, twice as large in area, represents 200 million"). The reader's eye does not weigh area linearly, so the "twice as large" judgment is unreliable. The other is *unintended* area encoding: a bar chart where the bars get wider as well as taller, or a 3D bar chart where perspective makes the back bars look different from the front ones at the same height. Both are common in business presentations.
 
@@ -44,7 +44,7 @@ Two time series on the same chart, with two y-axes, one on each side. Each axis 
 
 The trick is in the axis scaling. The author has chosen the two axis ranges to make the curves overlap. Different ranges would produce no apparent relationship. The eye, however, reads "they are tracking each other" with no awareness that the relationship is an artifact of axis choice.
 
-![A dual-axis chart of two unrelated time series. The left axis runs from 0 to 100; the right axis runs from 5 to 7. The two curves appear to track each other across the visible range, suggesting a strong correlation. They have none. Slide the right axis up or down and the apparent relationship disappears.](../../pictures/figures/output/fig_dual_axis.pdf){#fig-dual-axis width=85%}
+![A dual-axis chart of two unrelated time series. The left axis runs from 0 to 100; the right axis runs from 5 to 7. The two curves appear to track each other across the visible range, suggesting a strong correlation. They have none. Slide the right axis up or down and the apparent relationship disappears.](../../pictures/figures/output/fig_dual_axis.pdf){#fig-dual-axis}
 
 Dual-axis charts are not always dishonest. Sometimes the author genuinely wants to show two related quantities measured in different units (temperature and humidity, say). But the burden of proof should fall on the author. If the two series are conceptually unrelated, dual axes will manufacture an apparent correlation that does not exist.
 
@@ -54,7 +54,7 @@ The defensive move: separate the two series into two stacked panels with their o
 
 The previous tricks amplify small effects. Log scales mute large ones. A series that grows from 1 to 1,000 takes a giant vertical step on a linear scale and a small one on a log scale. On the log scale, the growth from 1 to 10 looks the same as the growth from 100 to 1,000, even though both represent tenfold increases. The constant log-step is good for showing rates of growth, but it can be used to make explosive growth look gentle.
 
-![An exponentially growing series shown on a linear axis (left) and a logarithmic axis (right). The linear chart screams. The log chart shrugs. Both show the same data. The choice of scale is the rhetorical move.](../../pictures/figures/output/fig_log_hides.pdf){#fig-log-hides width=85%}
+![An exponentially growing series shown on a linear axis (left) and a logarithmic axis (right). The linear chart screams. The log chart shrugs. Both show the same data. The choice of scale is the rhetorical move.](../../pictures/figures/output/fig_log_hides.pdf){#fig-log-hides .column-page}
 
 A common honest use: financial returns over decades, where the eye-relevant quantity is the percentage change, not the dollar level. A common dishonest use: showing a runaway quantity on a log scale and pointing to its "modest growth," when the underlying number has gone up by several orders of magnitude.
 

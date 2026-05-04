@@ -63,11 +63,11 @@ DIV_BLUE_RUST = [INK, "#6c9bc7", "#d6e4f0", "#f5f5f5",
 # Sizes (in inches)
 # ------------------------------------------------------------
 
-FIG_SINGLE = (4.5, 3.0)     # single column
-FIG_FULL   = (7.0, 4.0)     # full text width
-FIG_SPREAD = (10.0, 5.0)    # two-page spread
-FIG_TALL   = (4.5, 5.5)     # vertical
-FIG_SQUARE = (5.0, 5.0)     # square
+FIG_SINGLE = (5.5, 3.6)     # single column (in margin or half-width)
+FIG_FULL   = (9.0, 5.5)     # full text body, the default
+FIG_SPREAD = (12.0, 6.5)    # extra-wide, page-column or screen-inset
+FIG_TALL   = (6.0, 7.5)     # vertical
+FIG_SQUARE = (7.0, 7.0)     # square
 
 
 # ------------------------------------------------------------
@@ -125,11 +125,19 @@ def apply_defaults() -> None:
         ]),
 
         # Saving
-        "savefig.dpi": 300,
+        "savefig.dpi": 200,
         "savefig.bbox": "tight",
-        "savefig.pad_inches": 0.05,
+        "savefig.pad_inches": 0.15,
         "savefig.transparent": False,
-        "figure.dpi": 100,
+        "figure.dpi": 110,
+
+        # Title / label sizes scaled up for the new larger default
+        "axes.titlesize": 12,
+        "axes.labelsize": 11,
+        "xtick.labelsize": 10,
+        "ytick.labelsize": 10,
+        "legend.fontsize": 10,
+        "figure.titlesize": 13,
     })
 
 
