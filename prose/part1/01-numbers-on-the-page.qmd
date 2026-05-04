@@ -134,3 +134,23 @@ Two places to follow this if you care: the Berkeley Initiative for Transparency 
 Data is rectangular. Rows are observations, columns are variables, and the unit of analysis is the question that has to be answered before anything else. The eight-question audit is the discipline that turns a stack of numbers into evidence.
 
 :::
+
+## Practice problems
+
+1. Take any spreadsheet you can put your hands on. Run the eight-question audit on it. Write your answers in three sentences each. The discipline gets faster after about three datasets.
+
+2. Our trade slice has unit of analysis (exporter, importer, year). Suggest two other reasonable units of analysis you could aggregate to. For each, name one question that becomes easier and one that becomes impossible.
+
+3. A column called `blood_type` has values A+, A−, B+, B−, AB+, AB−, O+, O−. What variable type is it? Could you ever defend treating it as ordinal?
+
+4. ZIP codes look like integers, and computing the mean ZIP code of a sample is mathematically valid. Explain in two sentences why the result is useless.
+
+5. Open `data/trade/codebook.md`. Identify two facts about the dataset that you would not have learned by looking at the CSV alone.
+
+::: {.callout-caution title="Reflect before moving on"}
+
+- In your own words, what is the difference between "rows are observations" and "rows are independent"?
+- Why might the same dataset be tidy for one analysis and not tidy for another?
+- Pick the audit question you would be most likely to skip in practice. Why? What do you risk by skipping it?
+
+:::

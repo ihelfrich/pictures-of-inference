@@ -121,3 +121,23 @@ The grammar of graphics is now several decades old and the field has moved on. T
 The grammar is not finished, but the foundation is stable enough that this book will rest on it without apology.
 
 :::
+
+## Practice problems
+
+1. Take any chart from a recent news article. Identify the data, the aesthetic mappings, and the geometry.
+
+2. You have country, year, GDP, and continent. Sketch a chart that uses all four variables. Justify each encoding choice using the perceptual hierarchy.
+
+3. Why is a pie chart usually a worse choice than a bar chart for the same comparison, even when both encode the same data?
+
+4. Faceting moves an aesthetic from within-panel to position-of-panel. Explain why that is often an improvement, in terms of the perceptual hierarchy.
+
+5. Take the trade slice. Make four versions of the same scatter (`exports` vs `distance`), encoding `exporter` four different ways: as color, as shape, as size, as facet. Which encoding lets you read the data fastest?
+
+::: {.callout-caution title="Reflect before moving on"}
+
+- What is one chart you have made or seen recently that violates the perceptual hierarchy? Could it be redrawn?
+- Color is at the bottom of the hierarchy but is used everywhere. Why? When is color actually justified?
+- Pick a question you have had to answer with data and name the right geometry for it.
+
+:::

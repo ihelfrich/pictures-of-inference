@@ -1,0 +1,3415 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  letterpaper,
+  11pt,
+  twoside,
+  openany]{scrbook}
+\usepackage{xcolor}
+\usepackage[inner=1.2in,outer=1.0in,top=1.0in,bottom=1.0in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+% Quarto PDF preamble for Pictures of Inference
+% Quarto manages: documentclass, geometry, fonts (default), graphicx,
+% hyperref, microtype, captions, listings, syntax highlighting.
+% This file adds only what the book needs on top.
+
+% --- Math fonts and packages ---
+\usepackage{mathpazo}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{bm}
+
+% --- Callout boxes ---
+\usepackage[breakable,skins]{tcolorbox}
+
+\newtcolorbox{keyinsight}{
+  enhanced, breakable,
+  colframe=orange!70!black, colback=orange!5,
+  fonttitle=\sffamily\bfseries\small, title=Key Insight,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+\newtcolorbox{tryitnow}{
+  enhanced, breakable,
+  colframe=blue!50!black, colback=blue!3,
+  fonttitle=\sffamily\bfseries\small, title=Try It Now,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+\newtcolorbox{inthemath}{
+  enhanced, breakable,
+  colframe=yellow!50!black, colback=yellow!4,
+  fonttitle=\sffamily\bfseries\small, title=Inside the Math,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+\newtcolorbox{codelab}{
+  enhanced, breakable,
+  colframe=green!50!black, colback=green!3,
+  fonttitle=\sffamily\bfseries\small, title=Code Lab,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+\newtcolorbox{expedition}{
+  enhanced, breakable,
+  colframe=teal!60!black, colback=teal!4,
+  fonttitle=\sffamily\bfseries\small, title=Expedition,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+\newtcolorbox{frontiernote}{
+  enhanced, breakable,
+  colframe=purple!50!black, colback=purple!3,
+  fonttitle=\sffamily\bfseries\small, title=Frontier Note,
+  boxrule=0.8pt, left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=12pt, after skip=12pt,
+}
+
+% --- Custom math commands ---
+\newcommand{\E}{\operatorname{\mathbb{E}}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Corr}{\operatorname{Corr}}
+\newcommand{\bx}{\bm{x}}
+\newcommand{\by}{\bm{y}}
+\newcommand{\bbeta}{\bm{\beta}}
+\newcommand{\bvarepsilon}{\bm{\varepsilon}}
+\newcommand{\bX}{\bm{X}}
+\newcommand{\bY}{\bm{Y}}
+\newcommand{\bI}{\bm{I}}
+
+% Read-aloud aid for first-appearance notation
+\newcommand{\readas}[2]{#1\;\textit{(read: #2)}}
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
+\makeatletter
+\@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{sidenotes}{}{\usepackage{sidenotes}}
+\@ifpackageloaded{marginnote}{}{\usepackage{marginnote}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Pictures of Inference},
+  pdfauthor={Dr.~Ian Helfrich; Dr.~Elizaveta Gonchar},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Pictures of Inference}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{A Visual Course in Statistics, Calculus, and Econometrics}
+\author{Dr.~Ian Helfrich \and Dr.~Elizaveta Gonchar}
+\date{May 2026}
+\begin{document}
+\frontmatter
+\maketitle
+
+\renewcommand*\contentsname{Table of contents}
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+
+\mainmatter
+\bookmarksetup{startatroot}
+
+\chapter*{Preface}\label{preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+\markboth{Preface}{Preface}
+
+\emph{Working draft. Architecture committed; chapters arrive as they
+finish.}
+
+This is \emph{Pictures of Inference}. A visual course in statistics,
+calculus, and econometrics, by Dr.~Ian Helfrich and Dr.~Elizaveta
+Gonchar.
+
+The book is built to take a reader from ``what is a correlation'' to the
+working knowledge needed to read, evaluate, and contribute to research
+at the frontier of empirical economics. Four parts: How to See, How to
+Speak, How to Think, How to Discover. Visualization is primary. Math is
+taught as a language. Multiple data types are treated as first-class.
+
+For collaborators: see \texttt{docs/process.md} for how we build,
+\texttt{docs/voice/charter.md} for what the narrator does and does not
+do, and \texttt{docs/table-of-contents.md} for the chapter map.
+
+For readers: start with chapter 1
+(\href{prose/part1/01-numbers-on-the-page.qmd}{Numbers on the page}) and
+read forward. Each chapter has a narrative layer that goes straight
+through and requires no math beyond what came before. Underneath that,
+technical sections develop the derivations and proofs for readers who
+want them. At the end, a short frontier note points at where current
+research is arguing. Read the layers that suit you, and come back for
+the others later.
+
+\part{How to See}
+
+\chapter{Numbers on the page}\label{numbers-on-the-page}
+
+\section{What you just did}\label{what-you-just-did}
+
+Here is a small piece of a real-shaped dataset: bilateral trade flows
+for six countries observed over a decade, one row per pair-of-countries
+per year. Look at it for ten seconds before reading on.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.0426}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.0709}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.0709}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1702}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1560}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1560}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1064}}
+  >{\centering\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1206}}
+  >{\centering\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1064}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+year
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+exporter
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+importer
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+exports (USD millions)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+exporter GDP (USD T)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+importer GDP (USD T)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+distance (km)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+common language
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+common border
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+2023 & USA & CHN & 85,058 & 27.36 & 17.79 & 11,587 & 0 & 0 \\
+2023 & USA & DEU & 28,039 & 27.36 & 4.46 & 7,850 & 0 & 0 \\
+2023 & USA & JPN & 27,112 & 27.36 & 4.21 & 9,997 & 0 & 0 \\
+2023 & USA & GBR & 34,137 & 27.36 & 3.34 & 6,979 & 1 & 0 \\
+2023 & USA & KOR & 9,602 & 27.36 & 1.71 & 10,534 & 0 & 0 \\
+2023 & CHN & USA & 145,847 & 17.79 & 27.36 & 11,587 & 0 & 0 \\
+\end{longtable}
+}
+
+Ten seconds. What did your eye do?
+
+It found the rows and the columns. It noticed each row contained the
+same kinds of things in the same order. It registered that some columns
+held names (USA, CHN, DEU) and some held numbers, and that the numbers
+came in different magnitudes. It parsed ``85,058'' as eighty-five
+thousand of something, possibly more if you bothered to figure out the
+units, possibly the size of an entire country's exports to another
+country in a year. You probably started asking questions. Why does China
+export almost twice as much to the United States as the United States
+exports back? Why does the US export more to the much smaller economies
+of Germany and Japan than to Korea? What does ``common language'' mean
+as a number rather than as a word, and why is it 1 for the US-UK row and
+0 for everyone else?
+
+Nobody taught you to do any of that. You just did it.
+
+This book is about the difference between doing it instinctively and
+doing it deliberately. Most people who say they are bad at math, or at
+any of the disciplines that wear quantitative clothes, are not bad at
+the seeing. They are bad at the next step, the one where what your eye
+noticed gets written down precisely enough to argue with. Here is the
+claim the rest of this book will try to demonstrate: the gap between
+those two skills is much smaller than it looks, and bridging it does not
+require you to become a different kind of person. You already do most of
+the work. We are going to slow down and notice how.
+
+Chapter 1 is the easiest one. It establishes a single fact about almost
+every dataset you will ever meet, that data is rectangular and the
+rectangle is not a notational accident, and then catalogs the kinds of
+things that can live in a column. By the end of this chapter you will
+have a vocabulary for talking about any dataset, the way you already
+have one for talking about a paragraph of text. The vocabulary lets you
+decompose a dataset into parts, ask what each part is doing, and figure
+out which questions are worth asking before any analysis happens. The
+trade slice on this page is going to be a recurring character. By
+chapter five you will know it as well as you know your own kitchen.
+
+A note on how to read this book before we start. You can read at three
+depths. The narrative goes straight through and requires no math beyond
+what came before. If you want the math, the technical sections develop
+it properly without interrupting the narrative. At the end of every
+chapter, a short frontier note points at what current research is
+fighting about. Pick the depths that suit you, and come back for the
+others later.
+
+One more thing. When you encounter an equation, read it aloud. Out loud.
+Even if you do not yet know what every symbol means. Equations are
+sentences with a subject, a verb, and modifiers, and pretending they are
+not is the single biggest mistake students make in their first
+statistics course. We are going to fix that one immediately.
+
+\section{The shape}\label{the-shape}
+
+Every dataset you will ever look at is a rectangle. Some rectangles are
+tiny, two rows by three columns. Some are vast, millions of rows by
+hundreds of columns. The rule is the same at any size. Each row is one
+thing being observed. Each column is one thing being measured about it.
+
+In our trade slice, every row is one country's exports to one other
+country in one specific year. The first row, USA to CHN in 2023, is one
+observation. Just one. The next row is a different observation, USA to
+DEU in 2023, with its own values for everything. The columns describe
+the attributes you can attach to a row: the year, the exporter, the
+importer, the dollar value of exports, the GDP of each side, the
+great-circle distance between them, whether they share a language,
+whether they share a border.
+
+This sounds obvious. It is not. The first question to ask of any
+dataset, before any analysis, is: \emph{what is one row?} Until you
+answer that, you cannot do anything correctly with the data, because the
+same numbers can mean wildly different things depending on what the row
+represents.
+
+Take our slice. One row is one country-pair-year. Three hundred rows
+total, six countries with five trading partners each over ten years.
+Suppose we instead aggregated to one-country-year. We would have sixty
+rows (six countries times ten years), and ``exports'' would mean each
+country's total exports to the world rather than to a specific partner.
+Aggregate further to one-country and we would have six rows. Summarize
+to one-year and we would have ten. Same underlying facts, four different
+shapes, four different statistical worlds.
+
+The unit of analysis is not a notational detail. It is a substantive
+choice that decides everything downstream. A regression run on
+country-year data answers different questions than a regression run on
+dyad-year data, and the same coefficient labeled ``the effect of
+distance on trade'' means almost incomparable things in the two
+settings. When you read a paper, the first thing to figure out is what
+one row of their dataset is. When you write your own analysis, the first
+thing to decide is what you want one row to be.
+
+A column, on the other hand, is one variable measured across all the
+rows. The ``distance\_km'' column has the same definition in every row,
+namely how far apart the two countries are. In our slice that number is
+the same every time the same pair appears, which is itself a clue about
+the data. Distance does not depend on the year. It is redundant across
+the time dimension. (We will come back to that. It matters for how
+regression standard errors should behave when observations within a
+country-pair are correlated, which they are.)
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_data_rectangle.pdf}}
+
+}
+
+\caption{\label{fig-rect}The fundamental shape of a dataset. The
+horizontal stripe marks one row, which is one observation, in this case
+one country-pair-year. The vertical stripe marks one column, which is
+one variable measured across every observation. Whatever the size of the
+rectangle, the meaning of rows and columns does not change.}
+
+\end{figure}%
+
+Burn this image into your visual cortex now. You will need it for the
+rest of the book. Whatever you are looking at, however many variables
+and however many observations, the rectangle is the underlying shape.
+The skill the book teaches is what to do once you see it.
+
+\section{What lives in a column}\label{what-lives-in-a-column}
+
+Columns come in flavors. The flavor matters because it determines what
+arithmetic the column will support.
+
+The simplest distinction is between columns of \textbf{numbers} and
+columns of \textbf{labels}. Dollar value of exports: number. Country
+code USA: label. You can take the average of a number column and have it
+mean something. You cannot take the average of a column of country
+codes; the ``average country'' between USA and DEU is not a sensible
+thing. The exports-weighted average distance between trade partners, by
+contrast, is a real quantity that some people compute on purpose.
+
+Statisticians divide variables into four flavors, and the difference
+between them comes down to what operations the values support.
+
+\textbf{Categorical, unordered (nominal).} The values are names with no
+built-in ranking: country codes, sex, eye color, whether someone owns a
+passport. The only sensible operations are counting how often each value
+appears and asking whether two rows share the same value. USA and DEU
+are different. There is no answer to ``is USA bigger than DEU.''
+
+\textbf{Categorical, ordered (ordinal).} Order matters, but the gaps
+between adjacent values do not. Education levels (high school, college,
+graduate). Survey responses from strongly-disagree to strongly-agree.
+Movie ratings out of five. The difference between ``agree'' and
+``strongly agree'' is not necessarily the same size as the difference
+between ``neutral'' and ``agree.'' You can sort the values. You can talk
+about medians. Treating the numbers as if they were dollars and
+computing an average is a substantive choice that needs defending in
+print.
+
+\textbf{Quantitative, discrete.} Counts of things. The number of
+children in a household, the number of trade partners a country has in a
+given year. The values are real numbers and arithmetic works, but the
+values can only be whole numbers. You cannot have 2.4 children. The
+Poisson distribution, which we will meet in chapter three, is the
+natural home of this kind of variable.
+
+\textbf{Quantitative, continuous.} Dollars, distances, time intervals,
+temperatures. Arithmetic works fully. The exports column in our slice is
+continuous, and so is GDP, and so is distance.
+
+A common trap, especially when you are reading other people's data:
+things that look like numbers and aren't. ZIP codes. Phone numbers.
+Survey response IDs. The numeric country code 840 used for the United
+States in some bilateral databases. These are stored as integers, and a
+careless analyst will compute the mean ZIP code of a sample, get a
+result that is mathematically valid and substantively meaningless, and
+not notice. The number is a label that happens to look like a number.
+The statistical operation has to match what the column actually
+represents, not what its storage type happens to be.
+
+Now the opposite trap: things that don't look like numbers and are.
+Yes/no answers, encoded as 0 and 1. Dummy variables for whether a row
+meets some condition. The ``common\_language'' column in our slice is
+one of these. It is a yes/no, encoded as 0 or 1, and you can absolutely
+compute its average. The mean of a 0/1 column is the proportion of rows
+where the value is 1. We use this constantly.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_variable_types.pdf}}
+
+}
+
+\caption{\label{fig-types}A small taxonomy of variable types.
+Quantitative variables come in continuous and discrete varieties;
+categorical variables come in ordered (ordinal) and unordered (nominal)
+varieties. Examples on the right are the kinds of columns you actually
+meet in working datasets.}
+
+\end{figure}%
+
+You will spend more of your statistical life than you would guess just
+figuring out what kind of variable each column is. It is the foundation
+for everything that follows, and it is almost never written down
+explicitly in the dataset itself. Doing it carefully is one of the easy
+wins of getting good at this.
+
+\section{First questions}\label{first-questions}
+
+Every time you sit down with a new dataset, before any analysis, run a
+short list of questions through your head. The list takes ten minutes
+for a small dataset and an afternoon for a serious one. It is the
+difference between an analysis you can defend and an analysis that
+quietly breaks underneath you.
+
+Eight questions. Memorize the list.
+
+\textbf{1. What is one row?} We did this already. Until you can name the
+unit of analysis without thinking, you cannot do anything else
+correctly. In our trade slice, one row is one country-pair-year.
+
+\textbf{2. How many rows, how many columns?} For our slice, 300 rows and
+9 columns. This sounds like trivia. It is not. The shape sets the cost
+of mistakes. With 300 rows you can eyeball almost anything; with 300
+million you cannot. You will adopt different tools, do different sanity
+checks, and worry about different things as the row count grows.
+
+\textbf{3. What is the type of each column?} Number or label. If number,
+continuous or discrete. If label, ordered or unordered. Walk every
+column. Be specific about borderline cases (the
+\texttt{common\_language} column is technically categorical but encoded
+as 0/1 so you can average it, and you will).
+
+\textbf{4. What are the units?} ``Exports'' is meaningless without ``USD
+millions, current prices.'' ``Distance'' needs ``kilometers.'' ``GDP''
+needs ``trillions of USD'' and ideally ``nominal vs.~real, base year.''
+A staggering fraction of bad analyses come from someone forgetting that
+the units in two columns don't match. The codebook in
+\texttt{data/trade/codebook.md} is the source of truth for our slice.
+Read it.
+
+\textbf{5. What is the time period? What is the geographic scope?} Our
+slice covers 2014 to 2023, six countries chosen for size and student
+recognizability. Limited. A real bilateral trade panel covers 200
+territories and goes back decades. Whatever your slice is, the scope is
+part of every claim you can make.
+
+\textbf{6. Where did the data come from, and what survived the journey?}
+Raw data is messy. Clean data is the result of decisions: which
+observations to drop, which variables to re-code, which missing values
+to impute, which outliers to keep or remove. Every one of those
+decisions is a place where signal can leak. The processing script is
+part of the data. So is the person who wrote it.
+
+\textbf{7. What is missing?} The thing the dataset doesn't have is often
+more important than the thing it does. Our slice has six countries.
+Missing: every country except those six, every year before 2014, every
+product category, every direction of investment. Any conclusion drawn
+from this slice is conditional on those exclusions. A good analyst names
+the absences before drawing the inferences.
+
+\textbf{8. What looks weird?} Look at the data. Sort by exports, find
+the smallest and largest values, check whether they make sense. Look at
+the distance column, find the row where two countries are improbably
+close or far, ask why. Look at the GDP columns, look for off-by-1000
+unit confusion. The first ten minutes of weirdness-hunting saves the
+next ten hours.
+
+These eight questions will not catch every problem. They will catch
+most. Run them every time. The discipline is what separates analysis
+from rationalization.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Inside the math: tidy data, formally}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+The rectangular structure described in this chapter is one specific
+arrangement called \emph{tidy data}, formalized by Wickham (2014). A
+dataset is tidy when:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Each variable forms a column.
+\item
+  Each observation forms a row.
+\item
+  Each type of observational unit forms a table.
+\end{enumerate}
+
+These three conditions are equivalent to a special kind of relational
+normal form. The first two are the rectangular structure we have been
+discussing. The third is the rule that distinct kinds of things
+(countries, country-pairs, years) live in distinct tables, joined by
+keys, rather than crammed into a single table with mixed grain.
+
+Many real datasets are not tidy. Wide-format panels, wide-format
+surveys, and aggregated tables encountered in the wild often fail one or
+more conditions. Most data analysis begins with tidying: reshaping data
+into the rectangular form. Most data analysis errors begin with someone
+forgetting which form they are in.
+
+The reference is Hadley Wickham, ``Tidy Data,'' \emph{Journal of
+Statistical Software}, 59(10), 2014.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Try this}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Open \texttt{data/trade/clean/bilateral\_panel.csv} in any tool you like
+(a spreadsheet, R, Python, or your text editor of choice; the file is
+small).
+
+Run the eight-question audit on it. Write your answers down. The point
+is not to be exhaustive; the point is to make the questions habitual.
+When you finish, two things should be true: you can describe the dataset
+to someone in three sentences, and you can list at least one thing you
+wish were in there but is not.
+
+If you want a stretch question: compute the average bilateral exports
+for each year, plot the result, and notice what happens around 2020.
+Speculate about why.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Frontier note}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+The discipline of asking what data is and where it came from has a
+formal name in modern empirical work: \emph{data provenance}. A growing
+literature in measurement theory and metascience argues that most
+published quantitative claims are weaker than they appear because the
+chain from raw observation to reported number is opaque, and that
+openness about that chain (raw data, processing scripts, documented
+decisions) should be a precondition for citation.
+
+Two places to follow this if you care: the Berkeley Initiative for
+Transparency in the Social Sciences (BITSS), and the literature growing
+out of the credibility revolution in economics. Both have produced
+practical tools and standards for the kind of provenance work this
+chapter has gestured toward.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Key insight}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Data is rectangular. Rows are observations, columns are variables, and
+the unit of analysis is the question that has to be answered before
+anything else. The eight-question audit is the discipline that turns a
+stack of numbers into evidence.
+
+\end{tcolorbox}
+
+\section{Practice problems}\label{practice-problems}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Take any spreadsheet you can put your hands on. Run the eight-question
+  audit on it. Write your answers in three sentences each. The
+  discipline gets faster after about three datasets.
+\item
+  Our trade slice has unit of analysis (exporter, importer, year).
+  Suggest two other reasonable units of analysis you could aggregate to.
+  For each, name one question that becomes easier and one that becomes
+  impossible.
+\item
+  A column called \texttt{blood\_type} has values A+, A−, B+, B−, AB+,
+  AB−, O+, O−. What variable type is it? Could you ever defend treating
+  it as ordinal?
+\item
+  ZIP codes look like integers, and computing the mean ZIP code of a
+  sample is mathematically valid. Explain in two sentences why the
+  result is useless.
+\item
+  Open \texttt{data/trade/codebook.md}. Identify two facts about the
+  dataset that you would not have learned by looking at the CSV alone.
+\end{enumerate}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-caution-color!10!white, colframe=quarto-callout-caution-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-caution-color}{\faFire}\hspace{0.5em}{Reflect before moving on}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{itemize}
+\tightlist
+\item
+  In your own words, what is the difference between ``rows are
+  observations'' and ``rows are independent''?
+\item
+  Why might the same dataset be tidy for one analysis and not tidy for
+  another?
+\item
+  Pick the audit question you would be most likely to skip in practice.
+  Why? What do you risk by skipping it?
+\end{itemize}
+
+\end{tcolorbox}
+
+\chapter{Probability as area}\label{probability-as-area}
+
+\section{What probability is}\label{what-probability-is}
+
+Pause on the word ``probability.'' Pretend you have never heard it
+before. What kind of thing is it?
+
+Here is the answer the book will use, and it is the answer modern
+probability theory uses too: \emph{probability is a fraction of an
+outcome space.}
+
+That sentence does a lot of work. Let me unpack it slowly.
+
+An \emph{outcome space} is the set of all the things that could happen
+in some situation. When you roll a fair die, the outcome space is the
+six numbers from 1 to 6. When you draw a card from a shuffled deck, the
+outcome space is the 52 distinct cards. When you flip a coin, the
+outcome space has two elements. When you measure tomorrow's high
+temperature in Atlanta, the outcome space is technically every real
+number between some lower and upper bound, an infinite continuum.
+
+Once you have an outcome space, probability is just bookkeeping over the
+space. The probability of any specific outcome is a number between 0 and
+1. Add up the probabilities of the outcomes inside any subset, and you
+get that subset's probability. The probability of the \emph{whole space}
+is exactly 1, because something has to happen.
+
+That is it. There is a deeper formal version with σ-algebras and measure
+theory waiting later in the book, but at this level, probability is
+``what fraction of the things that could happen does this subset
+cover.''
+
+The picture below, and the rest of this chapter, takes that definition
+seriously.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_sample_space.pdf}}
+
+}
+
+\caption{\label{fig-sample-space}Every outcome of rolling two fair dice.
+There are 36 cells, one for each ordered pair of die-1 and die-2 values,
+and the number in each cell is the sum. The shading shows how many cells
+share the same sum: the diagonal stripe with sum 7 has six cells, sum 6
+and sum 8 have five, and so on, down to sums 2 and 12 with one cell
+each. Probability becomes geometry: the chance of rolling a 7 is just
+the fraction of the rectangle that is shaded most darkly.}
+
+\end{figure*}%
+
+Notice what the picture does not yet have: any equation. Probability is
+not, fundamentally, an equation. It is a way of carving up a space. The
+equations come later, as shorthand for the carving.
+
+The same idea works whether the space is finite or continuous. When you
+throw a dart at a square dartboard, the outcome space is the dartboard
+itself. The probability that the dart lands in some region is the
+fraction of the dartboard that region covers. This is literally area
+divided by area, no abstraction required.
+
+When you measure tomorrow's temperature, the outcome space is a number
+line and the probabilities are encoded by a \emph{density}: a curve over
+the number line whose total area equals 1. The probability that the
+temperature lands in some interval is the area under the density curve
+over that interval. We will spend chapter three meeting the most
+important density curves and learning to read them. For now, the only
+thing to remember is that area under a curve is probability. Always. No
+exceptions.
+
+\section{Events are regions}\label{events-are-regions}
+
+An \emph{event} is just a name for a subset of the outcome space.
+
+``The card I draw is a heart'' is an event. It corresponds to the subset
+of the deck consisting of the 13 hearts. The probability of the event is
+13/52, or 1/4, because the heart-region covers a quarter of the deck.
+
+``The card is a face card'' (jack, queen, king of any suit) is another
+event. It corresponds to 12 cards out of 52. Probability 12/52, about
+0.23.
+
+What about ``the card is a heart \textbf{and} a face card''? That is the
+\emph{intersection} of the two events: the cards that are simultaneously
+hearts and face cards. There are exactly three of those (jack, queen,
+king of hearts). Probability 3/52, about 0.058.
+
+What about ``the card is a heart \textbf{or} a face card''? That is the
+\emph{union}. You might be tempted to add the two probabilities, 13/52 +
+12/52 = 25/52. That is wrong, and the reason it is wrong is one of the
+most useful diagrams in elementary probability.
+
+The hearts and the face cards overlap. The three cards in the
+intersection (J, Q, K of hearts) belong to both regions. If you add 13
+and 12, you have counted those three twice. To get the union, you add
+the two regions and subtract the overlap once:
+
+\[
+P(\text{heart} \cup \text{face}) = P(\text{heart}) + P(\text{face}) - P(\text{heart} \cap \text{face}) = \frac{13}{52} + \frac{12}{52} - \frac{3}{52} = \frac{22}{52}.
+\]
+
+This is the \emph{inclusion-exclusion principle}, and it has a name only
+because beginners get it wrong so often. The picture is unambiguous.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_events_overlap.pdf}}
+
+}
+
+\caption{\label{fig-events-overlap}Two events drawn as overlapping
+regions inside a rectangular sample space. The blue region A is ``the
+card is a heart'' (13 of 52). The rust region B is ``the card is a face
+card'' (12 of 52). The overlap A ∩ B has three cards (J, Q, K of
+hearts). When you compute P(A ∪ B), the overlap is counted once in P(A)
+and once in P(B), which means you must subtract it once to avoid
+double-counting.}
+
+\end{figure*}%
+
+Two events that don't overlap are called \emph{disjoint}, or
+\emph{mutually exclusive}. For disjoint events, the union really is just
+the sum, because there is nothing to subtract. Drawing a heart and
+drawing a club are disjoint: no card is both. P(heart or club) = 13/52 +
+13/52 = 26/52, exactly half the deck.
+
+Read the figure carefully. Every claim in the next two chapters can be
+derived from looking at it.
+
+\section{Conditional probability is a change of
+denominator}\label{conditional-probability-is-a-change-of-denominator}
+
+Suppose you draw a card and someone tells you, before you look, that the
+card is a heart. Now what is the probability the card is a face card?
+
+The original outcome space was 52 cards, of which 12 were face cards.
+P(face) = 12/52, about 0.23. But you have new information: the card is a
+heart. The outcome space has shrunk. Instead of 52 cards, only the 13
+hearts are now possibilities. Among those 13, exactly 3 are face cards
+(J, Q, K of hearts). The probability that the card is a face card
+\emph{given that it is a heart} is 3/13, about 0.23.
+
+Conditioning on a piece of information is just zooming in. You take the
+original outcome space, restrict it to the region you have been told
+about, and recompute the fraction.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_conditional_zoom.pdf}}
+
+}
+
+\caption{\label{fig-cond-zoom}Left: the full deck, with the 12 face
+cards highlighted in gold. The probability of a face card, P(face), is
+12/52 ≈ 0.23. Right: the same problem, restricted to the 13 hearts only.
+The probability of a face card given that the card is a heart, P(face
+given heart), is 3/13 ≈ 0.23. Conditioning on ``heart'' zoomed the
+sample space from 52 cards to 13. The numerator and denominator both
+changed; in this case the ratio happens to come out about the same.}
+
+\end{figure*}%
+
+Notation. The probability of A given B is written \(P(A \mid B)\), read
+aloud as ``the probability of A given B.'' The vertical bar means
+``given.'' It is the most important piece of notation in inferential
+statistics, and most students never learn to read it aloud confidently.
+Read it aloud now.
+
+The formula corresponding to the picture is
+
+\[
+P(A \mid B) = \frac{P(A \cap B)}{P(B)}.
+\]
+
+Read the formula aloud. \emph{The probability of A given B equals the
+probability of A and B together, divided by the probability of B.} In
+words: of all the times B happened, what fraction of them also had A
+happen?
+
+Verify it on the cards.
+\(P(\text{face} \mid \text{heart}) = P(\text{face} \cap \text{heart}) / P(\text{heart}) = (3/52) / (13/52) = 3/13\).
+Same answer the picture gave. The formula and the picture are saying the
+same thing in different languages.
+
+Internalize this: \(P(A \mid B)\) is a different quantity from \(P(A)\).
+The two probabilities can be very different. Sometimes B raises the
+chance of A; sometimes B lowers it. When the two probabilities happen to
+be equal, A and B are \emph{independent}, and B carries no information
+about A. The same word ``probability'' is doing very different work in
+\(P(A)\) and \(P(A \mid B)\), and a great deal of statistical confusion
+in the wild comes from people sliding between them without noticing.
+
+\section{Bayes and the disease-test
+paradox}\label{bayes-and-the-disease-test-paradox}
+
+Here is a question that broke me the first time I saw it, and that I
+have watched humble dozens of trained scientists since.
+
+A rare disease affects 1\% of the population. A test for the disease is
+95\% accurate: among people who have the disease, the test correctly
+flags 95\% of them; among people who do not have the disease, the test
+correctly clears 95\% of them. You take the test. It comes back
+positive.
+
+What is the probability you have the disease?
+
+Most people, when surveyed, answer somewhere between 90\% and 95\%,
+anchoring on the test's accuracy. The actual answer, as the picture
+below makes obvious, is roughly 16\%.
+
+Imagine 10,000 people drawn at random from the population. The picture
+shows them as a 100-by-100 grid of squares.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_bayes_grid.pdf}}
+
+}
+
+\caption{\label{fig-bayes-grid}10,000 people, drawn at random from a
+population with 1\% disease prevalence and tested with a 95\%-accurate
+test. The dark red squares are sick people who tested positive (95). The
+pale red squares are sick people who tested negative (5). The rust
+squares are healthy people who tested positive anyway, the false
+positives (495). The gray squares are healthy people who tested negative
+(9,405). The probability of being sick given a positive test is the
+fraction of the positive-test population that is also in the sick
+population: 95 out of (95 + 495) = 590, or about 16\%. The base rate
+dominates.}
+
+\end{figure*}%
+
+Of the 10,000 people, 1\% have the disease. That is 100 people. The
+other 9,900 do not.
+
+Among the 100 sick people, the test correctly identifies 95\% as
+positive. That is 95 true positives. The other 5 are false negatives.
+
+Among the 9,900 well people, the test correctly clears 95\%. That is
+9,405 true negatives. But it incorrectly flags 5\%. That is 495 false
+positives.
+
+Now your test is positive. You belong to the population that tests
+positive. That population has two parts: the 95 true positives (sick)
+and the 495 false positives (well). The whole positive-test population
+is 590 people.
+
+Of those 590, only 95 are actually sick. The probability that a
+positive-test person has the disease is 95/590, about 0.161, about 16\%.
+
+The 95\% accuracy did not lie. It just answered a different question.
+\(P(+ \mid \text{sick}) = 0.95\) is not the same number as
+\(P(\text{sick} \mid +)\). The base rate, that 99\% of the population is
+well, dominates the calculation. With a rare disease and a test that is
+anything less than perfect, most positives are false positives.
+
+This is \emph{Bayes' theorem}, and the formula version is
+
+\[
+P(\text{sick} \mid +) = \frac{P(+ \mid \text{sick}) \, P(\text{sick})}{P(+)} = \frac{0.95 \times 0.01}{0.95 \times 0.01 + 0.05 \times 0.99} \approx 0.161.
+\]
+
+Read it aloud. \emph{The probability of being sick given a positive test
+equals the probability of testing positive given sickness, times the
+prevalence of sickness, divided by the total probability of testing
+positive.} That denominator is just the size of the positive-test
+population (the 590 from the picture), expressed as a fraction.
+
+The formula and the picture say exactly the same thing. The picture is
+more honest. When you read about Bayes' theorem in any later chapter,
+picture the grid first and translate the formula into rectangles second.
+That is the pedagogical move that prevents an entire class of mistakes
+that even careful researchers continue to make.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Key insight}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Probability is a fraction of an outcome space. Conditioning is
+restricting that space. Bayes' theorem is the bookkeeping that connects
+the two, and the rectangle-grid picture in this chapter is the only
+intuition you need to apply it correctly in the simple case.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Try this}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+A different version of the disease test problem. The disease prevalence
+is 50\% (very common). The test accuracy is the same 95\%.
+
+Without computing anything, predict whether \(P(\text{sick} \mid +)\) is
+closer to 50\% or 95\%.
+
+Then draw the grid. Then compute the answer. Compare to your prediction.
+Notice how much the prevalence is doing in this problem, even though the
+prevalence never appears in the test's specifications.
+
+A second one. Same 1\% prevalence as before, but now imagine the test is
+99\% accurate (99\% sensitivity, 99\% specificity). Recompute
+\(P(\text{sick} \mid +)\). What changed and what didn't?
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Inside the math: Bayes from first principles}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+The chapter derived Bayes' theorem from a picture. Here is the same
+derivation in symbols, for readers who want to see why it always works.
+
+The conditional probability formula \(P(A \mid B) = P(A \cap B) / P(B)\)
+can be rearranged into \(P(A \cap B) = P(A \mid B) \, P(B)\). This is
+sometimes called the \emph{multiplication rule}. Notice that the same
+intersection \(A \cap B\) can be written by conditioning the other
+direction: \(P(A \cap B) = P(B \mid A) \, P(A)\). Setting the two equal,
+
+\[
+P(A \mid B) \, P(B) = P(B \mid A) \, P(A),
+\]
+
+and dividing both sides by \(P(B)\) gives Bayes' theorem in its simplest
+form,
+
+\[
+P(A \mid B) = \frac{P(B \mid A) \, P(A)}{P(B)}.
+\]
+
+The denominator \(P(B)\) is the \emph{marginal probability} of B, and in
+problems like the disease test it is computed by summing over the
+conditioning variable:
+\(P(B) = P(B \mid A) P(A) + P(B \mid \text{not } A) P(\text{not } A)\).
+This is the \emph{law of total probability}, and it is the formal
+version of ``add up the squares in the grid that meet condition B.''
+
+That is the entire mathematical content of Bayesian inference.
+Everything that follows in chapters 30 and beyond is just turning the
+rectangles into curves and the counts into integrals.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Frontier note}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Modern Bayesian statistics is the largest practical descendant of the
+simple bookkeeping you just learned. A working Bayesian analysis turns
+the rectangle picture from this chapter into a continuous version (the
+rectangles become curves and the counts become integrals), and asks the
+same question: given the data, what is the conditional distribution of
+the parameters?
+
+The recent renaissance of Bayesian methods in applied work owes most of
+its momentum to two things: better computational tools (Hamiltonian
+Monte Carlo, variational inference), and a slow shift in scientific
+culture toward thinking about uncertainty in the way Bayes' theorem
+requires.
+
+For now, every time you condition on data in this book, remember that
+you are doing a tiny piece of Bayesian thinking, even if the chapter
+calls it something else.
+
+\end{tcolorbox}
+
+\section{Practice problems}\label{practice-problems-1}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  A bag has 5 red, 3 blue, and 2 green marbles. You draw one. Compute
+  \(P(\text{red})\), \(P(\text{blue or green})\), and
+  \(P(\text{red and blue})\). Sketch the sample space as a rectangle to
+  verify.
+\item
+  Repeat the disease-test problem with prevalence 5\% and test accuracy
+  90\% (90\% sensitivity, 90\% specificity). Draw the grid for 10,000
+  people and compute \(P(\text{sick} \mid +)\).
+\item
+  Two events \(A\) and \(B\) have \(P(A) = 0.4\), \(P(B) = 0.5\),
+  \(P(A \cap B) = 0.1\). Compute \(P(A \cup B)\), \(P(A \mid B)\), and
+  \(P(B \mid A)\). Are \(A\) and \(B\) independent?
+\item
+  Why is \(P(A \cup B) = P(A) + P(B) - P(A \cap B)\) rather than just
+  \(P(A) + P(B)\)? Explain in one sentence and a small picture.
+\item
+  A test has 99\% sensitivity and 99\% specificity, and the underlying
+  disease has prevalence 0.1\%. Without computing, predict whether
+  \(P(\text{sick} \mid +)\) is closer to 99\% or 10\%. Then compute and
+  compare.
+\end{enumerate}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-caution-color!10!white, colframe=quarto-callout-caution-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-caution-color}{\faFire}\hspace{0.5em}{Reflect before moving on}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{itemize}
+\tightlist
+\item
+  What is the visual difference between conditional probability and
+  joint probability?
+\item
+  Where else in the world have you seen base-rate neglect at work?
+\item
+  If a friend asked you ``what is probability, in one sentence,'' what
+  would you say now that you could not have said before this chapter?
+\end{itemize}
+
+\end{tcolorbox}
+
+\chapter{Shapes of data}\label{shapes-of-data}
+
+\section{What a distribution is}\label{what-a-distribution-is}
+
+You have a column. A few hundred rows of bilateral exports, or trade
+distances, or human heights, or wait times for the bus. The values are
+not all the same, and they are not arranged at random across some flat
+range. They cluster, they spread, they trail off. The pattern of where
+the values fall is what statisticians call the \emph{distribution}.
+
+A distribution is the answer to ``for any given value, how often does it
+appear?'' If you collect heights of adult men in centimeters and bin
+them into one-centimeter buckets, you can plot the count in each bucket
+and watch a shape emerge. The shape is not random. It has a name. It
+carries information about the kind of process that produced the values.
+
+Most of the conceptual work of statistics is recognizing distribution
+shapes and matching them to processes. You learn the half-dozen most
+important shapes and which kinds of real-world situations produce them,
+and a great deal of the rest of the field becomes the question of how to
+use those shapes to make good decisions.
+
+This chapter introduces six distributions you will see repeatedly. None
+of them are formulas to memorize. Each is a \emph{story}: a description
+of what generates data with this shape. When you meet a column of
+numbers in the wild, your first move is to ask what story produced it.
+The right answer points at the right tool.
+
+Six stories follow. Each gets a figure. Read the figures first, the
+prose second.
+
+\section{Bernoulli and binomial: a coin and a
+tally}\label{bernoulli-and-binomial-a-coin-and-a-tally}
+
+Start with the simplest possible distribution. You have a single
+yes-or-no event with probability \(p\) of being yes. Coin flip with a
+biased coin. Click-or-no-click on an ad. Whether a randomly chosen
+person owns a passport. The outcome is one of two values, conventionally
+encoded as 1 (yes) and 0 (no). The distribution is called
+\emph{Bernoulli}, and it is fully described by the single number \(p\).
+
+You can plot a Bernoulli distribution as two bars: one of height \(p\)
+at the value 1, one of height \(1-p\) at the value 0. That is the entire
+shape. There is nothing more to know.
+
+Now suppose you do \(n\) independent Bernoulli trials with the same
+\(p\) and count how many came out yes. The number of yeses is no longer
+a yes-or-no; it is an integer between 0 and \(n\). The distribution of
+that count is called \emph{binomial}, written Binomial(\(n, p\)). It has
+more shape than the Bernoulli does, because the count can land anywhere
+in a range, and some counts are far more likely than others.
+
+When \(n\) is small, the binomial is asymmetric and lumpy. When \(n\) is
+large, it starts to look like a bell curve centered at \(np\) with width
+controlled by \(\sqrt{np(1-p)}\). We will return to that ``starts to
+look like'' later in the book, because it is one of the most important
+facts in statistics. For now, recognize the shape.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_bernoulli_binomial.pdf}}
+
+}
+
+\caption{\label{fig-bernoulli-binomial}Top: a Bernoulli distribution at
+three values of p (0.2, 0.5, 0.8). It is just two bars, one at 0 and one
+at 1. Bottom: a Binomial(20, p) at the same three values. Notice how the
+binomial spreads, peaks near np, and is symmetric only when p = 0.5.}
+
+\end{figure*}%
+
+Where you meet binomials in the wild: anything counted from a fixed
+number of trials. Test scores out of 50. Free throws made in 10
+attempts. People in a sample of 1,000 who report a given opinion. The
+story is always ``fixed \(n\), fixed \(p\), count the yeses.''
+
+\section{Poisson: the rare event}\label{poisson-the-rare-event}
+
+A different story. You are not running a fixed number of trials; you are
+watching a clock or a region in space, and events happen at some average
+rate. Earthquakes per year above some magnitude. Cars arriving at a toll
+booth per minute. Typos per page. Cosmic rays striking your phone in an
+hour. Events are independent, the rate is approximately constant, and
+you count how many you observed in your window.
+
+The distribution of that count is called \emph{Poisson}, written
+Poisson(\(\lambda\)). Its single parameter \(\lambda\) is the average
+number of events expected in the window. Values live on the non-negative
+integers (0, 1, 2, \ldots), with a characteristic shape that peaks near
+\(\lambda\), drops off on both sides, and never quite reaches zero.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_poisson.pdf}}
+
+}
+
+\caption{\label{fig-poisson}Poisson PMFs at three values of \(\lambda\).
+Small \(\lambda\) produces a heavily right-skewed shape with most of the
+mass at zero or one. As \(\lambda\) grows, the distribution shifts right
+and starts to look more like a bell.}
+
+\end{figure}%
+
+The Poisson story is the answer to ``how many rare independent events in
+a fixed window?'' When you see count data and the events are not all
+going to be yes-or-no with a fixed \(n\), the Poisson is usually the
+right starting point. Many real count distributions are not exactly
+Poisson but are close enough that the Poisson is the right idealization.
+
+A useful trick. If \(\lambda\) is large (say, more than 30), the Poisson
+starts to look like a normal distribution centered at \(\lambda\) with
+standard deviation \(\sqrt{\lambda}\). This is a special case of a
+phenomenon we will spend chapter 14 working on.
+
+\section{Normal: the sum of many small
+things}\label{normal-the-sum-of-many-small-things}
+
+The most important distribution in statistics, full stop. The bell
+curve. The Gaussian. The normal. There are reasons it shows up
+everywhere, and the reasons matter more than the formula.
+
+The story: a normal distribution arises whenever the value you are
+measuring is the sum of many independent small contributions, none of
+which dominates the total. Human height is approximately normal because
+it is the sum of many small genetic and environmental influences.
+Measurement error is approximately normal because each measurement is a
+sum of many tiny independent perturbations. The mean of any sample (no
+matter what the underlying distribution is) is approximately normal once
+\(n\) is large enough. We will spend chapter 14 on that last fact,
+because it is the engine of inferential statistics.
+
+A normal distribution is fully described by two numbers: its mean (where
+it is centered) and its standard deviation (how wide it is). The shape
+is symmetric about the mean, drops off rapidly on both sides, and has
+the characteristic 68-95-99.7 property: about 68\% of the area is within
+one standard deviation of the mean, about 95\% within two, about 99.7\%
+within three.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_normal_68_95_99.pdf}}
+
+}
+
+\caption{\label{fig-normal}A standard normal distribution with the
+68-95-99.7 bands shaded. Reading the figure: roughly two-thirds of the
+area falls inside the inner band, ninety-five percent inside the middle
+band, and almost all the rest inside the outer band. The thresholds at
+\(\pm 2\sigma\) and \(\pm 3\sigma\) are the natural reference points for
+any normal-shaped data.}
+
+\end{figure}%
+
+The 68-95-99.7 rule is worth memorizing. It lets you do quick sanity
+checks on any normal-shaped data: if a value is more than 2 sd from the
+mean, it is in the top or bottom 2.5\% of the distribution. More than 3
+sd, top or bottom 0.15\%. The thresholds become natural after a few
+uses.
+
+\section{Exponential and log-normal: the wait, the
+multiplied}\label{exponential-and-log-normal-the-wait-the-multiplied}
+
+Two more shapes that recur, both heavy on the right side.
+
+The \emph{exponential} distribution is the story of waiting. You are
+watching for the next earthquake, the next bus, the next user click.
+Time elapses. The probability of waiting at least \(t\) more time units
+shrinks at a constant rate, regardless of how long you have already
+waited (the \emph{memoryless} property). The distribution of the wait
+time has a peak at zero and a fast decay toward longer waits. Most waits
+are short, a few are surprisingly long. The single parameter is the rate
+\(\lambda\), and the mean wait is \(1/\lambda\).
+
+The \emph{log-normal} distribution is the story of multiplied effects.
+Suppose a quantity is built up not by adding many small things but by
+multiplying them. The size of a city is roughly the product of
+historical advantages, each one acting as a multiplier. Income is
+roughly the product of skill, opportunity, market timing, and luck, each
+multiplying the previous. The log of such a quantity is a sum of small
+things, which (by the previous section's story) is approximately normal.
+So the original quantity is the exponential of a normal, called
+\emph{log-normal}.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_exp_lognormal.pdf}}
+
+}
+
+\caption{\label{fig-exp-lognormal}Left: an exponential distribution.
+Most of the mass is at small values; a thin tail stretches to the right.
+Right: a log-normal distribution. Heavier on the right than the
+exponential; a small fraction of values are extreme. Income, city
+populations, file sizes, reaction times in psychology: all approximately
+log-normal.}
+
+\end{figure*}%
+
+The first move when you see right-skew data is usually to take the log
+and see if the result looks normal. Often it does. Once it does, all the
+tools you have for working with normal distributions become available,
+applied on the log scale. Coefficients of regressions on log-transformed
+outcomes have a natural interpretation as percentage changes, which we
+will use heavily in the regression chapters.
+
+\section{The t: when n is small}\label{the-t-when-n-is-small}
+
+One last shape. The \emph{Student's t} distribution, which looks almost
+like a normal but is not.
+
+The story: when you compute the mean of a small sample, you do not
+actually know the population standard deviation; you have to estimate it
+from the data. That estimate has its own uncertainty, especially when
+the sample is small. The t distribution is the correct accounting for
+the extra uncertainty. It looks like a normal but with heavier tails,
+the heaviness controlled by a parameter called \emph{degrees of freedom}
+that essentially equals the sample size minus one.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_t_vs_normal.pdf}}
+
+}
+
+\caption{\label{fig-t-vs-normal}The t distribution overlaid on a
+standard normal. At \(df = 2\), the t is dramatically heavier-tailed
+than the normal: substantially more mass beyond \(\pm 2\). At
+\(df = 10\) the difference is smaller but still visible. By \(df = 30\)
+the t is almost indistinguishable from the normal.}
+
+\end{figure}%
+
+When the sample is large (say, \(n > 30\)), the t is indistinguishable
+from the normal. When the sample is small (say, \(n = 5\)), the t has
+noticeably fatter tails: more probability of extreme values, to account
+for the fact that the standard deviation estimate could itself be off.
+As \(n\) grows, the t converges to the normal.
+
+You will meet the t the first time we do a confidence interval for a
+mean, in chapter 13. The reason hypothesis tests for small samples use
+the t and not the normal is exactly the story above.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Key insight}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Distributions are stories about generating processes. Six of them cover
+most of what you will see in working analysis: Bernoulli (yes-or-no),
+Binomial (counts of yeses), Poisson (rare events in a window), Normal
+(sums of many small things), Exponential and Log-normal (waits and
+products), and Student's t (the normal's small-sample cousin).
+Recognizing the story tells you which tool to use; the formulas come
+later.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Try this}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Pick a column from any dataset you have access to, ideally something
+with at least a hundred values. Plot a histogram. Ask which of the six
+stories above best describes its shape. Then ask why: what process
+produced the values, and does that process match the story?
+
+If the data is right-skewed, take the log and plot again. Does the
+log-transformed version look approximately normal? If yes, you have a
+log-normal column on your hands and a different set of tools applies.
+
+A second prompt: pick two columns from the trade slice
+(\texttt{exports\_usd\_millions} and \texttt{distance\_km} are good).
+Plot a histogram of each. Then plot a histogram of
+\(\log(\text{exports})\) and \(\log(\text{distance})\). Notice which
+transformation does meaningful work.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Inside the math: where the names come from}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Each distribution in this chapter has a probability mass function (for
+discrete distributions) or probability density function (for continuous
+ones). The names attached to the formulas are sedimented history.
+
+Jacob Bernoulli, working on games of chance in the late 1600s, gave his
+name to the simplest yes-or-no distribution. The binomial coefficient
+that appears inside Binomial(\(n, p\)) was studied earlier still, by
+Pascal and Fermat in their 1654 correspondence about gambling.
+
+In 1837, Siméon Denis Poisson published a treatise on the probability of
+judicial verdicts that contained what we now call the \emph{Poisson
+distribution}. Its earliest serious application was to the statistics of
+rare events in human populations: deaths from horse-kicks in the
+Prussian army, used by Bortkiewicz in 1898 as a textbook example.
+
+The normal distribution was discovered three times. De Moivre derived it
+in 1733 as a limit of the binomial. Laplace developed it independently
+in 1810 inside what we now call the central limit theorem. Gauss arrived
+at it from a different direction in 1809, in his theory of measurement
+error. ``Normal'' as the popular name came only later, from Galton and
+Pearson at the end of the 1800s.
+
+In 1908, a Guinness brewery statistician named William Sealy Gosset
+published the t distribution under the pen name \emph{Student}, because
+his employer forbade publication under his real name. It is one of the
+most consequential pseudonyms in scientific history.
+
+Log-normal and exponential are simpler in provenance: both fall out
+naturally once the normal exists and once you start thinking about waits
+and products.
+
+Notation conventions across these distributions (Greek for parameters,
+Roman with hats for estimators) will be respected throughout the book.
+The hats become important in chapter 13, when we learn to estimate
+parameters from data.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Frontier note}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Modern probability is much wider than the six distributions above. Three
+areas where the frontier is moving:
+
+\emph{Heavy-tailed distributions and extreme value theory.} Many
+real-world distributions (market returns, internet traffic, natural
+disasters) have tails far heavier than the normal predicts. The field of
+extreme value theory studies the maxima of random processes and provides
+distributions (Gumbel, Fréchet, Weibull) that are the right tools when
+the question is about rare extreme events rather than the bulk.
+
+\emph{Distributions on networks and graphs.} The ``rectangle of rows and
+columns'' assumption breaks down when the data is relational (who knows
+whom, who trades with whom). Modern probability has been extended to
+handle distributions on graphs, on permutations, on trees, on more
+exotic combinatorial objects. The recurring trade panel of this book is
+partly network data, and we will return to this in chapter 41.
+
+\emph{Bayesian nonparametric models.} When the right distribution is
+itself unknown, modern Bayesian methods place a prior over distributions
+themselves (Dirichlet processes, Gaussian processes), letting the data
+choose the right distributional family. This is one of the most active
+areas in current statistics and machine learning.
+
+For now, the six stories cover everything in Parts One and Two of the
+book. The bigger zoo waits.
+
+\end{tcolorbox}
+
+\section{Practice problems}\label{practice-problems-2}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  For each variable below, name the distribution that most likely
+  describes it: number of phone calls received in an hour; height of
+  adult women in cm; whether a coin lands heads; income in a country;
+  time between earthquakes; number of children per family.
+\item
+  A distribution has a long right tail. You take the log; the result
+  looks normal. What family of distributions is the original?
+\item
+  A Poisson distribution has \(\lambda = 6.4\). What is the mean?
+  Approximately what is the standard deviation? Why?
+\item
+  For Student's \(t\) at \(df = 5\), where do the tails sit relative to
+  a standard normal? At \(df = 50\)?
+\item
+  Open the trade slice. Plot a histogram of
+  \texttt{exports\_usd\_millions}. Then plot a histogram of
+  \(\log(\text{exports_usd_millions})\). Which version is closer to a
+  familiar shape from this chapter? What does that tell you about the
+  underlying process?
+\end{enumerate}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-caution-color!10!white, colframe=quarto-callout-caution-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-caution-color}{\faFire}\hspace{0.5em}{Reflect before moving on}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{itemize}
+\tightlist
+\item
+  Why is ``what process produced this data'' a more useful question than
+  ``what is the formula''?
+\item
+  Pick one distribution from the chapter. Explain its underlying story
+  to a friend in three sentences.
+\item
+  The mean of a sample becomes normal as \(n\) grows, no matter what the
+  parent distribution looks like. Why is this almost magical?
+\end{itemize}
+
+\end{tcolorbox}
+
+\chapter{The grammar of graphics}\label{the-grammar-of-graphics}
+
+\section{Anatomy of a chart}\label{anatomy-of-a-chart}
+
+A chart is not a kind of thing. It is not ``a bar chart'' or ``a scatter
+plot.'' A chart is a recipe with three layers, and once you see the
+layers separately, the apparent variety of charts collapses into a much
+smaller set of decisions.
+
+The recipe was named by Leland Wilkinson in 1999 in \emph{The Grammar of
+Graphics}, and refined by Hadley Wickham into the ggplot2 implementation
+in R. Both versions agree on what the layers are.
+
+\textbf{Data.} The dataset you are visualizing. Rectangular, of course.
+Rows are observations, columns are variables.
+
+\textbf{Aesthetics.} The mapping from columns of the dataset to visual
+properties of the chart. Position on the x-axis. Position on the y-axis.
+Color. Size. Shape. Each visual property is called an \emph{aesthetic},
+and the chart-maker decides which dataset variable, if any, gets mapped
+to each aesthetic.
+
+\textbf{Geometry.} The kind of mark used to render each row. A point. A
+bar. A line. A polygon.
+
+That is the entire vocabulary. A scatter plot is \emph{data + position-x
++ position-y + point}. A bar chart is \emph{data + position-x + length-y
++ bar}. A line chart is \emph{data + position-x + position-y + line}. A
+faceted small-multiples plot is the same with one extra aesthetic,
+usually called \emph{facet}, that splits the data into panels.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_grammar.pdf}}
+
+}
+
+\caption{\label{fig-grammar}Anatomy of a single chart, exploded into the
+three layers of the grammar. The data is a small slice of trade flows.
+One row maps to one geometric mark (a point). The aesthetics map columns
+of the data to visual properties of the mark: x-position, y-position,
+color. Change the geometry and you get a different chart from the same
+data and aesthetics.}
+
+\end{figure*}%
+
+Once the grammar is in your head, ``what kind of chart should I make''
+stops being a question about chart types and becomes a question about
+which aesthetic each of your variables should get mapped to. That is the
+right question. The answer depends on what you want the reader to see,
+and on what the human visual system is good at.
+
+\section{The perceptual hierarchy}\label{the-perceptual-hierarchy}
+
+Not all aesthetics are created equal. The human visual system reads some
+encodings much more accurately than others, and this fact has been
+measured carefully.
+
+The hierarchy, from most accurate to least, was established by Cleveland
+and McGill in 1984 and confirmed in many studies since:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Position along a common axis
+\item
+  Position along non-aligned axes
+\item
+  Length
+\item
+  Angle and slope
+\item
+  Area
+\item
+  Volume
+\item
+  Color hue and density
+\end{enumerate}
+
+This means that the same number, encoded as a position on a scatter
+plot's y-axis, is read more accurately than the same number encoded as
+the height of a bar (which is length), much more accurately than the
+same number encoded as the area of a circle, and far more accurately
+than the same number encoded as the lightness of a color.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_perceptual_hierarchy.pdf}}
+
+}
+
+\caption{\label{fig-perceptual-hierarchy}The same five values rendered
+five ways: as positions on a common axis, as bar lengths, as pie-slice
+angles, as circle areas, and as color values. Cleveland and McGill's
+experiments asked subjects to compare encoded values; accuracy fell off
+in roughly that order. Position is read accurately. Color is read
+poorly.}
+
+\end{figure*}%
+
+The implication is brutal and important. When you have a choice, encode
+the variable you most want the reader to read accurately as a position.
+When you do not have a choice (because position is already taken by
+other variables), use length next. Use area only when ranking the values
+matters but precise comparison does not. Use color hue last, and only
+when the variable is categorical or the question is about rough
+categories.
+
+This is why bar charts are usually fine but pie charts are usually not
+(the reader compares angles, item 4 on the list, when length on a bar
+chart, item 3, would be more accurate). It is why bubble charts are
+misleading (area, item 5). It is why heatmaps work for ``spot the hot
+region'' but fail for ``compare exact values'' (color, the bottom of the
+list).
+
+\section{Small multiples}\label{small-multiples}
+
+When you have one extra variable beyond what x and y are encoding, you
+face a choice. Map the extra variable to a within-panel aesthetic
+(color, shape, size), or use it to split the chart into panels.
+
+Splitting into panels is called \emph{faceting}, or \emph{small
+multiples}, and it has a strong claim to being the most underused
+visualization technique in working analysis. The design move: instead of
+overlaying everything on one chart, repeat the chart structure across
+panels, with each panel showing a slice of the data.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_faceting.pdf}}
+
+}
+
+\caption{\label{fig-faceting}A scatter of bilateral exports against
+importer GDP, faceted by exporter country. Each panel uses the same axes
+and the same encoding; only the panel-defining variable changes. The
+pattern in any one panel is easy to read, and so is the contrast across
+panels. The same data overlaid in one panel with color-by-country would
+be a tangled mess.}
+
+\end{figure*}%
+
+Small multiples work because they use position (the panel grid is a
+position encoding) for the splitting variable, and they keep the
+within-panel encoding clean. They also support the eye in moving across
+panels: if all panels share axes, the visual comparison is doing the
+same kind of work as a scatter plot of summary statistics, except every
+individual data point is visible.
+
+When in doubt, facet.
+
+\section{The POI palette as semantic
+vocabulary}\label{the-poi-palette-as-semantic-vocabulary}
+
+This book uses a fixed set of seven colors, and each one carries
+meaning. The meanings are taught here and respected for the rest of the
+book.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Color
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Hex
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Meaning
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{INK} & \texttt{\#1a4f7a} & primary, default, the main story \\
+\textbf{RUST} & \texttt{\#b85c38} & treatment, contrast, the alternative
+perspective \\
+\textbf{SAGE} & \texttt{\#5a7247} & control, comparison, the baseline \\
+\textbf{GOLD} & \texttt{\#b8941e} & highlighted, derived, the
+synthesized quantity \\
+\textbf{VIOLET} & \texttt{\#6a5acd} & uncertain, predicted, the model's
+guess \\
+\textbf{DIM} & \texttt{\#8a8a8a} & background, de-emphasized, support \\
+\textbf{TEAL} & \texttt{\#3a8a99} & alternative or secondary contrast \\
+\end{longtable}
+}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_palette.pdf}}
+
+}
+
+\caption{\label{fig-palette}The book's palette as swatches with semantic
+labels. By chapter five you will recognize the colors without thinking.
+A new figure with INK and RUST tells you, before you read the caption,
+that there is a primary story and a contrast. A figure where INK fades
+to DIM tells you which thing is being de-emphasized.}
+
+\end{figure}%
+
+This is unusual in textbooks. Most books pick colors per chapter, often
+from a default palette that has no meaning attached. The result is that
+the reader processes color afresh on every figure, which slows reading
+and dilutes argument. The palette here is doing real work, and so are
+you when you respect its conventions while making your own figures.
+
+\section{Same data, four ways}\label{same-data-four-ways}
+
+Here is one small dataset rendered as four different geometries. The
+data is identical. The aesthetic mappings (which column maps to x and
+which to y) are identical. Only the geometry changes.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_same_data_four_ways.pdf}}
+
+}
+
+\caption{\label{fig-same-data}One small dataset rendered four ways:
+scatter, bar, dot plot, slope graph. Each one is correct. Each one
+privileges a different question. The scatter is good for ``how do x and
+y relate.'' The bar chart is good for ``rank these from largest to
+smallest.'' The dot plot is the same comparison without the visual
+weight of bars. The slope graph is good for ``how did things change
+between two points in time.''}
+
+\end{figure*}%
+
+Each one is correct. Each one is also, in a sense, wrong, because each
+one privileges a particular kind of question. The lesson is not that one
+of these is the best. The lesson is that the choice of geometry is a
+substantive choice about which question the chart is designed to answer.
+
+When you make a chart, ask first: what does the reader need to see? That
+answer chooses the geometry. Everything else follows.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Key insight}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+A chart is data plus aesthetic mappings plus geometry, in that order.
+Changing the geometry without changing the data answers a different
+question. Changing the aesthetic mappings without changing the geometry
+is what most ``chart improvement'' actually consists of. The perceptual
+hierarchy (position beats length beats angle beats area beats color) is
+the constraint that decides which mappings serve the reader and which do
+not.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Try this}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Pick any chart from a recent news article. Identify the three layers:
+what is the dataset, which columns are mapped to which aesthetics, and
+what is the geometry?
+
+Then ask: would another geometry, with the same data and aesthetics,
+answer the question better? Would a different aesthetic mapping (color
+instead of x-position, say) work better, given what the reader is
+supposed to see?
+
+The exercise gets faster with practice. By the tenth chart you will be
+doing it automatically.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Inside the math: a more formal grammar}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Wilkinson's \emph{Grammar of Graphics} (1999) decomposed a chart into
+seven layers, of which the three above are the most consequential. The
+full list adds \emph{scales} (how data values are mapped to visual
+values), \emph{coordinates} (Cartesian, polar, geographic projections),
+\emph{facets} (the small-multiples splitting variable), and
+\emph{themes} (typography, gridlines, palette). Wickham's ggplot2
+implementation in R follows the same structure.
+
+The grammar is more general than this chapter's three-layer
+simplification suggests. A polar coordinate system applied to a bar
+chart produces a pie chart (with all the perceptual liabilities
+described above). A logarithmic scale applied to a continuous axis
+produces a log-log plot. A geographic projection applied to a position
+aesthetic produces a map.
+
+Each move is a transformation in the grammar, and the same chart is
+described compactly by the sequence of transformations rather than by a
+chart-type name. This is the conceptual move that makes ggplot2 readable
+to people who have never seen it: the syntax mirrors the grammar.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Frontier note}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+The grammar of graphics is now several decades old and the field has
+moved on. Three directions worth knowing.
+
+\emph{Interactive grammars.} Vega and Vega-Lite extend the static
+grammar to interaction (brushing, linked views, animation). The
+visualizations on this book's website use Observable Plot, which is in
+the same family. The interactive grammar is largely the static grammar
+plus a vocabulary for events and selections.
+
+\emph{Algebraic visualization grammars.} Recent work by Wills, Pu, and
+others has formalized the grammar as an algebra, where chart
+compositions can be reasoned about systematically. This is the basis for
+tools that auto-recommend visualizations given the data.
+
+\emph{Perceptual grammars.} Modern work continues to refine Cleveland
+and McGill's hierarchy with new experimental data, especially for
+unconventional encodings (animated transitions, 3D, AR/VR). Most of the
+new findings reinforce the original hierarchy with caveats. Position
+remains king.
+
+The grammar is not finished, but the foundation is stable enough that
+this book will rest on it without apology.
+
+\end{tcolorbox}
+
+\section{Practice problems}\label{practice-problems-3}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Take any chart from a recent news article. Identify the data, the
+  aesthetic mappings, and the geometry.
+\item
+  You have country, year, GDP, and continent. Sketch a chart that uses
+  all four variables. Justify each encoding choice using the perceptual
+  hierarchy.
+\item
+  Why is a pie chart usually a worse choice than a bar chart for the
+  same comparison, even when both encode the same data?
+\item
+  Faceting moves an aesthetic from within-panel to position-of-panel.
+  Explain why that is often an improvement, in terms of the perceptual
+  hierarchy.
+\item
+  Take the trade slice. Make four versions of the same scatter
+  (\texttt{exports} vs \texttt{distance}), encoding \texttt{exporter}
+  four different ways: as color, as shape, as size, as facet. Which
+  encoding lets you read the data fastest?
+\end{enumerate}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-caution-color!10!white, colframe=quarto-callout-caution-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-caution-color}{\faFire}\hspace{0.5em}{Reflect before moving on}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{itemize}
+\tightlist
+\item
+  What is one chart you have made or seen recently that violates the
+  perceptual hierarchy? Could it be redrawn?
+\item
+  Color is at the bottom of the hierarchy but is used everywhere. Why?
+  When is color actually justified?
+\item
+  Pick a question you have had to answer with data and name the right
+  geometry for it.
+\end{itemize}
+
+\end{tcolorbox}
+
+\chapter{Center, spread, shape}\label{center-spread-shape}
+
+\section{Three numbers that summarize a
+column}\label{three-numbers-that-summarize-a-column}
+
+You have a column of numbers. A million rows, maybe. You want to
+describe it in a way that fits in a sentence. What three numbers should
+you reach for?
+
+The answer in most introductory courses is: the mean, the standard
+deviation, and not much else. That answer is not wrong. It is also not
+enough. A column of numbers is described well by three things: where it
+is centered, how spread out it is, and what shape it has. Each of these
+can be measured several ways, and the choice of measurement is itself a
+substantive decision.
+
+The sections below lay out the choices. By the end of the chapter you
+will be reaching for the right one without thinking, and the words
+``mean'' and ``standard deviation'' will sound, properly, like just one
+option among several.
+
+\section{Center: mean, median, mode}\label{center-mean-median-mode}
+
+The \emph{mean} is the arithmetic average. Sum the values, divide by the
+count. It has a clean physical interpretation: if you put each data
+value as a unit weight on a number line, the mean is the point where the
+line balances.
+
+The \emph{median} is the middle value when the data are sorted. Half the
+values fall below it, half above. It has a different physical
+interpretation: it is the point that minimizes the sum of absolute
+distances to the data.
+
+The \emph{mode} is the most common value, or for continuous data, the
+value where the distribution peaks.
+
+For perfectly symmetric distributions, all three are equal. For skewed
+distributions, they pull apart. The mean chases the long tail. The
+median ignores it. The mode plants itself at the peak.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_center_compared.pdf}}
+
+}
+
+\caption{\label{fig-center}A right-skewed distribution
+(log-normal-shaped) with the three centers marked. The mode sits at the
+peak, the median sits to its right (because more than half the area is
+to the right of the mode), and the mean sits even further right (because
+the long tail pulls the balance point that way). For symmetric
+distributions, all three coincide.}
+
+\end{figure}%
+
+Income is the canonical example. A small number of very high earners
+pull the mean far above the median. The median household income in a
+country can be \$50,000 while the mean is \$80,000, simply because a
+tiny fraction of the population earns enough to drag the average up.
+When a journalist wants to make inequality look mild, they report the
+mean. When they want to make it visible, they report the median. Both
+numbers are correct. The choice of which to report is a choice about
+what story to tell.
+
+The general rule. For symmetric data, mean and median agree, and the
+mean is more efficient (uses more of the data). For skewed data, the
+median is the more honest summary of ``what does a typical observation
+look like.'' The mean is still useful, but it tells you about the
+\emph{aggregate} (the total divided by the count), not about the
+\emph{typical}.
+
+\section{Spread: range, variance, sd,
+IQR}\label{spread-range-variance-sd-iqr}
+
+A column with mean 50 could have all its values within a millimeter of
+50, or it could have half its values at 0 and half at 100. The mean is
+the same. The spread is wildly different.
+
+Several ways to measure spread.
+
+The \emph{range} is the largest value minus the smallest. Easy to
+compute. Almost useless: a single outlier can blow the range up. Don't
+use it for anything serious.
+
+The \emph{variance} is the average of squared deviations from the mean,
+
+\[
+s^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \bar{x})^2.
+\]
+
+The squaring matters. It prevents positive and negative deviations from
+cancelling, and it weights large deviations more heavily than small
+ones. Variance has the wrong units for direct interpretation (squared
+whatever-the-data-was-in), so we usually report its square root, the
+\emph{standard deviation} \(s\). Compare \(s\) to the mean to get a
+sense of relative spread.
+
+The \emph{interquartile range}, or IQR, is the spread between the 25th
+percentile and the 75th percentile. Middle half of the data, as a single
+number. By ignoring the top and bottom 25\%, the IQR becomes robust to
+outliers in a way the standard deviation is not.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_spread_compared.pdf}}
+
+}
+
+\caption{\label{fig-spread}Three distributions with the same mean but
+very different spreads. The left has standard deviation 0.5; the middle
+has 1.0; the right has 2.5. The IQR ratios track the standard deviation
+ratios because the data is normal-shaped. For non-normal data, the two
+measures can diverge sharply.}
+
+\end{figure}%
+
+When the data is approximately normal, the standard deviation is the
+right tool. The 68-95-99.7 rule from chapter 3 tells you exactly how to
+interpret it. When the data is skewed or has outliers, the IQR is
+usually more honest, because the standard deviation can be inflated by a
+few extreme values that are not representative of the bulk.
+
+\section{Shape: skewness and kurtosis without the
+formulas}\label{shape-skewness-and-kurtosis-without-the-formulas}
+
+Beyond center and spread, distributions have shape.
+
+\emph{Skewness} measures asymmetry. A right-skewed distribution has a
+long tail on the right (income, file sizes, earthquake magnitudes). A
+left-skewed distribution has a long tail on the left (less common; one
+example is age at death in low-mortality populations). A symmetric
+distribution has zero skewness.
+
+\emph{Kurtosis} measures tailedness, roughly speaking. A high-kurtosis
+distribution has heavier tails than a normal: more probability of
+extreme values. A low-kurtosis distribution has lighter tails. Financial
+returns famously have high kurtosis: extreme moves are more common than
+a normal distribution would predict, and the difference matters for risk
+management.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_shapes.pdf}}
+
+}
+
+\caption{\label{fig-shapes}Four shapes that recur: a roughly symmetric
+(normal) distribution, a right-skewed (log-normal) distribution, a
+heavy-tailed (Student's t with low df) distribution, and a bimodal
+distribution. Knowing the formulas for skewness and kurtosis matters
+less than recognizing the shapes.}
+
+\end{figure*}%
+
+The numerical formulas for skewness and kurtosis exist and you can look
+them up. Knowing the formulas matters less than recognizing the shapes.
+When you look at a histogram, your first move is: symmetric or skewed?
+Light-tailed or heavy-tailed? One peak or several? Those four binary
+questions catch most of the shape information you need for early-stage
+analysis.
+
+Bimodal distributions deserve special mention. When a distribution has
+two peaks, the mean and median are both potentially meaningless: they
+fall in the valley between the peaks, where almost no actual
+observations live. Bimodality is usually a sign that two different
+processes have been pooled together: men and women, treated and control,
+before and after. The right move when you see bimodality is to find the
+splitting variable and disaggregate.
+
+\section{Robustness: what an outlier
+does}\label{robustness-what-an-outlier-does}
+
+An \emph{outlier} is an observation that lies far from the bulk. The
+word does no semantic work; it is just a description of distance from
+the center.
+
+The mean and standard deviation are \emph{not robust} to outliers. A
+single extreme value can change them substantially. The median and IQR
+\emph{are robust}. A single extreme value barely moves them at all.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_robustness.pdf}}
+
+}
+
+\caption{\label{fig-robustness}Fifty points sampled near zero, with one
+extreme outlier added at 100. The mean is dragged toward the outlier,
+while the median barely moves. The standard deviation explodes; the IQR
+holds steady. Robustness is the difference between summary statistics
+that lie about an outlier and summary statistics that ignore it.}
+
+\end{figure}%
+
+The robustness distinction is more important than it sounds. Real
+datasets have outliers. Sometimes those outliers are real (a billionaire
+in an income survey). Sometimes they are errors (a typo, a unit
+confusion, a sensor malfunction). In both cases, summary statistics that
+are pulled around by the outliers will mislead. Robust statistics give
+you a stable summary of the bulk, which is usually what you want before
+you have figured out whether the outliers should be kept.
+
+Use the median and IQR when you do not yet know what your outliers are.
+Use the mean and standard deviation when the data is approximately
+normal and you are confident the outliers are real and meaningful.
+
+\section{The five-number summary and the
+boxplot}\label{the-five-number-summary-and-the-boxplot}
+
+A compact summary captures center, spread, and outliers in five numbers:
+the minimum, the 25th percentile, the median, the 75th percentile, and
+the maximum. Tukey called this the \emph{five-number summary}, and it is
+one of the most useful descriptive tools in the discipline.
+
+The \emph{boxplot} is the visualization of the five-number summary. A
+box from the 25th to the 75th percentile, a line at the median, whiskers
+extending to the most extreme non-outlier values, and individual points
+for outliers beyond the whiskers (typically beyond 1.5 IQRs).
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_boxplot.pdf}}
+
+}
+
+\caption{\label{fig-boxplot}Anatomy of a boxplot, alongside boxplots for
+the four shapes from earlier in the chapter. Boxplots are excellent for
+comparing distributions across groups: row of boxplots, one per group,
+is often the right first chart. They hide the within-box shape, which is
+why a bimodal distribution and a uniform distribution can have similar
+boxplots.}
+
+\end{figure*}%
+
+Boxplots are the right summary visualization for many comparisons across
+groups: trade flows by year, test scores by class, response times by
+condition. They show center and spread and outliers in a small
+footprint, which makes them ideal for small multiples. A row of
+boxplots, one per group, is often the right first chart for any
+cross-group comparison.
+
+Their weakness: they hide the \emph{shape} of the distribution within
+the box. A bimodal distribution and a uniform distribution can have the
+same boxplot. When shape matters, a \emph{violin plot} (which adds a
+kernel density estimate to each side of the box) is the better choice.
+We will meet violin plots formally in chapter seven.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Key insight}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+A column of numbers wants three things named: where it is centered, how
+spread out it is, and what shape it has. Each can be measured several
+ways, and the right choice depends on whether the data is symmetric,
+whether outliers are present, and what story the summary needs to tell.
+Robust statistics (median, IQR) are the default when you do not yet know
+your data; classical statistics (mean, sd) come into their own when the
+data is approximately normal.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Try this}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Open the bilateral trade panel. For the \texttt{exports\_usd\_millions}
+column, compute: mean, median, standard deviation, IQR, and the
+five-number summary. Plot a histogram and a boxplot.
+
+Which summary best describes the column? If you had to give one number
+to a journalist who wanted to know ``how much typical bilateral trade is
+between these countries,'' which would you give?
+
+Then take the log of \texttt{exports\_usd\_millions} and recompute.
+Notice which summary changes most dramatically and which barely changes.
+The answer tells you something about the underlying distribution and
+about robustness, both at once.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Inside the math: where the n-1 comes from}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+The variance formula has \(n-1\) in the denominator, not \(n\). This is
+\emph{Bessel's correction}, and the reason for it is one of the cleanest
+derivations in statistics.
+
+When you estimate the population variance from a sample, you use the
+sample mean \(\bar{x}\) in place of the unknown population mean \(\mu\).
+The sample mean minimizes \(\sum(x_i - c)^2\) over choices of \(c\),
+which means \(\sum(x_i - \bar{x})^2\) is \emph{systematically smaller}
+than \(\sum(x_i - \mu)^2\) would have been. Dividing by \(n\) would
+therefore underestimate the population variance.
+
+The correction is exactly \(n/(n-1)\): dividing by \(n-1\) instead of
+\(n\) produces an unbiased estimator of the population variance. The
+intuition is that we have used up ``one degree of freedom'' in
+estimating the mean from the same data, so the effective sample size for
+estimating spread is \(n-1\) rather than \(n\).
+
+This shows up everywhere in inferential statistics. Whenever you see
+\(n-1\) in a denominator, look for an estimated mean somewhere in the
+numerator. Degrees of freedom are the bookkeeping system for this
+correction, and we will encounter them again in the t distribution
+(chapter 13), in regression (chapter 16), and in everything that
+follows.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Frontier note}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Robust statistics is a substantial sub-field of modern statistics.
+Beyond the median and IQR, there are robust analogues of almost every
+classical procedure: M-estimators, trimmed means, winsorized means, the
+median absolute deviation (MAD), Huber regression, and many more. The
+frontier work is in \emph{high-dimensional} robustness: when the data
+has thousands of variables, classical procedures break down in ways that
+simple median-and-IQR replacements do not fix.
+
+In modern empirical economics, the practice of reporting both classical
+and robust summaries (or robust standard errors, which we will meet in
+chapter 34) is now standard for any serious paper. The reason is partly
+the credibility revolution and partly the recognition that real economic
+data has fat tails, outliers, and clusters, and pretending otherwise
+produces fragile inference.
+
+\end{tcolorbox}
+
+\section{Practice problems}\label{practice-problems-4}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Compute by hand: mean, median, mode, range, variance, sd, IQR, and the
+  five-number summary for the values
+  \(\{1, 3, 3, 5, 7, 8, 9, 12, 100\}\).
+\item
+  Which summary statistic from the previous problem changes the most if
+  you remove the 100? Which barely changes? What does that tell you
+  about robustness?
+\item
+  A distribution has skewness \(+2\). What does that tell you about the
+  shape? What if the skewness is \(-2\)?
+\item
+  A boxplot shows three distributions side by side. Without seeing
+  histograms, which features can you compare confidently? Which would
+  you want histograms for?
+\item
+  Open the trade slice. Compute the mean and the median of
+  \texttt{exports\_usd\_millions}. Which is larger? Why? Which would you
+  report to a journalist?
+\end{enumerate}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-caution-color!10!white, colframe=quarto-callout-caution-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-caution-color}{\faFire}\hspace{0.5em}{Reflect before moving on}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{itemize}
+\tightlist
+\item
+  Mean and median tell you different things. Pick a real-world quantity
+  where you would report the median over the mean. Explain.
+\item
+  The IQR ignores the top and bottom 25\%. What information are you
+  giving up by reporting it instead of the standard deviation?
+\item
+  The bimodality warning sign comes up again and again. Why is
+  bimodality usually a clue to disaggregate?
+\end{itemize}
+
+\end{tcolorbox}
+
+\chapter{Lying with charts}\label{lying-with-charts}
+
+\section{A defensive reading skill}\label{a-defensive-reading-skill}
+
+This is a different kind of chapter. The previous chapters built up the
+visual vocabulary the book uses. This one teaches you to read other
+people's charts critically, because most charts you encounter outside of
+textbooks are made by people with an argument they want to win, and a
+well-made chart is a powerful tool for winning arguments dishonestly.
+
+The techniques below are not separate problems. They are the same
+problem (a mismatch between visual encoding and the truth of the
+underlying data) applied to different aesthetics. Truncated y-axes lie
+about position. Cherry-picked windows lie about what is in scope. Area
+encodings lie when length is what is being compared. Dual axes lie about
+what corresponds to what. Log scales lie about effect sizes. Each one
+will fool you the first time you see it. Once you can name the trick,
+you stop being fooled.
+
+The chapter ends with a short list of honest defaults that prevent most
+of these errors when you make charts of your own. Read them last.
+
+\section{The truncated y-axis}\label{the-truncated-y-axis}
+
+The most common visual lie. A bar chart shows that quantity X went from
+100 to 102, but the y-axis starts at 99 and ends at 103. Visually, the
+second bar looks much taller than the first: maybe four times taller.
+Numerically, X grew by 2\%.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_truncated_axis.pdf}}
+
+}
+
+\caption{\label{fig-truncated}Same data, two y-axes. On the left, the
+y-axis starts at zero, and a 2\% growth looks like a 2\% growth. On the
+right, the y-axis starts at 99, and the same 2\% growth looks like the
+second value is several times larger than the first. The data is
+identical. The visual story is opposite.}
+
+\end{figure*}%
+
+The defensive move: always check where the y-axis starts. If it does not
+start at zero on a bar chart of magnitudes, the chart is amplifying or
+muting differences relative to a chart that does start at zero.
+Sometimes that amplification is editorially fine (small changes in CPI
+matter; you would not want to start at zero for a chart of historical
+CPI, because zero CPI is a meaningless reference). More often it is
+dishonest.
+
+A useful rule. Bar charts should almost always start at zero, because
+the visual story of a bar chart is ``compare the heights.'' Line charts
+are different. Line charts about percentage changes or rates can
+legitimately start anywhere, because the visual story is about
+\emph{changes} over time, not absolute heights. Be especially suspicious
+of bars that do not start at zero.
+
+\section{Cherry-picked time windows}\label{cherry-picked-time-windows}
+
+The same time series can tell completely different stories depending on
+which part of it you show. Pick a starting point near a peak and you get
+a downward trend. Pick a starting point near a trough and you get an
+upward one. Both are honest in the sense that the data shown is real.
+Both are dishonest in the sense that the choice of window is the
+editorial argument, and a chart that does not show the longer context is
+hiding the argument behind a curated frame.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_cherry_pick.pdf}}
+
+}
+
+\caption{\label{fig-cherry-pick}A 30-year time series with a clear
+upward trend. On the left, the full series. On the right, a five-year
+window selected from the same series, chosen to suggest decline. Both
+panels show real data. Only one tells the truth about what is going on.}
+
+\end{figure*}%
+
+The defensive move: ask why this window. If the chart shows five years
+and you suspect more data exists, look for it. If the chart starts at a
+suspiciously specific date, check what was happening just before.
+Markets, climate series, public-health metrics, all of these have
+natural reference points (a peak, a recession, a prior policy change)
+that are deliberately included or excluded to shape the story.
+
+\section{Area when length was needed}\label{area-when-length-was-needed}
+
+A bar twice as tall has twice the height. A circle twice the diameter
+has four times the area. A sphere twice the diameter has eight times the
+volume. When a chart encodes a quantity as the area of a circle (a
+``bubble chart'' or ``infographic'') or as the volume of a 3D shape, the
+visual sense of magnitude grows faster than the underlying number, and
+the reader systematically overestimates differences.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_area_distortion.pdf}}
+
+}
+
+\caption{\label{fig-area-distortion}Two bars representing 100 and 200.
+On the left, only the height changes (the honest encoding). On the
+right, the second bar is also drawn twice as wide, so its area is four
+times larger than the first bar's, even though the underlying number is
+only twice as large. The reader's eye overestimates by a factor of two.}
+
+\end{figure}%
+
+This goes wrong in two ways in the wild. One is genuine area encoding
+(``this circle represents 100 million people; this circle, twice as
+large in area, represents 200 million''). The reader's eye does not
+weigh area linearly, so the ``twice as large'' judgment is unreliable.
+The other is \emph{unintended} area encoding: a bar chart where the bars
+get wider as well as taller, or a 3D bar chart where perspective makes
+the back bars look different from the front ones at the same height.
+Both are common in business presentations.
+
+The defensive move: when you see area or volume as an encoding, do the
+calculation. The 2x circle has 4x the area; ask whether the underlying
+number is 2x or 4x.
+
+\section{Dual-axis chicanery}\label{dual-axis-chicanery}
+
+Two time series on the same chart, with two y-axes, one on each side.
+Each axis is scaled differently. The two series appear to track each
+other beautifully, suggesting a relationship.
+
+The trick is in the axis scaling. The author has chosen the two axis
+ranges to make the curves overlap. Different ranges would produce no
+apparent relationship. The eye, however, reads ``they are tracking each
+other'' with no awareness that the relationship is an artifact of axis
+choice.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_dual_axis.pdf}}
+
+}
+
+\caption{\label{fig-dual-axis}A dual-axis chart of two unrelated time
+series. The left axis runs from 0 to 100; the right axis runs from 5 to
+7. The two curves appear to track each other across the visible range,
+suggesting a strong correlation. They have none. Slide the right axis up
+or down and the apparent relationship disappears.}
+
+\end{figure}%
+
+Dual-axis charts are not always dishonest. Sometimes the author
+genuinely wants to show two related quantities measured in different
+units (temperature and humidity, say). But the burden of proof should
+fall on the author. If the two series are conceptually unrelated, dual
+axes will manufacture an apparent correlation that does not exist.
+
+The defensive move: separate the two series into two stacked panels with
+their own axes. The relationship, if real, will still be visible. The
+relationship, if manufactured by axis manipulation, will dissolve.
+
+\section{Log scales that hide effect
+sizes}\label{log-scales-that-hide-effect-sizes}
+
+The previous tricks amplify small effects. Log scales mute large ones. A
+series that grows from 1 to 1,000 takes a giant vertical step on a
+linear scale and a small one on a log scale. On the log scale, the
+growth from 1 to 10 looks the same as the growth from 100 to 1,000, even
+though both represent tenfold increases. The constant log-step is good
+for showing rates of growth, but it can be used to make explosive growth
+look gentle.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_log_hides.pdf}}
+
+}
+
+\caption{\label{fig-log-hides}An exponentially growing series shown on a
+linear axis (left) and a logarithmic axis (right). The linear chart
+screams. The log chart shrugs. Both show the same data. The choice of
+scale is the rhetorical move.}
+
+\end{figure*}%
+
+A common honest use: financial returns over decades, where the
+eye-relevant quantity is the percentage change, not the dollar level. A
+common dishonest use: showing a runaway quantity on a log scale and
+pointing to its ``modest growth,'' when the underlying number has gone
+up by several orders of magnitude.
+
+The defensive move: when you see a log axis, mentally re-render the data
+on a linear axis. If the linear version would show an alarming surge,
+the log scale was muting an honest signal.
+
+\section{The honest defaults}\label{the-honest-defaults}
+
+Five rules that prevent most of the lies above when you are the one
+making the chart.
+
+Bars start at zero. Line charts can start anywhere if the reader is
+told. Time-series windows include the most relevant context, not just
+the part that supports the argument. Quantities are encoded as length or
+position, not as area or volume, unless the question is genuinely about
+area or volume. Two unrelated series live in two stacked panels, not on
+dual axes. Log scales are used when growth rate is the question, and
+never when the level is.
+
+That is the entire defensive checklist. Apply it to every chart in the
+news this week. You will be surprised how many fail.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Key insight}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Every visual lie in this chapter is the same kind of lie: a mismatch
+between the visual encoding and the underlying number. Position lies
+(truncated axes), scope lies (cherry-picked windows), area lies (bubble
+charts), correspondence lies (dual axes), and rate-vs-level lies (log
+scales). Five tricks. Once named, they stop fooling you.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Try this}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Find a chart in a recent news article that you have an opinion about
+(politically, economically, scientifically, whatever). Apply the
+five-trick checklist. Does the chart truncate the y-axis? Cherry-pick a
+window? Use area when length would have done? Stack two unrelated series
+on dual axes? Use a log scale to hide a level?
+
+Now do the harder version: find a chart in a recent paper from a journal
+you respect. Apply the same checklist. Find at least one thing the chart
+could be doing better. Many published charts do not pass the checklist;
+the journal-name does not absolve them.
+
+The exercise is not about catching dishonesty (most authors are not
+malicious). It is about training your eye to notice when a visual is
+doing rhetorical work that the underlying data does not support.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Inside the math: why the eye fails on area}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Stevens' law, from psychophysics, says that the perceived intensity of a
+stimulus follows a power law: \(S = k \cdot I^a\), where \(I\) is the
+physical intensity and \(a\) is an exponent that depends on the stimulus
+type. For length, \(a\) is approximately 1.0 (the eye reads length
+almost linearly). For area, \(a\) is approximately 0.7 (the eye
+underestimates large areas relative to small ones). For volume, \(a\) is
+around 0.6.
+
+The implication: when you encode a quantity as area, the reader
+systematically misjudges large values. A circle that is 4x larger in
+area is judged to be only \(4^{0.7} \approx 2.6\) times larger by eye.
+The number is right; the perception is wrong.
+
+This is the deep reason area-based charts fail at precise comparison,
+and it is why position and length (where the eye reads linearly) sit at
+the top of the perceptual hierarchy. The hierarchy is not a stylistic
+preference; it is a description of human perception, derived from
+controlled experiments going back to Cleveland and McGill in the 1980s
+and Stevens in the 1950s.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Frontier note}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+A growing literature studies \emph{visualization deception} as a
+research topic. Pandey and others (2015) showed experimentally that
+truncated axes, area encodings, and cherry-picked windows shift readers'
+beliefs about underlying data, even when the readers know the chart
+might be biased. The effect persists for trained scientists.
+
+The policy response, in some venues, is the requirement of \emph{open
+data and open code} alongside any chart in a published paper. If readers
+can re-render the data themselves with honest defaults, the editorial
+freedom to mislead is sharply reduced. Journals like \emph{AEA: Applied
+Economics} and the broader open-science movement have moved in this
+direction. The book's worldview, if you have not noticed, is sympathetic
+to it.
+
+For a longer treatment of this material, see Tufte's \emph{The Visual
+Display of Quantitative Information} (1983), which remains the standard
+reference. Tufte's ``lie factor'' formalizes the area distortion in this
+chapter into a single number you can compute for any chart.
+
+\end{tcolorbox}
+
+\section{Practice problems}\label{practice-problems-5}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Find one chart in a news article from this week. Apply the five-trick
+  checklist. What does the chart do well? What does it hide?
+\item
+  Tufte defined the \emph{lie factor} as the ratio of the visual size of
+  a change to the actual size. Compute it for a chart you find in the
+  wild.
+\item
+  When is it legitimate to truncate a y-axis? Give two examples and
+  explain what makes them legitimate.
+\item
+  Two unrelated time series look correlated on a dual-axis chart. Sketch
+  the same data on stacked panels with separate axes. What changes?
+\item
+  A log scale is honest when growth rate is the question and dishonest
+  when level is. Find one example of each in current news and defend
+  your call.
+\end{enumerate}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-caution-color!10!white, colframe=quarto-callout-caution-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-caution-color}{\faFire}\hspace{0.5em}{Reflect before moving on}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\begin{itemize}
+\tightlist
+\item
+  Which of the five tricks have you accidentally used in a chart of your
+  own?
+\item
+  The chapter argues that most visual lies are mismatches between
+  encoding and data. Can you think of a sixth kind of mismatch that was
+  not named?
+\item
+  What is the strongest argument \emph{for} a misleading chart? When (if
+  ever) is editorial framing legitimate?
+\end{itemize}
+
+\end{tcolorbox}
+
+\chapter{Underused visualizations}\label{underused-visualizations}
+
+\section{Beyond the standard
+repertoire}\label{beyond-the-standard-repertoire}
+
+The standard chart repertoire in introductory courses is small: bars,
+lines, scatters, pies, histograms. Boxplots, if the instructor is
+feeling generous. Most students leave their first stats course with that
+as their entire vocabulary, and most working analysts add at most one or
+two more over the course of a career.
+
+This is a poverty. The visualization literature has produced many chart
+types that answer specific questions better than anything in the
+standard repertoire. Knowing them is the difference between an analyst
+who reaches for a bar chart in every situation and one who reaches for
+the right tool. The chart types in this chapter are not exotic. They are
+well-understood, available in every plotting library, and
+disproportionately useful for the kinds of questions empirical research
+actually asks. They are simply not taught.
+
+Six chart types follow. Each gets a section and a question. Read the
+figures first, the prose second.
+
+\section{The slope graph}\label{the-slope-graph}
+
+Tufte's slope graph is the answer to ``how did things change between two
+points in time?'' It is two columns of numbers connected by lines: the
+value of each unit at time A on the left, the value at time B on the
+right, a line connecting them. Lines that go up represent increases.
+Lines that go down represent decreases. The eye reads the slope of each
+line to compare changes across units.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_slope_graph.pdf}}
+
+}
+
+\caption{\label{fig-slope}Bilateral export volumes from each of our six
+exporters to the United States, in 2014 and 2023, connected by lines.
+Lines that rise represent growth; lines that fall represent decline. The
+slope graph encodes both the level at each endpoint and the direction of
+change in a single visual unit, which a bar chart of differences cannot
+do.}
+
+\end{figure}%
+
+Why this works better than alternatives. A bar chart of differences
+answers the same question, but the slope graph also shows the levels at
+the start and end, which provides context. Two bar charts side by side
+answer the same question, but the eye has to do work to track which unit
+went where. The slope graph encodes change as the slope of a line; what
+the eye is asked to read is differences in slope, which is a much easier
+comparison than absolute angle.
+
+When to reach for it. Two-point comparisons across many units. Survey
+results before and after an intervention. Pollutant levels at the
+beginning and end of a regulation period. Country-level outcomes across
+two policy regimes. The slope graph is at its best with somewhere
+between five and thirty units. Fewer is overkill; more becomes
+spaghetti.
+
+\section{The Cleveland dot plot}\label{the-cleveland-dot-plot}
+
+A Cleveland dot plot is a bar chart with the bars replaced by single
+dots. Each dot sits at the value, with a thin guideline back to a
+reference (often zero, sometimes the median). That is the entire chart.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_dot_plot.pdf}}
+
+}
+
+\caption{\label{fig-dot}Total exports from each of our six countries in
+2023, ranked. Each dot is the value; the thin guideline traces back to
+zero. The same data as a bar chart would use far more ink to encode the
+same information, with no gain in accuracy of reading.}
+
+\end{figure}%
+
+Why this is better than alternatives. Bar charts use ink to encode the
+same value twice: once as the position of the bar's top, and once as the
+bar's length. The eye reads position more accurately than length (per
+the perceptual hierarchy in chapter 4), so the body of the bar is
+decoration, not information. Dot plots strip the decoration. The result
+is more readable, especially when the number of categories is large.
+
+The Cleveland dot plot is also better when the data does not start at
+zero, where bar charts become misleading (chapter 6). Dots can sit
+anywhere on the axis without implying a magnitude from the visual length
+of a bar. Stock prices, temperature anomalies, log-transformed values:
+all comfortable in dot plots, awkward in bars.
+
+When to reach for it. Ranked comparison across many categories,
+especially when zero is not a meaningful reference. Country rankings,
+journal impact factors, expression levels across genes, performance
+benchmarks across teams.
+
+\section{The hex bin}\label{the-hex-bin}
+
+A scatter plot stops working when there are too many points. With a
+thousand points, you can see structure. With a million, the points pile
+on top of each other and you see a black blob. The hex bin solves this.
+
+A hex bin chart divides the plotting area into hexagonal cells and
+counts the number of points falling into each cell. Each cell is then
+colored by its count. Dense regions appear dark; sparse regions appear
+pale. The result is a heatmap of point density that reveals structure
+invisible in the underlying scatter.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_hex_bin.pdf}}
+
+}
+
+\caption{\label{fig-hex}A hex-binned scatter of 100,000 points drawn
+from a slightly correlated noisy joint distribution. A regular scatter
+at this point count is a black smudge; the hex bin reveals the
+underlying density gradient and the modes. Hexagons (rather than
+squares) tile the plane more isotropically, so visual artifacts from the
+grid itself are minimized.}
+
+\end{figure}%
+
+Why this works better than alternatives. With many points, a regular
+scatter is unreadable. A 2D histogram with rectangular bins is a step up
+but suffers from the rectangular grid showing through visually. Hexagons
+are nearly circular, which means they bin similarly in all directions,
+and they tile the plane without leaving gaps. The aesthetic result is
+smoother than rectangular bins and more accurate than a smoothed density
+plot for finding precise modes.
+
+When to reach for it. Any scatter plot with more than about 5,000
+points. Astronomy data, genomic data, large survey or transactional
+data, log files. If the underlying scatter would be a black blob, the
+hex bin is your friend.
+
+\section{The ridge plot}\label{the-ridge-plot}
+
+A ridge plot, sometimes called a joy plot, is a stacked sequence of
+small density plots, one per category, arranged vertically with each
+density slightly overlapping the one below. The result looks a bit like
+a topographic map of distributions.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_ridge_plot.pdf}}
+
+}
+
+\caption{\label{fig-ridge}Distributions of bilateral export volumes (log
+scale) across the years 2014 to 2023 in our trade slice. One density per
+year, stacked from oldest at the top to most recent at the bottom. The
+visual story is whether and how the distribution drifts over time, which
+would be impossible to read from a single overlaid histogram and tedious
+to read from a row of small multiples.}
+
+\end{figure}%
+
+Why this works better than alternatives. To compare the distribution of
+a quantity across many categories (years, countries, conditions), the
+alternatives are: many small histograms (small multiples), violin plots
+side by side, or a single histogram colored by category (which becomes
+mush). The ridge plot is the most space-efficient of these for showing
+many distributions at once. The eye reads the shapes top to bottom and
+immediately spots which categories have unusual distributions.
+
+When to reach for it. Comparing the shape of a distribution across five
+to fifty categories. Time-evolution of a distribution. Distribution of
+one variable across many groups. The ridge plot is what you want when
+the comparison is shape-vs-shape, not
+summary-statistic-vs-summary-statistic.
+
+\section{The mosaic plot}\label{the-mosaic-plot}
+
+A mosaic plot is the visualization of a contingency table. The plot is a
+rectangle divided proportionally by one variable along one axis. Each
+resulting strip is then divided by another variable along the other
+axis. The areas of the resulting tiles are proportional to the joint
+counts.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_mosaic.pdf}}
+
+}
+
+\caption{\label{fig-mosaic}A mosaic plot of 2,000 simulated passenger
+records by class (1st, 2nd, 3rd) and survival outcome. Each rectangle's
+area is proportional to the count in that cell. The widths of the
+columns encode the marginal distribution of class. The heights inside
+each column encode the conditional distribution of survival within that
+class. Departures from independence (different conditional heights
+across columns) are visible as misalignments of the horizontal cuts.}
+
+\end{figure}%
+
+Why this works better than alternatives. A grouped bar chart of a
+contingency table answers questions about counts, but it does not show
+the marginal distribution of each variable, and it makes the joint
+distribution hard to read because the bars within a group are at
+different heights. The mosaic plot encodes everything at once: the
+marginal distribution along one axis, the conditional distribution
+within each level along the other, and the joint counts as areas. The
+eye spots which combinations are over- or under-represented relative to
+independence.
+
+When to reach for it. Two or three categorical variables and you want to
+see association. Survival rates by class on a ship. Voting patterns by
+demographic and region. Confusion matrices in classification when you
+want to see joint structure beyond the diagonal.
+
+\section{The alluvial diagram}\label{the-alluvial-diagram}
+
+An alluvial diagram, in its directed-flow form often called a Sankey,
+shows how a population redistributes between categorical states. Stripes
+leave one set of categories on the left and arrive at another set on the
+right, with the width of each stripe proportional to the number of units
+making that transition.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_alluvial.pdf}}
+
+}
+
+\caption{\label{fig-alluvial}Trade-partner rank changes between 2014 and
+2023 for our six countries. Each country occupies a stripe whose
+vertical position encodes its rank as an importer of bilateral exports.
+Stripes flow from left (2014 rank) to right (2023 rank), with width
+proportional to trade volume in 2023. Crossings reveal countries that
+climbed or fell in the rankings.}
+
+\end{figure}%
+
+Why this works better than alternatives. Tracking flow between
+categories is hard with bars or lines. A grouped bar chart of ``before''
+and ``after'' loses the connection between them. A Sankey or alluvial
+diagram makes the connection explicit: the visual width of each stripe
+is the number of units following that path.
+
+When to reach for it. Categorical transitions over time or between
+conditions. Voter movement between elections. Customer-state movement
+(free → paid → churned). Trade partner reassignments. Employment-status
+changes. The alluvial is the right tool whenever the question is ``where
+did they go?''
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Key insight}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+The standard chart repertoire teaches answers to a small set of
+questions. Each chart type in this chapter is the answer to a question
+the standard repertoire handles poorly. Knowing the right tool for the
+question is the difference between an analyst who fights their data and
+one who reads it.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Try this}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+For each scenario below, name the chart type from this chapter that fits
+best and explain why in one sentence:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  You have GDP per capita for 30 countries in 1990 and 2020. You want to
+  show which countries gained ground and which lost it.
+\item
+  You have a million bilateral trade flows and want to see the joint
+  shape of GDP and distance.
+\item
+  You have a survey with five Likert items broken down by twelve
+  demographic groups. You want to show how response distributions differ
+  across groups.
+\item
+  You have students moving between four academic majors over four years
+  of college. You want to show the dominant trajectories.
+\item
+  You have voting patterns by income decile and education level. You
+  want to show which combinations vote which way.
+\end{enumerate}
+
+After answering, draw at least one of these in a tool of your choice.
+The hardest part of using non-standard charts is reaching for them; once
+you do, the implementation is rarely the bottleneck.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Inside the math: why hexagons}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+The hex bin specifically uses hexagons rather than squares or triangles.
+The reason is geometric: among regular polygons that tile the plane, the
+hexagon has the most sides, which makes each cell closer to a circle.
+
+For a square grid, a point near the corner of a cell is much further
+from the cell center than a point near the middle of an edge. This
+produces visible artifacts: the eye sees the grid even when the
+underlying data has no gridded structure. Hexagons reduce the effect
+dramatically. The visual texture of a hex bin chart is closer to the
+underlying density than any rectangular alternative.
+
+This is the same reason bee hives, soap bubbles, and basalt columns are
+hexagonal: it is the most efficient regular tiling. Nature picks
+hexagons when packing matters; we pick them for the same reason in
+visualization.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-caution-color!10!white, colframe=quarto-callout-caution-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-caution-color}{\faFire}\hspace{0.5em}{Reflect before moving on}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Three questions to articulate in your own words before moving on:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Pick one chart type from this chapter you had never made before. What
+  question does it answer that the standard repertoire could not?
+\item
+  Bar charts are the default for almost every quantitative comparison.
+  Name a situation where you have used a bar chart that would have been
+  better as a Cleveland dot plot.
+\item
+  The chapter argued that ``the right tool for the question'' is the
+  design move. Where do you think your own default chart vocabulary is
+  too small?
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Frontier note}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+The visualization literature has produced many more chart types than the
+six in this chapter. Some that are gaining traction in modern empirical
+work:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Parallel coordinates} for high-dimensional data, showing many
+  variables at once with one line per observation
+\item
+  \emph{Heatmap matrices with hierarchical clustering} for genomics and
+  exploratory matrix data
+\item
+  \emph{Network and graph layouts} for relational data (which the trade
+  panel of this book is, when treated as a directed graph)
+\item
+  \emph{Calendar heatmaps} for time-of-day, day-of-week patterns
+\end{itemize}
+
+The next chapter (visualizing uncertainty) covers a separate frontier:
+chart types that show not just the estimate but the uncertainty around
+it. Most of those are also underused outside of statistical specialty
+fields, even though they are exactly what the credibility revolution in
+empirical research is asking for.
+
+\end{tcolorbox}
+
+\section{Practice problems}\label{practice-problems-6}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Take any spreadsheet of two-time-point data you have access to. Render
+  it as a slope graph. Count the number of lines that go up versus down.
+  What story does the slope graph tell that you could not have read from
+  the means alone?
+\item
+  The Cleveland dot plot uses position rather than length to encode
+  magnitude. Design a dot plot for the data in the trade slice (USA's
+  exports to its five partners in 2023). Then redesign it for export
+  \emph{change} between 2014 and 2023. What changes between the two
+  charts?
+\item
+  Pick a dataset with more than 10,000 rows and two continuous variables
+  (any source: a research dataset, a public CSV, a log file). Make a
+  regular scatter plot. Then make a hex-bin version. Compare what each
+  chart reveals.
+\item
+  Find a contingency table in a recent paper or news article. Sketch it
+  as a mosaic plot. What relationship between the variables becomes
+  visible in the mosaic that was hidden in the table of numbers?
+\item
+  Construct an alluvial diagram for a categorical transition you
+  actually care about (your students' major changes, your team's role
+  transitions, partner shifts in a relationship dataset). The exercise
+  is partly about whether the data lets you build it cleanly.
+\end{enumerate}
+
+\chapter{Visualizing uncertainty}\label{visualizing-uncertainty}
+
+\section{What error bars cannot do}\label{what-error-bars-cannot-do}
+
+Most published research that visualizes uncertainty uses error bars. A
+bar chart with a thin vertical line on top of each bar, terminated in
+horizontal caps, encoding either the standard error or a 95\% confidence
+interval. Error bars are everywhere. They are also, in most situations,
+the wrong choice.
+
+Error bars fail at several things at once. They are visually dominated
+by the bar; the eye sees the bar's height and treats the error as
+decoration. They cannot show asymmetric uncertainty. They cannot show
+non-Gaussian uncertainty. They invite the wrong reading: that the
+interval is ``where the true value probably is,'' which is closer to a
+Bayesian credible interval than to what a frequentist confidence
+interval actually means. They fail catastrophically when the bars are
+themselves negative, because the visual implication of an ``error bar on
+a bar chart'' is not designed to handle bidirectional uncertainty around
+a central estimate that swings sign.
+
+This chapter is about better tools. Each one shows uncertainty as a
+first-class part of the visual story rather than an afterthought.
+
+\section{Confidence bands and prediction
+bands}\label{confidence-bands-and-prediction-bands}
+
+When the underlying quantity is a curve (a regression line, a smoothed
+trend, a fitted survival curve), uncertainty is shown as a band around
+the curve. The band has a center line (the point estimate) and a shaded
+region around it (the uncertainty interval at each point along the
+x-axis).
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_conf_band.pdf}}
+
+}
+
+\caption{\label{fig-conf-band}A linear regression of bilateral exports
+on importer GDP, with a 95\% confidence band shaded around the fitted
+line. The band narrows in the dense part of the data and widens at the
+extremes, which is a faithful encoding of how much the regression line
+itself is uncertain at each x-value. The wider band beyond the data
+range is the most honest way to show extrapolation uncertainty.}
+
+\end{figure*}%
+
+Two important distinctions:
+
+A \emph{confidence band} shows the uncertainty around the regression
+line itself: where the true mean function plausibly lies. A
+\emph{prediction band} shows the uncertainty around future observations:
+where new data points are likely to fall. The prediction band is always
+wider, because it includes both the uncertainty in the line and the
+residual scatter around the line. Confusing them is one of the most
+common errors in applied empirical work.
+
+Confidence bands handle asymmetry naturally. If the true function has
+heteroskedastic errors, the band can fan out at the edges. They also
+handle non-linear models easily: a logistic regression's confidence band
+on the probability scale is non-symmetric, and the band reflects this.
+They are the right default for any continuous predictor.
+
+\section{Coefficient plots}\label{coefficient-plots}
+
+A coefficient plot, also called a forest plot in medicine and
+meta-analysis, shows many regression estimates at once. Each row is one
+coefficient. The dot is the point estimate. A horizontal line through
+the dot is the confidence interval. A vertical reference line, usually
+at zero, marks the null.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_coef_plot.pdf}}
+
+}
+
+\caption{\label{fig-coef-plot}Coefficients from a regression of log
+bilateral exports on log importer GDP, log distance, common-language
+indicator, and an intercept. Each row is one coefficient with a 95\%
+interval. The vertical line at zero marks the null. Coefficients whose
+intervals cross the line cannot reject the null at the conventional
+level; coefficients whose intervals sit clearly to one side are far from
+zero in their estimated direction.}
+
+\end{figure}%
+
+Why this works better than the standard alternative, a regression table.
+A regression table displays the same information as numbers in a grid.
+The numbers require translation: the reader must compare each
+coefficient to its standard error mentally, decide whether the interval
+crosses zero, and judge magnitudes by mentally normalizing to the units
+of each variable. A coefficient plot does all of this visually. The
+reader sees at a glance which estimates are large, which are precise,
+which cross zero, and which are similar in magnitude.
+
+Coefficient plots are now standard in modern empirical economics and
+political science papers, partly because of the credibility revolution
+and partly because they make it harder to hide weak results in a table
+of numbers.
+
+\section{Hypothetical outcome plots}\label{hypothetical-outcome-plots}
+
+A hypothetical outcome plot, or HOP, shows uncertainty by sampling.
+Instead of drawing a confidence band, the plot shows several plausible
+realizations of the underlying quantity, drawn from the posterior or the
+sampling distribution. In a static figure, an HOP overlays a few dozen
+sampled curves in light color, with the central estimate in a heavier
+line. In a dynamic figure (animated, interactive), the HOP cycles
+through draws over time, giving the reader a visceral sense of how much
+the estimate could vary.
+
+\begin{figure*}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_hop.pdf}}
+
+}
+
+\caption{\label{fig-hop}Twenty regression lines drawn from the joint
+distribution of slope and intercept, overlaid on the data. The dark line
+is the central estimate. Each light line is one plausible realization of
+the underlying line consistent with the data. The thicker the visible
+bundle, the less confident the estimate; the spread of the bundle is the
+uncertainty.}
+
+\end{figure*}%
+
+The pedagogical case for HOPs is that confidence bands feel like static
+facts, whereas HOPs feel like the underlying probabilistic process.
+Research by Hullman, Kale, and others has shown that HOPs improve
+viewers' calibration of subjective beliefs about uncertainty better than
+equivalent confidence-band displays. The reason is roughly that bands
+encode a precise probability, but the eye reads ``more probable here,
+less probable here'' with mixed accuracy, whereas HOPs encode the same
+probabilities by the \emph{frequency of visual presence}, which the eye
+reads directly.
+
+\section{Fan charts}\label{fan-charts}
+
+A fan chart is a forecast visualization. The forecasted quantity is
+plotted as a curve into the future, with a series of nested confidence
+bands around it. The innermost band might be a 50\% prediction interval,
+the next 80\%, the outermost 95\%. The result looks like a fan opening
+to the right, narrowest at the present moment and widening into the
+future.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_fan_chart.pdf}}
+
+}
+
+\caption{\label{fig-fan-chart}A fan chart of a forecasted series. The
+dark central line is the point forecast; the nested bands are the 50\%,
+80\%, and 95\% prediction intervals. The fan widens further into the
+future, encoding the rate at which forecast uncertainty grows. Bank of
+England inflation reports use exactly this format; the visual move is to
+communicate both the central forecast and the rate of uncertainty growth
+in one figure.}
+
+\end{figure}%
+
+Fan charts are standard in central banking and in epidemiology
+forecasting. They communicate two things at once: the central forecast
+(the line in the middle) and the rate at which uncertainty grows (the
+rate at which the fan opens).
+
+The visual property worth noting: the bands are nested rather than
+separate. The reader's eye reads ``more probability concentrated in the
+inner bands, less in the outer ones,'' which is the right reading. A
+single 95\% band gives a binary in-or-out reading. A nested fan gives a
+graded reading: more or less likely.
+
+\section{Showing all the data}\label{showing-all-the-data}
+
+The most honest uncertainty visualization is showing all the data. When
+sample sizes permit, plot every individual observation as a small mark,
+with the summary (mean, regression line, model) overlaid. The eye reads
+both the structure and the spread, and there is no chance of being
+misled about precision.
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prose/part1/../../pictures/figures/output/fig_show_all.pdf}}
+
+}
+
+\caption{\label{fig-show-all}Every one of our 300 bilateral observations
+plotted as a point, with a smoothed conditional mean overlaid. The
+dispersion of the points around the line is the residual variation. The
+slope of the line is the estimated relationship. Showing the data and
+the model together is the most informationally honest visualization of
+uncertainty available.}
+
+\end{figure}%
+
+This is what scatter plots already do, but the principle generalizes. A
+box plot shows summary statistics; a strip plot shows summary statistics
+and every individual observation. A bar chart shows means; a violin or
+jittered scatter shows means and the underlying spread.
+
+The trade-off. When \(n\) is small, ``show all the data'' is easy. When
+\(n\) is millions, you need to pre-aggregate or use density-based
+encodings (hex bins, contour plots). The principle stays the same:
+prefer showing more rather than less, and make explicit the choice about
+what is hidden.
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-warning-color!10!white, colframe=quarto-callout-warning-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-warning-color}{\faExclamationTriangle}\hspace{0.5em}{Key insight}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Uncertainty deserves the same care as the point estimate. Error bars are
+common but rarely optimal: they hide more than they show. Confidence
+bands, coefficient plots, hypothetical outcome plots, and fan charts
+each show uncertainty as a first-class part of the visual argument. The
+general rule: show all the data when you can; where summary is
+unavoidable, encode the uncertainty in a way that matches the reader's
+question.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Try this}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+A regression of bilateral exports on importer GDP gives a slope estimate
+of 0.88 with a standard error of 0.06. Sketch:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The result as an error-bar plot.
+\item
+  The result as a coefficient plot, with the null line at 0 and a second
+  null line at 1 (the gravity-model benchmark).
+\item
+  The result as a confidence band over the range of importer GDP in the
+  data.
+\end{enumerate}
+
+Compare the three. Which most clearly answers ``is the slope different
+from 1?'' Which most clearly answers ``how confident am I about the
+slope at GDP equal to 25 trillion?'' Which would you publish?
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Inside the math: pointwise vs simultaneous bands}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+A pointwise 95\% confidence band at each \(x\)-value gives an interval
+such that, if you repeated the experiment many times, 95\% of the
+resulting intervals at that \(x\) would cover the true mean function. A
+simultaneous 95\% confidence band is wider and gives an interval such
+that the entire band contains the true function 95\% of the time.
+
+These are different things. The pointwise band is the standard default
+in most software and is what most researchers report. The simultaneous
+band is what you actually want if you intend to make claims about
+multiple \(x\)-values at once. The simultaneous band can be
+substantially wider than the pointwise version, especially when the
+predictor has many evaluation points.
+
+A simple rule of thumb. If you are reporting a single test at a single
+\(x\), the pointwise band is fine. If you are reporting on an entire
+curve and might select \(x\)-values post hoc, you want the simultaneous
+band. The Working-Hotelling band is the classical construction; modern
+bootstrap-based bands are the practical alternative.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-caution-color!10!white, colframe=quarto-callout-caution-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-caution-color}{\faFire}\hspace{0.5em}{Reflect before moving on}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Three questions to articulate in your own words:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  The chapter claims that error bars on bar charts are usually the wrong
+  choice. In your own words, why? Where have you seen error bars used
+  well?
+\item
+  A confidence band and a prediction band are different. Which one would
+  you want to see if you were asked to forecast where a new observation
+  will land? Which if you were asked about the underlying mean function?
+\item
+  HOPs (hypothetical outcome plots) work because the eye reads frequency
+  directly. Where else in this book have you seen frequency used as a
+  visual encoding?
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-important-color!10!white, colframe=quarto-callout-important-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-important-color}{\faExclamation}\hspace{0.5em}{Frontier note}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Modern uncertainty visualization is an active research area. Three
+directions worth knowing.
+
+\emph{Animated and interactive uncertainty.} Hypothetical outcome plots,
+ensemble visualizations, and dynamic confidence regions have been shown
+by Hullman, Kale, and others to improve viewer calibration of subjective
+uncertainty. The visualizations on this book's website use these where
+they fit.
+
+\emph{Multiverse analysis displays.} When the same dataset can support
+many defensible analyses (specification choices, measurement choices,
+robustness checks), the modern move is to display the distribution of
+results across all of them. Specification curves and multiverse plots
+are the two leading visual formats.
+
+\emph{Bayesian posterior visualization.} Modern Bayesian software
+produces full posterior distributions. Visualizing those distributions,
+rather than reducing them to a single CI, is its own active design
+space. Density plots, eye-plots, and fan-style visualizations are all in
+current use.
+
+The general direction: less reduction, more information. The trend
+follows the technical capacity to compute and display the underlying
+probabilistic objects directly, rather than summarize them away.
+
+\end{tcolorbox}
+
+\section{Practice problems}\label{practice-problems-7}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Find a paper in your field that uses error bars on a bar chart. Sketch
+  the same data as a coefficient plot. Which version is more useful for
+  the question the paper is trying to answer?
+\item
+  A 95\% confidence band for a regression of \(y\) on \(x\) is plotted.
+  At \(x = 5\) the band runs from \(y = 2.4\) to \(y = 3.6\). Write one
+  sentence describing what this band means, and one sentence describing
+  what it does \emph{not} mean.
+\item
+  Take the trade slice. Fit a simple regression of log exports on log
+  importer GDP. Plot it three ways: (a) point estimate plus error bar;
+  (b) confidence band; (c) hypothetical outcome plot with twenty draws.
+  Compare. Which makes the gravity slope feel most uncertain?
+\item
+  A fan chart of disease cases shows the 50\%, 80\%, and 95\% prediction
+  intervals widening into the future. Two months out, the 95\% interval
+  spans 100 to 1,000 cases. Is that a useful forecast? When would a fan
+  chart with very wide outer bands still be informative?
+\item
+  Construct a coefficient plot for the multiple-regression result you
+  choose: at minimum three coefficients with their 95\% intervals and a
+  vertical reference line at zero. Annotate which coefficients are
+  statistically distinguishable from zero and which are not. The
+  exercise is half the chart and half the writing of the annotations.
+\end{enumerate}
+
+
+\backmatter
+
+
+\end{document}

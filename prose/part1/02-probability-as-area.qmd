@@ -161,3 +161,23 @@ The recent renaissance of Bayesian methods in applied work owes most of its mome
 For now, every time you condition on data in this book, remember that you are doing a tiny piece of Bayesian thinking, even if the chapter calls it something else.
 
 :::
+
+## Practice problems
+
+1. A bag has 5 red, 3 blue, and 2 green marbles. You draw one. Compute $P(\text{red})$, $P(\text{blue or green})$, and $P(\text{red and blue})$. Sketch the sample space as a rectangle to verify.
+
+2. Repeat the disease-test problem with prevalence 5% and test accuracy 90% (90% sensitivity, 90% specificity). Draw the grid for 10,000 people and compute $P(\text{sick} \mid +)$.
+
+3. Two events $A$ and $B$ have $P(A) = 0.4$, $P(B) = 0.5$, $P(A \cap B) = 0.1$. Compute $P(A \cup B)$, $P(A \mid B)$, and $P(B \mid A)$. Are $A$ and $B$ independent?
+
+4. Why is $P(A \cup B) = P(A) + P(B) - P(A \cap B)$ rather than just $P(A) + P(B)$? Explain in one sentence and a small picture.
+
+5. A test has 99% sensitivity and 99% specificity, and the underlying disease has prevalence 0.1%. Without computing, predict whether $P(\text{sick} \mid +)$ is closer to 99% or 10%. Then compute and compare.
+
+::: {.callout-caution title="Reflect before moving on"}
+
+- What is the visual difference between conditional probability and joint probability?
+- Where else in the world have you seen base-rate neglect at work?
+- If a friend asked you "what is probability, in one sentence," what would you say now that you could not have said before this chapter?
+
+:::

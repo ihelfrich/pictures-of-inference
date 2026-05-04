@@ -123,3 +123,23 @@ Modern probability is much wider than the six distributions above. Three areas w
 For now, the six stories cover everything in Parts One and Two of the book. The bigger zoo waits.
 
 :::
+
+## Practice problems
+
+1. For each variable below, name the distribution that most likely describes it: number of phone calls received in an hour; height of adult women in cm; whether a coin lands heads; income in a country; time between earthquakes; number of children per family.
+
+2. A distribution has a long right tail. You take the log; the result looks normal. What family of distributions is the original?
+
+3. A Poisson distribution has $\lambda = 6.4$. What is the mean? Approximately what is the standard deviation? Why?
+
+4. For Student's $t$ at $df = 5$, where do the tails sit relative to a standard normal? At $df = 50$?
+
+5. Open the trade slice. Plot a histogram of `exports_usd_millions`. Then plot a histogram of $\log(\text{exports_usd_millions})$. Which version is closer to a familiar shape from this chapter? What does that tell you about the underlying process?
+
+::: {.callout-caution title="Reflect before moving on"}
+
+- Why is "what process produced this data" a more useful question than "what is the formula"?
+- Pick one distribution from the chapter. Explain its underlying story to a friend in three sentences.
+- The mean of a sample becomes normal as $n$ grows, no matter what the parent distribution looks like. Why is this almost magical?
+
+:::

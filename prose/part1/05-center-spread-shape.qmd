@@ -121,3 +121,23 @@ Robust statistics is a substantial sub-field of modern statistics. Beyond the me
 In modern empirical economics, the practice of reporting both classical and robust summaries (or robust standard errors, which we will meet in chapter 34) is now standard for any serious paper. The reason is partly the credibility revolution and partly the recognition that real economic data has fat tails, outliers, and clusters, and pretending otherwise produces fragile inference.
 
 :::
+
+## Practice problems
+
+1. Compute by hand: mean, median, mode, range, variance, sd, IQR, and the five-number summary for the values $\{1, 3, 3, 5, 7, 8, 9, 12, 100\}$.
+
+2. Which summary statistic from the previous problem changes the most if you remove the 100? Which barely changes? What does that tell you about robustness?
+
+3. A distribution has skewness $+2$. What does that tell you about the shape? What if the skewness is $-2$?
+
+4. A boxplot shows three distributions side by side. Without seeing histograms, which features can you compare confidently? Which would you want histograms for?
+
+5. Open the trade slice. Compute the mean and the median of `exports_usd_millions`. Which is larger? Why? Which would you report to a journalist?
+
+::: {.callout-caution title="Reflect before moving on"}
+
+- Mean and median tell you different things. Pick a real-world quantity where you would report the median over the mean. Explain.
+- The IQR ignores the top and bottom 25%. What information are you giving up by reporting it instead of the standard deviation?
+- The bimodality warning sign comes up again and again. Why is bimodality usually a clue to disaggregate?
+
+:::

@@ -225,3 +225,35 @@ pre code {
 main.content {
   max-width: 880px;
 }
+
+/* ---------- Small-caps lead-in for the first paragraph of a chapter ---------- */
+/* The first ~3 words of the first <p> after the title get small caps,
+   the way a real book opens. */
+
+main.content > section:first-of-type > p:first-of-type::first-line {
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+}
+
+/* Drop cap on the chapter's opening letter — subtle, not Gutenberg */
+main.content > section:first-of-type > p:first-of-type::first-letter {
+  font-size: 1.05em;
+  font-weight: 600;
+  color: var(--poi-ink);
+}
+
+/* ---------- Section dividers feel less brutal ---------- */
+hr {
+  border: none;
+  border-top: 1px solid var(--poi-line);
+  margin: 2em auto;
+  width: 30%;
+}
+
+/* ---------- Inline emphasis ---------- */
+em, i {
+  color: #4a3a2a;
+}
+strong, b {
+  color: var(--poi-ink);
+}

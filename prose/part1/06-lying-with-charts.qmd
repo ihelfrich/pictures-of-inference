@@ -103,3 +103,23 @@ The policy response, in some venues, is the requirement of *open data and open c
 For a longer treatment of this material, see Tufte's *The Visual Display of Quantitative Information* (1983), which remains the standard reference. Tufte's "lie factor" formalizes the area distortion in this chapter into a single number you can compute for any chart.
 
 :::
+
+## Practice problems
+
+1. Find one chart in a news article from this week. Apply the five-trick checklist. What does the chart do well? What does it hide?
+
+2. Tufte defined the *lie factor* as the ratio of the visual size of a change to the actual size. Compute it for a chart you find in the wild.
+
+3. When is it legitimate to truncate a y-axis? Give two examples and explain what makes them legitimate.
+
+4. Two unrelated time series look correlated on a dual-axis chart. Sketch the same data on stacked panels with separate axes. What changes?
+
+5. A log scale is honest when growth rate is the question and dishonest when level is. Find one example of each in current news and defend your call.
+
+::: {.callout-caution title="Reflect before moving on"}
+
+- Which of the five tricks have you accidentally used in a chart of your own?
+- The chapter argues that most visual lies are mismatches between encoding and data. Can you think of a sixth kind of mismatch that was not named?
+- What is the strongest argument *for* a misleading chart? When (if ever) is editorial framing legitimate?
+
+:::
