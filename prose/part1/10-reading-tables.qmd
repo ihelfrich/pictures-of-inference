@@ -12,7 +12,7 @@ This chapter walks through three common kinds of tables you will meet in researc
 
 A regression table reports the results of one or several regression models. Conventionally, each column is a different model specification, and each row is one variable's coefficient. Standard errors appear in parentheses below each coefficient. Stars mark statistical significance at conventional thresholds, though the convention varies by journal.
 
-![A typical regression table from an empirical paper. Three specifications across columns, six covariates plus a constant down the rows, point estimates with standard errors in parentheses underneath, stars for conventional significance thresholds, and bottom rows for sample-level diagnostics. Read across columns first, looking for stability of the coefficient of interest as covariates are added or dropped.](../../pictures/figures/output/fig_regression_table.pdf){#fig-regression-table .column-page}
+![A typical regression table from an empirical paper. Three specifications across columns, six covariates plus a constant down the rows, point estimates with standard errors in parentheses underneath, stars for conventional significance thresholds, and bottom rows for sample-level diagnostics. Read across columns first, looking for stability of the coefficient of interest as covariates are added or dropped.](../../pictures/figures/output/fig_regression_table.png){#fig-regression-table}
 
 Reading from the top down:
 
@@ -37,7 +37,7 @@ The defensive move on a regression table is to read across columns first, lookin
 
 A summary statistics table describes the dataset before any analysis. Each row is one variable; each column is a summary statistic (mean, sd, min, max, percentiles). The table is the dataset's introduction, and a careful reader spends real time on it.
 
-![A summary statistics table for the trade slice. One row per variable, columns for count, mean, standard deviation, min, the quartiles, and max. The reader should ask: what is the unit of analysis, what are the units of each variable, are missing observations counted, and are any of the summary statistics weighted.](../../pictures/figures/output/fig_summary_table.pdf){#fig-summary-table .column-page}
+![A summary statistics table for the trade slice. One row per variable, columns for count, mean, standard deviation, min, the quartiles, and max. The reader should ask: what is the unit of analysis, what are the units of each variable, are missing observations counted, and are any of the summary statistics weighted.](../../pictures/figures/output/fig_summary_table.png){#fig-summary-table}
 
 The questions to ask:
 
@@ -53,7 +53,7 @@ A good summary statistics table answers all of these implicitly through its stru
 
 A balance table is the dataset-description chapter for randomized experiments and quasi-experimental designs. Each row is a covariate; columns show the mean of that covariate within the treatment group, the control group, the difference, and a p-value for the difference.
 
-![A balance table for a hypothetical randomized intervention. One row per pre-treatment covariate, columns for treatment-group mean, control-group mean, the difference, and a p-value for the difference. A well-randomized study produces small differences and p-values scattered uniformly. A balance table where many differences are large or many p-values are small is a red flag.](../../pictures/figures/output/fig_balance_table.pdf){#fig-balance-table .column-page}
+![A balance table for a hypothetical randomized intervention. One row per pre-treatment covariate, columns for treatment-group mean, control-group mean, the difference, and a p-value for the difference. A well-randomized study produces small differences and p-values scattered uniformly. A balance table where many differences are large or many p-values are small is a red flag.](../../pictures/figures/output/fig_balance_table.png){#fig-balance-table}
 
 The visual story is whether the treatment and control groups look comparable on observable characteristics. A well-randomized experiment produces a balance table where most of the differences are small and the p-values are scattered uniformly between 0 and 1. A balance table where many differences are large or many p-values are small is a red flag: either the randomization failed, the design is observational rather than experimental, or there is selection at play.
 

@@ -20,7 +20,7 @@ The *mode* is the most common value, or for continuous data, the value where the
 
 For perfectly symmetric distributions, all three are equal. For skewed distributions, they pull apart. The mean chases the long tail. The median ignores it. The mode plants itself at the peak.
 
-![A right-skewed distribution (log-normal-shaped) with the three centers marked. The mode sits at the peak, the median sits to its right (because more than half the area is to the right of the mode), and the mean sits even further right (because the long tail pulls the balance point that way). For symmetric distributions, all three coincide.](../../pictures/figures/output/fig_center_compared.pdf){#fig-center}
+![A right-skewed distribution (log-normal-shaped) with the three centers marked. The mode sits at the peak, the median sits to its right (because more than half the area is to the right of the mode), and the mean sits even further right (because the long tail pulls the balance point that way). For symmetric distributions, all three coincide.](../../pictures/figures/output/fig_center_compared.png){#fig-center}
 
 Income is the canonical example. A small number of very high earners pull the mean far above the median. The median household income in a country can be \$50,000 while the mean is \$80,000, simply because a tiny fraction of the population earns enough to drag the average up. When a journalist wants to make inequality look mild, they report the mean. When they want to make it visible, they report the median. Both numbers are correct. The choice of which to report is a choice about what story to tell.
 
@@ -44,7 +44,7 @@ The squaring matters. It prevents positive and negative deviations from cancelli
 
 The *interquartile range*, or IQR, is the spread between the 25th percentile and the 75th percentile. Middle half of the data, as a single number. By ignoring the top and bottom 25%, the IQR becomes robust to outliers in a way the standard deviation is not.
 
-![Three distributions with the same mean but very different spreads. The left has standard deviation 0.5; the middle has 1.0; the right has 2.5. The IQR ratios track the standard deviation ratios because the data is normal-shaped. For non-normal data, the two measures can diverge sharply.](../../pictures/figures/output/fig_spread_compared.pdf){#fig-spread}
+![Three distributions with the same mean but very different spreads. The left has standard deviation 0.5; the middle has 1.0; the right has 2.5. The IQR ratios track the standard deviation ratios because the data is normal-shaped. For non-normal data, the two measures can diverge sharply.](../../pictures/figures/output/fig_spread_compared.png){#fig-spread}
 
 When the data is approximately normal, the standard deviation is the right tool. The 68-95-99.7 rule from chapter 3 tells you exactly how to interpret it. When the data is skewed or has outliers, the IQR is usually more honest, because the standard deviation can be inflated by a few extreme values that are not representative of the bulk.
 
@@ -56,7 +56,7 @@ Beyond center and spread, distributions have shape.
 
 *Kurtosis* measures tailedness, roughly speaking. A high-kurtosis distribution has heavier tails than a normal: more probability of extreme values. A low-kurtosis distribution has lighter tails. Financial returns famously have high kurtosis: extreme moves are more common than a normal distribution would predict, and the difference matters for risk management.
 
-![Four shapes that recur: a roughly symmetric (normal) distribution, a right-skewed (log-normal) distribution, a heavy-tailed (Student's t with low df) distribution, and a bimodal distribution. Knowing the formulas for skewness and kurtosis matters less than recognizing the shapes.](../../pictures/figures/output/fig_shapes.pdf){#fig-shapes .column-page}
+![Four shapes that recur: a roughly symmetric (normal) distribution, a right-skewed (log-normal) distribution, a heavy-tailed (Student's t with low df) distribution, and a bimodal distribution. Knowing the formulas for skewness and kurtosis matters less than recognizing the shapes.](../../pictures/figures/output/fig_shapes.png){#fig-shapes}
 
 The numerical formulas for skewness and kurtosis exist and you can look them up. Knowing the formulas matters less than recognizing the shapes. When you look at a histogram, your first move is: symmetric or skewed? Light-tailed or heavy-tailed? One peak or several? Those four binary questions catch most of the shape information you need for early-stage analysis.
 
@@ -68,7 +68,7 @@ An *outlier* is an observation that lies far from the bulk. The word does no sem
 
 The mean and standard deviation are *not robust* to outliers. A single extreme value can change them substantially. The median and IQR *are robust*. A single extreme value barely moves them at all.
 
-![Fifty points sampled near zero, with one extreme outlier added at 100. The mean is dragged toward the outlier, while the median barely moves. The standard deviation explodes; the IQR holds steady. Robustness is the difference between summary statistics that lie about an outlier and summary statistics that ignore it.](../../pictures/figures/output/fig_robustness.pdf){#fig-robustness}
+![Fifty points sampled near zero, with one extreme outlier added at 100. The mean is dragged toward the outlier, while the median barely moves. The standard deviation explodes; the IQR holds steady. Robustness is the difference between summary statistics that lie about an outlier and summary statistics that ignore it.](../../pictures/figures/output/fig_robustness.png){#fig-robustness}
 
 The robustness distinction is more important than it sounds. Real datasets have outliers. Sometimes those outliers are real (a billionaire in an income survey). Sometimes they are errors (a typo, a unit confusion, a sensor malfunction). In both cases, summary statistics that are pulled around by the outliers will mislead. Robust statistics give you a stable summary of the bulk, which is usually what you want before you have figured out whether the outliers should be kept.
 
@@ -80,7 +80,7 @@ A compact summary captures center, spread, and outliers in five numbers: the min
 
 The *boxplot* is the visualization of the five-number summary. A box from the 25th to the 75th percentile, a line at the median, whiskers extending to the most extreme non-outlier values, and individual points for outliers beyond the whiskers (typically beyond 1.5 IQRs).
 
-![Anatomy of a boxplot, alongside boxplots for the four shapes from earlier in the chapter. Boxplots are excellent for comparing distributions across groups: row of boxplots, one per group, is often the right first chart. They hide the within-box shape, which is why a bimodal distribution and a uniform distribution can have similar boxplots.](../../pictures/figures/output/fig_boxplot.pdf){#fig-boxplot .column-page}
+![Anatomy of a boxplot, alongside boxplots for the four shapes from earlier in the chapter. Boxplots are excellent for comparing distributions across groups: row of boxplots, one per group, is often the right first chart. They hide the within-box shape, which is why a bimodal distribution and a uniform distribution can have similar boxplots.](../../pictures/figures/output/fig_boxplot.png){#fig-boxplot}
 
 Boxplots are the right summary visualization for many comparisons across groups: trade flows by year, test scores by class, response times by condition. They show center and spread and outliers in a small footprint, which makes them ideal for small multiples. A row of boxplots, one per group, is often the right first chart for any cross-group comparison.
 

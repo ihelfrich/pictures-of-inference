@@ -18,7 +18,7 @@ That is it. There is a deeper formal version with σ-algebras and measure theory
 
 The picture below, and the rest of this chapter, takes that definition seriously.
 
-![Every outcome of rolling two fair dice. There are 36 cells, one for each ordered pair of die-1 and die-2 values, and the number in each cell is the sum. The shading shows how many cells share the same sum: the diagonal stripe with sum 7 has six cells, sum 6 and sum 8 have five, and so on, down to sums 2 and 12 with one cell each. Probability becomes geometry: the chance of rolling a 7 is just the fraction of the rectangle that is shaded most darkly.](../../pictures/figures/output/fig_sample_space.pdf){#fig-sample-space .column-page}
+![Every outcome of rolling two fair dice. There are 36 cells, one for each ordered pair of die-1 and die-2 values, and the number in each cell is the sum. The shading shows how many cells share the same sum: the diagonal stripe with sum 7 has six cells, sum 6 and sum 8 have five, and so on, down to sums 2 and 12 with one cell each. Probability becomes geometry: the chance of rolling a 7 is just the fraction of the rectangle that is shaded most darkly.](../../pictures/figures/output/fig_sample_space.png){#fig-sample-space}
 
 Notice what the picture does not yet have: any equation. Probability is not, fundamentally, an equation. It is a way of carving up a space. The equations come later, as shorthand for the carving.
 
@@ -46,7 +46,7 @@ $$
 
 This is the *inclusion-exclusion principle*, and it has a name only because beginners get it wrong so often. The picture is unambiguous.
 
-![Two events drawn as overlapping regions inside a rectangular sample space. The blue region A is "the card is a heart" (13 of 52). The rust region B is "the card is a face card" (12 of 52). The overlap A ∩ B has three cards (J, Q, K of hearts). When you compute P(A ∪ B), the overlap is counted once in P(A) and once in P(B), which means you must subtract it once to avoid double-counting.](../../pictures/figures/output/fig_events_overlap.pdf){#fig-events-overlap .column-page}
+![Two events drawn as overlapping regions inside a rectangular sample space. The blue region A is "the card is a heart" (13 of 52). The rust region B is "the card is a face card" (12 of 52). The overlap A ∩ B has three cards (J, Q, K of hearts). When you compute P(A ∪ B), the overlap is counted once in P(A) and once in P(B), which means you must subtract it once to avoid double-counting.](../../pictures/figures/output/fig_events_overlap.png){#fig-events-overlap}
 
 Two events that don't overlap are called *disjoint*, or *mutually exclusive*. For disjoint events, the union really is just the sum, because there is nothing to subtract. Drawing a heart and drawing a club are disjoint: no card is both. P(heart or club) = 13/52 + 13/52 = 26/52, exactly half the deck.
 
@@ -60,7 +60,7 @@ The original outcome space was 52 cards, of which 12 were face cards. P(face) = 
 
 Conditioning on a piece of information is just zooming in. You take the original outcome space, restrict it to the region you have been told about, and recompute the fraction.
 
-![Left: the full deck, with the 12 face cards highlighted in gold. The probability of a face card, P(face), is 12/52 ≈ 0.23. Right: the same problem, restricted to the 13 hearts only. The probability of a face card given that the card is a heart, P(face given heart), is 3/13 ≈ 0.23. Conditioning on "heart" zoomed the sample space from 52 cards to 13. The numerator and denominator both changed; in this case the ratio happens to come out about the same.](../../pictures/figures/output/fig_conditional_zoom.pdf){#fig-cond-zoom .column-page}
+![Left: the full deck, with the 12 face cards highlighted in gold. The probability of a face card, P(face), is 12/52 ≈ 0.23. Right: the same problem, restricted to the 13 hearts only. The probability of a face card given that the card is a heart, P(face given heart), is 3/13 ≈ 0.23. Conditioning on "heart" zoomed the sample space from 52 cards to 13. The numerator and denominator both changed; in this case the ratio happens to come out about the same.](../../pictures/figures/output/fig_conditional_zoom.png){#fig-cond-zoom}
 
 Notation. The probability of A given B is written $P(A \mid B)$, read aloud as "the probability of A given B." The vertical bar means "given." It is the most important piece of notation in inferential statistics, and most students never learn to read it aloud confidently. Read it aloud now.
 
@@ -88,7 +88,7 @@ Most people, when surveyed, answer somewhere between 90% and 95%, anchoring on t
 
 Imagine 10,000 people drawn at random from the population. The picture shows them as a 100-by-100 grid of squares.
 
-![10,000 people, drawn at random from a population with 1% disease prevalence and tested with a 95%-accurate test. The dark red squares are sick people who tested positive (95). The pale red squares are sick people who tested negative (5). The rust squares are healthy people who tested positive anyway, the false positives (495). The gray squares are healthy people who tested negative (9,405). The probability of being sick given a positive test is the fraction of the positive-test population that is also in the sick population: 95 out of (95 + 495) = 590, or about 16%. The base rate dominates.](../../pictures/figures/output/fig_bayes_grid.pdf){#fig-bayes-grid .column-page}
+![10,000 people, drawn at random from a population with 1% disease prevalence and tested with a 95%-accurate test. The dark red squares are sick people who tested positive (95). The pale red squares are sick people who tested negative (5). The rust squares are healthy people who tested positive anyway, the false positives (495). The gray squares are healthy people who tested negative (9,405). The probability of being sick given a positive test is the fraction of the positive-test population that is also in the sick population: 95 out of (95 + 495) = 590, or about 16%. The base rate dominates.](../../pictures/figures/output/fig_bayes_grid.png){#fig-bayes-grid}
 
 Of the 10,000 people, 1% have the disease. That is 100 people. The other 9,900 do not.
 

@@ -31,31 +31,25 @@ highlight-style: a11y
 
 format:
   html:
-    theme:
-      light: [cosmo, assets/theme.scss]
-      dark:  [cosmo, assets/dark.scss]
+    theme: [cosmo, assets/theme.scss]
     css: assets/styles.css
-    respect-user-color-scheme: true
     toc: true
     toc-depth: 3
-    toc-location: right
-    fig-format: svg
+    fig-format: png
+    fig-dpi: 300
     fig-width: 9
     fig-height: 5.5
     fig-align: center
     fig-cap-location: bottom
     code-copy: true
     code-overflow: wrap
-    code-link: true
     smooth-scroll: true
     citations-hover: true
     crossrefs-hover: true
     link-external-newwindow: true
-    title-block-banner: true
     html-math-method: katex
     include-in-header:
       - text: |
-          <meta name="color-scheme" content="light dark">
           <script>
           window.MathJax = {
             tex: {

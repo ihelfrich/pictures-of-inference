@@ -32,7 +32,7 @@ The best way to learn a language is to read it. Three expressions follow, each w
 
 Read aloud: *the expected value of Y given that X equals x.*
 
-![Anatomy of a conditional expectation. The operator E takes a random variable as its argument. The bar separates "what we want to know about" (left) from "what we are conditioning on" (right). The lowercase x is a specific value; the uppercase X is the random variable that took that value.](../../pictures/figures/output/fig_eq_expectation.pdf){#fig-eq-expectation}
+![Anatomy of a conditional expectation. The operator E takes a random variable as its argument. The bar separates "what we want to know about" (left) from "what we are conditioning on" (right). The lowercase x is a specific value; the uppercase X is the random variable that took that value.](../../pictures/figures/output/fig_eq_expectation.png){#fig-eq-expectation}
 
 Layer by layer:
 
@@ -50,7 +50,7 @@ Where you have already seen this. In chapter 2, when we conditioned on hearts an
 
 Read aloud: *beta-hat equals X-transpose-X inverse, times X-transpose-y.*
 
-![Anatomy of the OLS estimator in matrix form. The hat marks an estimator. Bold letters mark a vector or a matrix. The transpose flips rows to columns. The inverse undoes a square matrix. The product of inverse-Gram matrix and X-transpose-y is the unique vector that minimizes the sum of squared residuals.](../../pictures/figures/output/fig_eq_ols.pdf){#fig-eq-ols .column-page}
+![Anatomy of the OLS estimator in matrix form. The hat marks an estimator. Bold letters mark a vector or a matrix. The transpose flips rows to columns. The inverse undoes a square matrix. The product of inverse-Gram matrix and X-transpose-y is the unique vector that minimizes the sum of squared residuals.](../../pictures/figures/output/fig_eq_ols.png){#fig-eq-ols}
 
 This is the OLS regression estimator in matrix form. It looks scary. The pieces are not.
 
@@ -70,7 +70,7 @@ We will derive this expression carefully in chapter 24. For now, the goal is to 
 
 Read aloud: *the probability of A given B equals the probability of B given A, times the probability of A, divided by the probability of B.*
 
-![Anatomy of Bayes' theorem. The posterior is on the left, the likelihood times prior is on top of the right side, and the marginal is on the bottom. Each name has a meaning that maps directly to the rectangle picture from chapter 2.](../../pictures/figures/output/fig_eq_bayes.pdf){#fig-eq-bayes}
+![Anatomy of Bayes' theorem. The posterior is on the left, the likelihood times prior is on top of the right side, and the marginal is on the bottom. Each name has a meaning that maps directly to the rectangle picture from chapter 2.](../../pictures/figures/output/fig_eq_bayes.png){#fig-eq-bayes}
 
 This is Bayes' theorem, which we met visually in chapter 2 with the disease-test grid. The expression compresses the entire grid into a formula.
 

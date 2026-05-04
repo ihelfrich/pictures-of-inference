@@ -14,7 +14,7 @@ This chapter is about better tools. Each one shows uncertainty as a first-class 
 
 When the underlying quantity is a curve (a regression line, a smoothed trend, a fitted survival curve), uncertainty is shown as a band around the curve. The band has a center line (the point estimate) and a shaded region around it (the uncertainty interval at each point along the x-axis).
 
-![A linear regression of bilateral exports on importer GDP, with a 95% confidence band shaded around the fitted line. The band narrows in the dense part of the data and widens at the extremes, which is a faithful encoding of how much the regression line itself is uncertain at each x-value. The wider band beyond the data range is the most honest way to show extrapolation uncertainty.](../../pictures/figures/output/fig_conf_band.pdf){#fig-conf-band .column-page}
+![A linear regression of bilateral exports on importer GDP, with a 95% confidence band shaded around the fitted line. The band narrows in the dense part of the data and widens at the extremes, which is a faithful encoding of how much the regression line itself is uncertain at each x-value. The wider band beyond the data range is the most honest way to show extrapolation uncertainty.](../../pictures/figures/output/fig_conf_band.png){#fig-conf-band}
 
 Two important distinctions:
 
@@ -26,7 +26,7 @@ Confidence bands handle asymmetry naturally. If the true function has heterosked
 
 A coefficient plot, also called a forest plot in medicine and meta-analysis, shows many regression estimates at once. Each row is one coefficient. The dot is the point estimate. A horizontal line through the dot is the confidence interval. A vertical reference line, usually at zero, marks the null.
 
-![Coefficients from a regression of log bilateral exports on log importer GDP, log distance, common-language indicator, and an intercept. Each row is one coefficient with a 95% interval. The vertical line at zero marks the null. Coefficients whose intervals cross the line cannot reject the null at the conventional level; coefficients whose intervals sit clearly to one side are far from zero in their estimated direction.](../../pictures/figures/output/fig_coef_plot.pdf){#fig-coef-plot}
+![Coefficients from a regression of log bilateral exports on log importer GDP, log distance, common-language indicator, and an intercept. Each row is one coefficient with a 95% interval. The vertical line at zero marks the null. Coefficients whose intervals cross the line cannot reject the null at the conventional level; coefficients whose intervals sit clearly to one side are far from zero in their estimated direction.](../../pictures/figures/output/fig_coef_plot.png){#fig-coef-plot}
 
 Why this works better than the standard alternative, a regression table. A regression table displays the same information as numbers in a grid. The numbers require translation: the reader must compare each coefficient to its standard error mentally, decide whether the interval crosses zero, and judge magnitudes by mentally normalizing to the units of each variable. A coefficient plot does all of this visually. The reader sees at a glance which estimates are large, which are precise, which cross zero, and which are similar in magnitude.
 
@@ -36,7 +36,7 @@ Coefficient plots are now standard in modern empirical economics and political s
 
 A hypothetical outcome plot, or HOP, shows uncertainty by sampling. Instead of drawing a confidence band, the plot shows several plausible realizations of the underlying quantity, drawn from the posterior or the sampling distribution. In a static figure, an HOP overlays a few dozen sampled curves in light color, with the central estimate in a heavier line. In a dynamic figure (animated, interactive), the HOP cycles through draws over time, giving the reader a visceral sense of how much the estimate could vary.
 
-![Twenty regression lines drawn from the joint distribution of slope and intercept, overlaid on the data. The dark line is the central estimate. Each light line is one plausible realization of the underlying line consistent with the data. The thicker the visible bundle, the less confident the estimate; the spread of the bundle is the uncertainty.](../../pictures/figures/output/fig_hop.pdf){#fig-hop .column-page}
+![Twenty regression lines drawn from the joint distribution of slope and intercept, overlaid on the data. The dark line is the central estimate. Each light line is one plausible realization of the underlying line consistent with the data. The thicker the visible bundle, the less confident the estimate; the spread of the bundle is the uncertainty.](../../pictures/figures/output/fig_hop.png){#fig-hop}
 
 The pedagogical case for HOPs is that confidence bands feel like static facts, whereas HOPs feel like the underlying probabilistic process. Research by Hullman, Kale, and others has shown that HOPs improve viewers' calibration of subjective beliefs about uncertainty better than equivalent confidence-band displays. The reason is roughly that bands encode a precise probability, but the eye reads "more probable here, less probable here" with mixed accuracy, whereas HOPs encode the same probabilities by the *frequency of visual presence*, which the eye reads directly.
 
@@ -44,7 +44,7 @@ The pedagogical case for HOPs is that confidence bands feel like static facts, w
 
 A fan chart is a forecast visualization. The forecasted quantity is plotted as a curve into the future, with a series of nested confidence bands around it. The innermost band might be a 50% prediction interval, the next 80%, the outermost 95%. The result looks like a fan opening to the right, narrowest at the present moment and widening into the future.
 
-![A fan chart of a forecasted series. The dark central line is the point forecast; the nested bands are the 50%, 80%, and 95% prediction intervals. The fan widens further into the future, encoding the rate at which forecast uncertainty grows. Bank of England inflation reports use exactly this format; the visual move is to communicate both the central forecast and the rate of uncertainty growth in one figure.](../../pictures/figures/output/fig_fan_chart.pdf){#fig-fan-chart}
+![A fan chart of a forecasted series. The dark central line is the point forecast; the nested bands are the 50%, 80%, and 95% prediction intervals. The fan widens further into the future, encoding the rate at which forecast uncertainty grows. Bank of England inflation reports use exactly this format; the visual move is to communicate both the central forecast and the rate of uncertainty growth in one figure.](../../pictures/figures/output/fig_fan_chart.png){#fig-fan-chart}
 
 Fan charts are standard in central banking and in epidemiology forecasting. They communicate two things at once: the central forecast (the line in the middle) and the rate at which uncertainty grows (the rate at which the fan opens).
 
@@ -54,7 +54,7 @@ The visual property worth noting: the bands are nested rather than separate. The
 
 The most honest uncertainty visualization is showing all the data. When sample sizes permit, plot every individual observation as a small mark, with the summary (mean, regression line, model) overlaid. The eye reads both the structure and the spread, and there is no chance of being misled about precision.
 
-![Every one of our 300 bilateral observations plotted as a point, with a smoothed conditional mean overlaid. The dispersion of the points around the line is the residual variation. The slope of the line is the estimated relationship. Showing the data and the model together is the most informationally honest visualization of uncertainty available.](../../pictures/figures/output/fig_show_all.pdf){#fig-show-all}
+![Every one of our 300 bilateral observations plotted as a point, with a smoothed conditional mean overlaid. The dispersion of the points around the line is the residual variation. The slope of the line is the estimated relationship. Showing the data and the model together is the most informationally honest visualization of uncertainty available.](../../pictures/figures/output/fig_show_all.png){#fig-show-all}
 
 This is what scatter plots already do, but the principle generalizes. A box plot shows summary statistics; a strip plot shows summary statistics and every individual observation. A bar chart shows means; a violin or jittered scatter shows means and the underlying spread.
 

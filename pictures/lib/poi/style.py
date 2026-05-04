@@ -219,9 +219,12 @@ def _wrap_figure(func, name, size, save, output_dir):
         if save:
             outdir = Path(output_dir) if output_dir else FIG_OUTPUT
             outdir.mkdir(parents=True, exist_ok=True)
-            fname = (name or func.__name__) + ".pdf"
-            fig.savefig(outdir / fname)
-            print(f"  saved {fname}")
+            stem = name or func.__name__
+            # Save as PNG (for HTML — renders inline, no PDF viewer)
+            # AND PDF (for print/LaTeX).
+            fig.savefig(outdir / f"{stem}.png", dpi=300)
+            fig.savefig(outdir / f"{stem}.pdf")
+            print(f"  saved {stem}.png + {stem}.pdf")
         return fig
     return wrapper
 
