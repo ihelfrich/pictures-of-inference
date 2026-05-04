@@ -1,4 +1,4 @@
-/* Minimal CSS overlay. Most styling is in theme.scss / dark.scss. */
+/* Minimal CSS overlay. Most styling is in theme.scss. */
 
 /* Drop-cap on first paragraph of each chapter (subtle, not Gutenberg) */
 main.content > section:first-of-type > p:first-of-type::first-line {
@@ -10,9 +10,13 @@ main.content > section:first-of-type > p:first-of-type::first-letter {
   font-weight: 600;
 }
 
-/* Search box: warmer focus state */
-.aa-DetachedSearchButton {
-  border-radius: 6px;
+/* Suppress drop-cap on the landing page's hero */
+body.quarto-light .poi-hero-text p:first-of-type::first-line,
+body.quarto-light .poi-hero-text p:first-of-type::first-letter {
+  font-variant: normal;
+  letter-spacing: normal;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 /* Footer breathing room */
@@ -21,4 +25,22 @@ main.content > section:first-of-type > p:first-of-type::first-letter {
   padding-top: 1.2rem;
   border-top: 1px solid #e6dfd2;
   font-size: 0.92em;
+  color: #5a5a5a;
+}
+
+/* Search box: warmer focus */
+.aa-DetachedSearchButton { border-radius: 6px; }
+
+/* Print stylesheet */
+@media print {
+  .navbar, .sidebar, nav#TOC, .nav-footer, .quarto-title-banner-extra {
+    display: none !important;
+  }
+  body { background: white; }
+  main.content { max-width: 100%; }
+  figure { break-inside: avoid; page-break-inside: avoid; }
+  h2, h3 { break-after: avoid; page-break-after: avoid; }
+  .poi-chapter-card,
+  .poi-looking-ahead { break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
 }

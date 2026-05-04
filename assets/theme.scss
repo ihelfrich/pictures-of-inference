@@ -5,17 +5,21 @@
 // cream paper, ink-blue accent, restrained.
 //
 
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 // ---- Palette ------------------------------------------------------
 
 $poi-paper:   #f8f5f0;
+$poi-paper-2: #fdfaf3;
 $poi-ink:     #1a4f7a;
+$poi-ink-2:   #2c628f;
 $poi-rust:    #b85c38;
 $poi-sage:    #5a7247;
 $poi-gold:    #b8941e;
 $poi-violet:  #6a5acd;
 $poi-dim:     #8a8a8a;
+$poi-line:    #e6dfd2;
+$poi-line-2:  #d8cfb8;
 $poi-teal:    #3a8a99;
 
 $body-bg:    $poi-paper;
@@ -46,8 +50,8 @@ $headings-font-weight:  600;
 $headings-line-height:  1.25;
 
 $h1-font-size: 2.2rem;
-$h2-font-size: 1.6rem;
-$h3-font-size: 1.25rem;
+$h2-font-size: 1.55rem;
+$h3-font-size: 1.2rem;
 
 $link-color:           $poi-ink;
 $link-decoration:      none;
@@ -60,18 +64,16 @@ $code-bg:              #efe9da;
 $pre-color:            #2a2a2a;
 $pre-bg:               #fbf8f1;
 
-$table-border-color:   #e6dfd2;
+$table-border-color:   $poi-line;
 
 /*-- scss:rules --*/
 
-// Body type rendering
 body {
   font-feature-settings: "kern", "liga", "onum";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-// Headings: tight letter-spacing, generous breathing room
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.005em;
 }
@@ -79,14 +81,12 @@ h1.title { font-weight: 700; }
 h2 {
   margin-top: 2.4rem;
   padding-bottom: 0.3rem;
-  border-bottom: 1px solid #e6dfd2;
+  border-bottom: 1px solid $poi-line;
 }
 h3 { margin-top: 1.8rem; }
 
-// Bold gets ink-blue tint; italic stays italic
 strong, b { color: $poi-ink; }
 
-// Inline code: warm chip
 code:not(pre code) {
   font-family: $font-family-monospace;
   background: $code-bg;
@@ -97,10 +97,9 @@ code:not(pre code) {
   border: 1px solid #ddd1b4;
 }
 
-// Code blocks
 pre {
   background: $pre-bg;
-  border: 1px solid #e6dfd2;
+  border: 1px solid $poi-line;
   border-left: 3px solid $poi-ink;
   padding: 0.85em 1.1em;
   font-size: 0.92em;
@@ -108,7 +107,6 @@ pre {
   border-radius: 3px;
 }
 
-// Tables: book typography with tabular numerals
 table {
   border-collapse: collapse;
   margin: 1.6em auto;
@@ -116,17 +114,12 @@ table {
   font-feature-settings: "tnum";
 }
 thead tr { border-top: 2px solid $poi-ink; border-bottom: 1px solid $poi-ink; }
-tbody tr { border-bottom: 1px solid #e6dfd2; }
+tbody tr { border-bottom: 1px solid $poi-line; }
 tbody tr:last-child { border-bottom: 2px solid $poi-ink; }
 th { color: $poi-ink; font-weight: 600; padding: 0.4em 0.85em; text-align: left; }
 td { padding: 0.35em 0.85em; }
 
-// Figures: full-width, italic captions, room to breathe.
-// IMPORTANT: do not use overflow:hidden or transforms here — they
-// caused content clipping in the previous theme.
-figure {
-  margin: 2em 0;
-}
+figure { margin: 2em 0; }
 figure img,
 .cell-output-display img,
 .figure img {
@@ -149,22 +142,20 @@ p.caption {
   line-height: 1.55;
 }
 
-// Section dividers
 hr {
   border: none;
-  border-top: 1px solid #d8cfb8;
+  border-top: 1px solid $poi-line-2;
   width: 28%;
   margin: 2.4em auto;
 }
 
-// Selection
 ::selection { background: $poi-ink; color: white; }
 
-// Callouts: POI palette
+// ----- Callouts -----
 .callout {
-  border: 1px solid #e6dfd2;
+  border: 1px solid $poi-line;
   border-radius: 4px;
-  background: #fdfaf3;
+  background: $poi-paper-2;
   margin: 1.8em 0;
   overflow: hidden;
 }
@@ -189,8 +180,324 @@ hr {
 .callout-important > .callout-header { background: $poi-rust; }
 .callout-caution   > .callout-header { background: $poi-violet; }
 
-// Math (KaTeX): give it room
+// ----- Sidebar / Navigation -----
+.sidebar-title {
+  color: $poi-ink;
+  font-family: $font-family-sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.sidebar nav[role="doc-toc"] ul > li > a:hover { color: $poi-rust; }
+.sidebar-item-text {
+  font-family: $font-family-sans-serif;
+  font-size: 0.93rem;
+}
+.sidebar a.active { color: $poi-ink !important; font-weight: 600; }
+
+// ----- Right TOC -----
+nav#TOC {
+  font-family: $font-family-sans-serif;
+  font-size: 0.88rem;
+}
+nav#TOC ul li a { color: #5a5a5a; }
+nav#TOC ul li a.active { color: $poi-ink; font-weight: 600; }
+
+// ----- Translucent navbar -----
+.navbar {
+  background-color: rgba(248, 245, 240, 0.86) !important;
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 1px 12px rgba(0,0,0,0.04);
+}
+
+// ----- Title block (per chapter) -----
+.quarto-title-banner {
+  background: $body-bg !important;
+  color: $body-color !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding-top: 1rem !important;
+  padding-bottom: 0.5rem !important;
+  border-bottom: 1px solid $poi-line !important;
+  margin-bottom: 1.6rem !important;
+}
+.quarto-title h1.title {
+  font-family: $font-family-sans-serif !important;
+  color: $poi-ink !important;
+  font-weight: 700 !important;
+}
+
+// ----- Math -----
 .math.display { margin: 1.5em 0; }
 
-// Smooth scrolling
+// ----- Footnotes -----
+.footnotes {
+  font-family: $font-family-sans-serif;
+  font-size: 0.92em;
+  color: #5a5a5a;
+  border-top: 1px solid $poi-line;
+  margin-top: 3rem;
+  padding-top: 1rem;
+}
+
+// ----- Smooth scrolling -----
 html { scroll-behavior: smooth; }
+
+// ===========================================================
+// Custom POI components
+// ===========================================================
+
+// ----- Hero / Landing page -----
+.poi-hero {
+  background: linear-gradient(180deg, $poi-paper 0%, $poi-paper-2 100%);
+  border-bottom: 1px solid $poi-line;
+  padding: 3rem 0 2.5rem 0;
+  margin: -1rem -1rem 2.5rem -1rem;
+  text-align: center;
+}
+.poi-hero-text { max-width: 700px; margin: 0 auto; padding: 0 1.5rem; }
+h1.poi-hero-title {
+  font-family: $font-family-sans-serif;
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  color: $poi-ink;
+  margin: 0 0 0.5rem 0;
+}
+.poi-hero-text p:nth-of-type(1) {
+  font-size: 1.25rem;
+  color: #4a4a4a;
+  margin-top: 0.6rem;
+  font-style: italic;
+}
+.poi-hero-text p:nth-of-type(2) {
+  font-size: 1.0rem;
+  color: #5a5a5a;
+  margin-bottom: 1.6rem;
+}
+
+a.poi-cta, a.poi-cta-secondary {
+  display: inline-block;
+  font-family: $font-family-sans-serif;
+  font-weight: 600;
+  font-size: 0.96rem;
+  padding: 0.6rem 1.2rem;
+  margin: 0.25rem 0.4rem;
+  border-radius: 4px;
+  text-decoration: none !important;
+  transition: all 0.18s ease;
+}
+a.poi-cta {
+  background: $poi-ink;
+  color: white !important;
+  border: 1px solid $poi-ink;
+}
+a.poi-cta:hover {
+  background: $poi-ink-2;
+  color: white !important;
+}
+a.poi-cta-secondary {
+  background: transparent;
+  color: $poi-ink !important;
+  border: 1px solid $poi-line-2;
+}
+a.poi-cta-secondary:hover {
+  border-color: $poi-ink;
+  color: $poi-ink !important;
+}
+
+// ----- Pitch (the long body paragraph after the hero) -----
+.poi-pitch {
+  max-width: 700px;
+  margin: 0 auto 2.5rem auto;
+  font-size: 1.06rem;
+  line-height: 1.7;
+}
+.poi-pitch p { margin-bottom: 1rem; }
+
+// ----- TOC grid (the four-card part overview) -----
+.poi-toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+  margin: 1.6rem 0 2.4rem 0;
+}
+.poi-toc-card {
+  background: $poi-paper-2;
+  border: 1px solid $poi-line;
+  border-radius: 6px;
+  padding: 1.3rem 1.4rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.poi-toc-card:hover {
+  border-color: $poi-ink;
+  transform: translateY(-2px);
+}
+.poi-toc-card h3 {
+  font-family: $font-family-sans-serif;
+  color: $poi-ink;
+  margin: 0 0 0.6rem 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-bottom: 0;
+}
+.poi-toc-card p {
+  font-size: 0.96rem;
+  line-height: 1.55;
+  margin-bottom: 0.8rem;
+  color: #444;
+}
+.poi-toc-card a {
+  font-family: $font-family-sans-serif;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.poi-toc-card-future {
+  opacity: 0.72;
+}
+.poi-toc-card-future em {
+  font-family: $font-family-sans-serif;
+  font-style: normal;
+  font-size: 0.88rem;
+  color: $poi-rust;
+}
+
+// ----- Reading paths (three boxed bullets) -----
+.poi-paths {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1.6rem 0;
+}
+.poi-path {
+  background: $poi-paper-2;
+  border-left: 3px solid $poi-ink;
+  padding: 0.9rem 1.1rem;
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+.poi-path strong { color: $poi-ink; }
+
+// ----- Chapter card (top of each chapter, after the title) -----
+.poi-chapter-card {
+  font-family: $font-family-sans-serif;
+  background: $poi-paper-2;
+  border: 1px solid $poi-line;
+  border-left: 4px solid $poi-ink;
+  border-radius: 4px;
+  padding: 0.9rem 1.2rem;
+  margin: 1rem 0 2rem 0;
+  font-size: 0.93rem;
+  color: #444;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem 2.4rem;
+  align-items: flex-start;
+}
+.poi-chapter-card-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 9rem;
+}
+.poi-chapter-card-meta .label {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $poi-dim;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+.poi-chapter-card-meta .value {
+  font-size: 0.96rem;
+  color: $poi-ink;
+  font-weight: 500;
+}
+.poi-chapter-card-learn {
+  flex: 1 1 22rem;
+}
+.poi-chapter-card-learn .label {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $poi-dim;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.poi-chapter-card-learn ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.poi-chapter-card-learn li {
+  margin-bottom: 0.2rem;
+  color: #333;
+}
+
+// ----- Looking ahead (closing pointer in each chapter) -----
+.poi-looking-ahead {
+  font-family: $font-family-sans-serif;
+  font-size: 0.96rem;
+  background: linear-gradient(180deg, transparent 0%, $poi-paper-2 100%);
+  border-top: 1px solid $poi-line;
+  margin: 3rem -1rem -1rem -1rem;
+  padding: 1.4rem 1.4rem 2rem 1.4rem;
+  border-radius: 0 0 4px 4px;
+}
+.poi-looking-ahead .label {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $poi-dim;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.poi-looking-ahead a {
+  color: $poi-ink;
+  font-weight: 600;
+}
+.poi-looking-ahead a:hover { color: $poi-rust; }
+
+// ----- Sidenotes (.column-margin) -----
+.column-margin {
+  font-family: $font-family-sans-serif;
+  font-size: 0.85em;
+  color: #5a5a5a;
+  line-height: 1.5;
+  border-left: 2px solid $poi-line-2;
+  padding-left: 0.9rem;
+  margin-top: 0.4rem;
+}
+.column-margin p { margin-bottom: 0.5rem; }
+.column-margin strong { color: $poi-ink; font-weight: 600; }
+.column-margin figure { margin: 0.4rem 0; }
+.column-margin figcaption { font-size: 0.85em; }
+
+// ----- Glossary term (custom inline) -----
+.poi-term {
+  border-bottom: 1px dotted $poi-ink;
+  cursor: help;
+  color: $poi-ink;
+  font-style: italic;
+}
+
+// ----- OJS interactive widget result panel -----
+.poi-bayes-result {
+  font-family: $font-family-sans-serif;
+  padding: 0.85rem 1.1rem;
+  background: $poi-paper-2;
+  border: 1px solid $poi-line;
+  border-left: 3px solid $poi-ink;
+  border-radius: 4px;
+  margin: 1rem 0 1.4rem 0;
+  font-size: 1.04rem;
+  line-height: 1.5;
+}
+.poi-bayes-result strong { color: $poi-ink; font-size: 1.2rem; }
+.poi-bayes-detail { color: #5a5a5a; font-size: 0.9rem; }
+
+// OJS sliders / Inputs.range from Observable runtime
+.observablehq form input[type="range"] { accent-color: #1a4f7a; }
+.observablehq form { font-family: $font-family-sans-serif; }
+.cell-output-display { margin: 1rem 0; }

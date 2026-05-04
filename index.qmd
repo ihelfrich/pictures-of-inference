@@ -1,11 +1,98 @@
-# Preface {.unnumbered}
+---
+title: "Pictures of Inference"
+subtitle: "A Visual Course in Statistics, Calculus, and Econometrics"
+title-block-banner: false
+toc: false
+sidebar: false
+---
 
-*Working draft. Architecture committed; chapters arrive as they finish.*
+::: {.poi-hero}
 
-This is *Pictures of Inference*. A visual course in statistics, calculus, and econometrics, by Dr. Ian Helfrich and Dr. Elizaveta Gonchar.
+::: {.poi-hero-text}
 
-The book is built to take a reader from "what is a correlation" to the working knowledge needed to read, evaluate, and contribute to research at the frontier of empirical economics. Four parts: How to See, How to Speak, How to Think, How to Discover. Visualization is primary. Math is taught as a language. Multiple data types are treated as first-class.
+# Pictures of Inference {.poi-hero-title}
 
-For collaborators: see `docs/process.md` for how we build, `docs/voice/charter.md` for what the narrator does and does not do, and `docs/table-of-contents.md` for the chapter map.
+A visual course in statistics, calculus, and econometrics.
 
-For readers: start with chapter 1 ([Numbers on the page](prose/part1/01-numbers-on-the-page.qmd)) and read forward. Each chapter has a narrative layer that goes straight through and requires no math beyond what came before. Underneath that, technical sections develop the derivations and proofs for readers who want them. At the end, a short frontier note points at where current research is arguing. Read the layers that suit you, and come back for the others later.
+A book by **Dr. Ian Helfrich** and **Dr. Elizaveta Gonchar**.
+
+[Start with chapter 1 →](prose/part1/01-numbers-on-the-page.qmd){.poi-cta}
+[Read the field guide first](prose/front/field-guide.qmd){.poi-cta-secondary}
+
+:::
+
+:::
+
+::: {.poi-pitch}
+
+This book is built to take a reader from "what is a correlation" to the working knowledge needed to read, evaluate, and contribute to research at the frontier of empirical economics. Visualization is primary throughout. Math is taught as a language. Multiple data types are treated as first-class citizens, not as exceptions.
+
+It is meant for people who have been frustrated by the gap between accessible-but-shallow popular books on statistics and rigorous-but-impenetrable graduate texts. The structure assumes you are intelligent and curious. Authority is never performed because it does not need to be.
+
+:::
+
+## How to read it
+
+The book is organized as four parts, each one a complete experience at its own depth.
+
+::: {.poi-toc-grid}
+
+::: {.poi-toc-card}
+### Part I — How to See
+
+Visual literacy. Reading the world through quantitative eyes. Probability, distributions, summaries, the grammar of graphics, lying with charts, descriptive statistics. By the end, the reader can pick up a published chart or table and read it critically.
+
+[Browse Part I →](prose/part1/01-numbers-on-the-page.qmd)
+:::
+
+::: {.poi-toc-card .poi-toc-card-future}
+### Part II — How to Speak
+
+Production. From reading to writing. Estimation, inference, regression, basic causal reasoning, model criticism, communication of results. The reader leaves Part II as a competent applied analyst.
+
+*Drafting in progress.*
+:::
+
+::: {.poi-toc-card .poi-toc-card-future}
+### Part III — How to Think
+
+Theoretical foundations. Calculus and linear algebra in service of statistical understanding, asymptotic theory, identification, the geometry of estimators. The reader leaves Part III with the apparatus that underlies the techniques.
+
+*Drafting in progress.*
+:::
+
+::: {.poi-toc-card .poi-toc-card-future}
+### Part IV — How to Discover
+
+The research frontier. Modern econometrics, causal inference at the frontier, machine learning crossovers, original research methodology. The reader leaves Part IV prepared to engage with current literature.
+
+*Drafting in progress.*
+:::
+
+:::
+
+## Three reading paths
+
+Each chapter has three layers, and you can read at the depth that suits you. Most readers move between layers depending on the chapter.
+
+::: {.poi-paths}
+
+::: {.poi-path}
+**The narrative track.** Prose with figures. No required mathematical notation beyond what was introduced earlier. A reader who reads only this layer comes away with real conceptual understanding. A first pass through Parts I and II at this depth takes about ten reading hours.
+:::
+
+::: {.poi-path}
+**The technical track.** The narrative track plus the *Inside the math* callouts in each chapter. Derivations, formal statements, proofs at appropriate depth. This is where the formal vocabulary lives. A reader who reads at this depth gains an analyst's working command of the methods.
+:::
+
+::: {.poi-path}
+**The frontier track.** Everything above plus the *Frontier note* at the end of each chapter, plus the practice problems and reflection prompts. This is the path for a reader heading toward original research. It is also the path the authors take when reading other people's books.
+:::
+
+:::
+
+For a more detailed map of which chapters serve which goals, read the [Field Guide](prose/front/field-guide.qmd).
+
+## A note on what is here today
+
+The book is in active development. Part I has ten of its eleven chapters drafted; Parts II through IV are scaffolded and being written. The figures, the prose, and the pedagogical structure are real, but expect rough edges. The repository is public and the source is open: see the [About the project](prose/front/about.qmd) page for the bibliography, the codebase, and how to contribute corrections.

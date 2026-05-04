@@ -1,0 +1,77 @@
+---
+title: "A Field Guide to the Book"
+---
+
+A short map of how the book is organized, who it serves, and which paths through it work for which kinds of reader.
+
+## The shape of the book
+
+Four parts, each one a complete experience at its own depth.
+
+| Part | Goal | What you will be able to do |
+|---|---|---|
+| **I — How to See** | Visual literacy | Pick up a published paper and follow its quantitative argument. |
+| **II — How to Speak** | Production | Run a real applied analysis from data to defensible conclusion. |
+| **III — How to Think** | Theory | Understand why the standard techniques work and when they fail. |
+| **IV — How to Discover** | The research frontier | Read current research in *AER*, *QJE*, *Econometrica* with comprehension. |
+
+Each part can be read more or less independently of the others. A reader who only reads Part I has gained genuine literacy. A reader who reads Parts I and II is a competent analyst. A reader who reads through Part III has the apparatus of a graduate student. A reader who finishes Part IV is prepared for original work.
+
+## Three reading paths
+
+Within each chapter, you can read at three depths. The layers are physically marked in the text.
+
+**The narrative track.** Prose plus the figures. No mathematical notation beyond what was introduced earlier. The first time you read a chapter, this is what you read. Most readers stay here for Parts I and II.
+
+**The technical track.** The narrative track plus the *Inside the math* callouts. Derivations, formal statements, proofs at the appropriate depth. A reader who engages with this layer in every chapter walks away with an analyst's grasp of the formal machinery.
+
+**The frontier track.** The technical track plus the *Frontier note*, the *Practice problems*, and the *Reflect before moving on* prompts. This is the path of a graduate student or an applied researcher who wants to test their understanding actively. It is roughly twice the time of the narrative track and pays off compoundingly.
+
+## Reading paths for specific audiences
+
+The four parts serve different readers differently. Below are some honest recommendations for who should read what.
+
+### A working analyst who already knows regression
+
+You probably want to skim Part I (chapters 6 and 8 in particular), spend real time in Part II for the things you already know less well (standard errors, model criticism), and start in Part III when you want to know why your tools work. Part IV is the frontier and is the only part of the book that will routinely surprise you.
+
+### A first-time student
+
+Read Part I cover to cover at the narrative depth. Do the practice problems. Skip the technical and frontier callouts on a first pass. Come back to them after Part II. Plan on twelve to twenty reading hours for Part I; longer if you are also doing the practice problems carefully.
+
+### A policy researcher or journalist
+
+The most useful chapters are 1 (data structure), 5 (what summaries hide), 6 (lying with charts), 8 (visualizing uncertainty), 10 (reading tables), 13 (confidence intervals, in Part II), and 32 (causal inference, in Part III). You can read those seven chapters as a standalone short course in quantitative literacy, in roughly five reading hours.
+
+### A graduate student in economics
+
+The book is written under the assumption that you have already taken a methods sequence. Skim Part I for vocabulary, Part II for the chapters you might teach, Part III as a refresher, and Part IV as the working bibliography for your dissertation. The book does not replace Greene or Hansen; it is a parallel companion that argues for visualization and intuition where those texts argue for mathematical formalism.
+
+### Someone reading aloud with a child or student
+
+Parts of Part I work as bedtime reading or office-hours material. Chapters 1, 2, 3, 6, and 7 in particular have running examples that survive being broken into small pieces. The voice is meant to be readable aloud; if it isn't, that is a failure of the prose.
+
+## How the chapters connect
+
+Each chapter has explicit forward and backward references in its prose. Cross-references appear in three places: in the prose itself when one chapter builds directly on another, in the *Frontier notes* at the end of each chapter, and in the bibliography at the back of the book.
+
+Roughly:
+
+- Chapters 1-2 set the foundations and are referenced throughout.
+- Chapter 3 (distributions) is referenced in every Part-II chapter on inference.
+- Chapter 4 (grammar of graphics) is referenced in every chapter that introduces a new chart type.
+- Chapter 9 (reading equations) is the keystone for everything mathematical that follows; many readers will want to come back to it more than once.
+
+If you find yourself confused in a later chapter, the most common fix is to go back to the chapter where the relevant concept was introduced.
+
+## Conventions used throughout
+
+A few small things that recur, named here so you can recognize them when they appear.
+
+**The trade panel.** A small bilateral trade dataset (six countries, ten years) is the running example for most of Part I. By chapter five you will know it well. The data lives in the source repository and the codebook is available online.
+
+**The POI palette.** A fixed set of seven colors with semantic meaning is taught in chapter 4 and used throughout. The colors are not arbitrary; reading them speeds up reading the figures.
+
+**Math read aloud.** Every new equation is parsed in English on first appearance. Read the parsing aloud.
+
+**Banned phrases.** A short list of writing tics (*let's dive in*, *it's important to note*, em-dashes) is excluded from the prose. The exclusion is editorial; the writing is meant to sound like a person.

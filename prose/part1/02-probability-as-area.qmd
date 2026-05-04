@@ -2,6 +2,30 @@
 title: "Probability as area"
 ---
 
+::: {.poi-chapter-card}
+<div class="poi-chapter-card-meta">
+<span class="label">Reading time</span>
+<span class="value">~16 minutes</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Prerequisites</span>
+<span class="value">Chapter 1</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Track</span>
+<span class="value">Concept</span>
+</div>
+<div class="poi-chapter-card-learn">
+<span class="label">You will learn</span>
+<ul>
+<li>That probability is, fundamentally, a fraction of an outcome space</li>
+<li>How conditional probability is just a change of denominator</li>
+<li>Bayes' theorem from a picture, then from a formula</li>
+<li>Why a 95%-accurate test for a rare disease usually returns false positives</li>
+</ul>
+</div>
+:::
+
 ## What probability is
 
 Pause on the word "probability." Pretend you have never heard it before. What kind of thing is it?
@@ -86,6 +110,10 @@ What is the probability you have the disease?
 
 Most people, when surveyed, answer somewhere between 90% and 95%, anchoring on the test's accuracy. The actual answer, as the picture below makes obvious, is roughly 16%.
 
+::: {.column-margin}
+**Casscells, Schoenberger, and Graboys (1978)** ran exactly this question on a sample of physicians and house officers at Harvard Medical School. The median answer was 95%. **Eddy (1982)** later documented similar errors among practicing physicians making real diagnostic decisions. Base-rate neglect is not a layperson's mistake; it is a working clinician's mistake too.
+:::
+
 Imagine 10,000 people drawn at random from the population. The picture shows them as a 100-by-100 grid of squares.
 
 ![10,000 people, drawn at random from a population with 1% disease prevalence and tested with a 95%-accurate test. The dark red squares are sick people who tested positive (95). The pale red squares are sick people who tested negative (5). The rust squares are healthy people who tested positive anyway, the false positives (495). The gray squares are healthy people who tested negative (9,405). The probability of being sick given a positive test is the fraction of the positive-test population that is also in the sick population: 95 out of (95 + 495) = 590, or about 16%. The base rate dominates.](../../pictures/figures/output/fig_bayes_grid.png){#fig-bayes-grid}
@@ -111,6 +139,69 @@ $$
 Read it aloud. *The probability of being sick given a positive test equals the probability of testing positive given sickness, times the prevalence of sickness, divided by the total probability of testing positive.* That denominator is just the size of the positive-test population (the 590 from the picture), expressed as a fraction.
 
 The formula and the picture say exactly the same thing. The picture is more honest. When you read about Bayes' theorem in any later chapter, picture the grid first and translate the formula into rectangles second. That is the pedagogical move that prevents an entire class of mistakes that even careful researchers continue to make.
+
+## Move the dials yourself
+
+The grid above used 1% prevalence and 95% test accuracy. The widget below lets you set those parameters yourself. Drag the sliders, watch the colored regions resize, and see how the positive predictive value, $P(\text{sick} \mid +)$, changes.
+
+```{ojs}
+//| echo: false
+//| panel: input
+viewof prevalence = Inputs.range([0.001, 0.50], { value: 0.01, step: 0.001, label: "Disease prevalence" })
+viewof sensitivity = Inputs.range([0.50, 0.999], { value: 0.95, step: 0.005, label: "Test sensitivity" })
+viewof specificity = Inputs.range([0.50, 0.999], { value: 0.95, step: 0.005, label: "Test specificity" })
+```
+
+```{ojs}
+//| echo: false
+ppv = (sensitivity * prevalence) /
+      (sensitivity * prevalence + (1 - specificity) * (1 - prevalence))
+
+n_total = 10000
+n_sick = Math.round(prevalence * n_total)
+n_sick_pos = Math.round(sensitivity * n_sick)
+n_sick_neg = n_sick - n_sick_pos
+n_well = n_total - n_sick
+n_well_pos = Math.round((1 - specificity) * n_well)
+n_well_neg = n_well - n_well_pos
+n_pos = n_sick_pos + n_well_pos
+
+result_html = html`<div class="poi-bayes-result">
+P(sick | positive) = <strong>${(ppv * 100).toFixed(1)}%</strong><br>
+<span class="poi-bayes-detail">${n_sick_pos.toLocaleString()} true positives out of ${n_pos.toLocaleString()} positive tests, in 10,000 people.</span>
+</div>`
+
+squares = {
+  const arr = []
+  for (let i = 0; i < n_total; i++) {
+    let cls
+    if (i < n_sick_pos) cls = "Sick · test +"
+    else if (i < n_sick) cls = "Sick · test −"
+    else if (i < n_sick + n_well_pos) cls = "Well · test +"
+    else cls = "Well · test −"
+    arr.push({ x: i % 100, y: Math.floor(i / 100), cls })
+  }
+  return arr
+}
+
+bayes_chart = Plot.plot({
+  width: 600,
+  aspectRatio: 1,
+  marginTop: 36, marginBottom: 8, marginLeft: 4, marginRight: 4,
+  x: { axis: null, domain: [-0.5, 99.5] },
+  y: { axis: null, domain: [-0.5, 99.5], reverse: true },
+  color: {
+    domain: ["Sick · test +", "Sick · test −", "Well · test +", "Well · test −"],
+    range: ["#8c2329", "#e8bdbd", "#b85c38", "#d8d3c5"],
+    legend: true
+  },
+  marks: [
+    Plot.dot(squares, { x: "x", y: "y", fill: "cls", r: 2.7, stroke: null })
+  ]
+})
+```
+
+Try the rare-disease scenario from the chapter (prevalence 0.01, sensitivity 0.95, specificity 0.95): the PPV is about 16%. Now slide prevalence to 0.10, a much more common condition. The PPV jumps to about 68%. Same test, different world. The base rate dominates the calculation, and the widget makes that fact tangible in a way the static figure cannot.
 
 ::: {.callout-warning title="Key insight"}
 
@@ -180,4 +271,10 @@ For now, every time you condition on data in this book, remember that you are do
 - Where else in the world have you seen base-rate neglect at work?
 - If a friend asked you "what is probability, in one sentence," what would you say now that you could not have said before this chapter?
 
+:::
+
+::: {.poi-looking-ahead}
+[Looking ahead]{.label}
+
+**Chapter 3: Shapes of data.** Probability lets you assign a number between 0 and 1 to a region of an outcome space. The next chapter asks: what shapes do real data actually take? Six distributions, each one a story about the kind of process that produces it, each one a tool you will reach for repeatedly for the rest of the book. [Continue →](03-shapes-of-data.qmd)
 :::

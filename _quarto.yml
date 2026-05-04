@@ -12,7 +12,11 @@ book:
   date-format: "MMMM YYYY"
   chapters:
     - index.qmd
-    - part: "How to See"
+    - part: "Front matter"
+      chapters:
+        - prose/front/field-guide.qmd
+        - prose/front/about.qmd
+    - part: "Part I — How to See"
       chapters:
         - prose/part1/01-numbers-on-the-page.qmd
         - prose/part1/02-probability-as-area.qmd
@@ -26,6 +30,15 @@ book:
         - prose/part1/10-reading-tables.qmd
   search: true
   page-navigation: true
+  reader-mode: true
+  page-footer:
+    left: |
+      © 2026 Ian Helfrich and Elizaveta Gonchar. CC-BY-SA 4.0.
+    right: |
+      Built with [Quarto](https://quarto.org).
+
+bibliography: references.bib
+csl: https://www.zotero.org/styles/chicago-author-date
 
 highlight-style: a11y
 
@@ -35,6 +48,7 @@ format:
     css: assets/styles.css
     toc: true
     toc-depth: 3
+    toc-expand: 2
     fig-format: png
     fig-dpi: 300
     fig-width: 9

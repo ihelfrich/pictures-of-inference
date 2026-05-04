@@ -2,6 +2,29 @@
 title: "Numbers on the page"
 ---
 
+::: {.poi-chapter-card}
+<div class="poi-chapter-card-meta">
+<span class="label">Reading time</span>
+<span class="value">~14 minutes</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Prerequisites</span>
+<span class="value">None</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Track</span>
+<span class="value">Concept</span>
+</div>
+<div class="poi-chapter-card-learn">
+<span class="label">You will learn</span>
+<ul>
+<li>How to read a dataset before you analyze it</li>
+<li>The four kinds of variable and what arithmetic each one supports</li>
+<li>The eight-question audit to run on every new dataset</li>
+</ul>
+</div>
+:::
+
 ## What you just did
 
 Here is a small piece of a real-shaped dataset: bilateral trade flows for six countries observed over a decade, one row per pair-of-countries per year. Look at it for ten seconds before reading on.
@@ -58,6 +81,10 @@ Statisticians divide variables into four flavors, and the difference between the
 **Categorical, unordered (nominal).** The values are names with no built-in ranking: country codes, sex, eye color, whether someone owns a passport. The only sensible operations are counting how often each value appears and asking whether two rows share the same value. USA and DEU are different. There is no answer to "is USA bigger than DEU."
 
 **Categorical, ordered (ordinal).** Order matters, but the gaps between adjacent values do not. Education levels (high school, college, graduate). Survey responses from strongly-disagree to strongly-agree. Movie ratings out of five. The difference between "agree" and "strongly agree" is not necessarily the same size as the difference between "neutral" and "agree." You can sort the values. You can talk about medians. Treating the numbers as if they were dollars and computing an average is a substantive choice that needs defending in print.
+
+::: {.column-margin}
+**S. S. Stevens (1946)** is the canonical reference for the four levels of measurement (nominal, ordinal, interval, ratio). The four-flavor split here is the working consensus in modern applied work; some methodologists argue for finer or coarser distinctions, none has stuck.
+:::
 
 **Quantitative, discrete.** Counts of things. The number of children in a household, the number of trade partners a country has in a given year. The values are real numbers and arithmetic works, but the values can only be whole numbers. You cannot have 2.4 children. The Poisson distribution, which we will meet in chapter three, is the natural home of this kind of variable.
 
@@ -153,4 +180,10 @@ Data is rectangular. Rows are observations, columns are variables, and the unit 
 - Why might the same dataset be tidy for one analysis and not tidy for another?
 - Pick the audit question you would be most likely to skip in practice. Why? What do you risk by skipping it?
 
+:::
+
+::: {.poi-looking-ahead}
+[Looking ahead]{.label}
+
+**Chapter 2: Probability as area.** With the rectangle of data in hand, the next move is to ask how likely each value of each column is. Chapter 2 introduces probability geometrically before any formula appears: as a fraction of an outcome space, as conditioning by zooming in, and as Bayes' theorem made visual through a 10,000-square grid that exposes the base-rate fallacy in one picture. [Continue →](02-probability-as-area.qmd)
 :::

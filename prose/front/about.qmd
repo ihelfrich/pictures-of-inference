@@ -1,0 +1,64 @@
+---
+title: "About the project"
+---
+
+## The book
+
+*Pictures of Inference* is a book in progress. It is meant as a single integrated text that takes a reader from "what is a correlation" to the working knowledge needed to read, evaluate, and contribute to research published in journals like the *American Economic Review*, *Quarterly Journal of Economics*, and *Econometrica*.
+
+The pedagogical commitments are stated up front and respected throughout:
+
+**Visualization is primary.** Every concept gets a figure, and the prose points at it. Captions interpret rather than label. The reader internalizes a consistent visual vocabulary by chapter five and benefits from it for the rest of the journey.
+
+**Math is taught as a language.** Notation is parsed before it is computed. Translation between English and mathematics is an explicit, drilled skill. Equations are read aloud the first time they appear.
+
+**Tool fluency, not tool tribalism.** R, Stata, Python, and others appear where they fit best. The reader develops a portfolio of fluencies rather than commitment to a single ecosystem.
+
+**Voice as a working narrator.** The narrator is a wise, curious, occasionally amused traveling companion. The reader is presumed intelligent. Authority is never performed because the writing demonstrates competence by being competent.
+
+## The authors
+
+**Dr. Ian Helfrich** is an economist working at the intersection of international economics, geospatial methods, and quantitative pedagogy. PhD, Georgia Institute of Technology. He works on trade-cost geometry, the measurement of trade frictions under sanctions and conflict, and the practical question of how to teach quantitative methods without losing the audience.
+
+**Dr. Elizaveta Gonchar** is the co-author. (Bio to be filled in.)
+
+## The repository
+
+The book's source lives at a public GitHub repository. The repository contains:
+
+- Every chapter's `.qmd` source, ready to re-render.
+- The Python figure generation code.
+- The placeholder trade dataset and its codebook.
+- The Quarto build configuration and CSS.
+- A continuous-integration workflow that rebuilds and deploys on every push.
+
+The book is licensed CC-BY-SA 4.0 for prose and MIT for code and figures. Datasets are licensed individually and noted in their respective directories. Corrections and contributions are invited through pull requests.
+
+## Comparable works
+
+*Pictures of Inference* sits alongside several existing texts and acknowledges its inheritances explicitly.
+
+- *Statistical Rethinking* (McElreath) for voice, integration of code, and accessibility-with-depth.
+- *Mostly Harmless Econometrics* and *Mastering 'Metrics* (Angrist & Pischke) for modern empirical sensibility.
+- *R for Data Science* (Wickham & Grolemund) for production quality, format, and reader experience.
+- *The Visual Display of Quantitative Information* and *Envisioning Information* (Tufte) for visual design philosophy.
+- *Causal Inference: The Mixtape* (Cunningham) for accessible voice on advanced material.
+- *Econometric Analysis* (Greene) for comprehensiveness and scholarly tone.
+
+## How to cite
+
+If you draw on this book in your own work, the suggested citation is:
+
+> Helfrich, I., and Gonchar, E. (2026). *Pictures of Inference: A Visual Course in Statistics, Calculus, and Econometrics*. (Working draft.) Available at: ianhelfrich.com.
+
+A formal citation will be added when the book reaches its first stable release.
+
+## How to contribute
+
+Three ways:
+
+1. **Corrections.** Open an issue on the GitHub repository. Specific page references are welcome.
+2. **Voice samples.** If a chapter feels off, the underlying voice charter is in `docs/voice/charter.md`. Quote the offending sentence and propose an alternative.
+3. **New material.** Draft chapters or sections, especially for Parts II-IV, are welcome via pull request. Read `docs/process.md` first for the editorial workflow.
+
+The project is multi-year and there is no shortage of work to do.
