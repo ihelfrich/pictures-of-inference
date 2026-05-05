@@ -197,9 +197,11 @@ The same problem appears in reverse for floor effects (data bounded below), and 
 
 ## Real UK data
 
+These two problems draw on UK administrative datasets at different geographic scales. Problem 9 pairs Gross Disposable Household Income (GDHI) from ONS Regional Accounts — the money households retain after taxes and transfers — with median property prices from the Land Registry, both aggregated to Local Authority District (LAD) level. Problem 10 uses the same IMD 2019 dataset as workbook 1 but examines individual deprivation domains at Lower Super Output Area level rather than the combined score.
+
 ### Problem 9: Income and house prices across British local authorities
 
-![Each dot is a local authority district in England and Wales. The x-axis shows gross disposable household income per head in 2016 (£). The y-axis shows the median house transaction price (£ thousands). London boroughs are highlighted.](../../pictures/figures/output/fig_wb2_q9.png){#fig-wb2-q9}
+![Each dot is one of 305 Local Authority Districts (LADs) in England and Wales. Horizontal axis: Gross Disposable Household Income (GDHI) per head in 2016 — money households have available after taxes and transfers, in pounds. Vertical axis: median residential transaction price in £ thousands (year ending September 2016). London boroughs (median price above £500k) highlighted in orange. Gold line: OLS regression fit. **Sources:** ONS Regional Accounts (GDHI 2016); HM Land Registry Price Paid Data.](../../pictures/figures/output/fig_wb2_uk_gdhi_prices.png){#fig-wb2-uk-gdhi-prices}
 
 1. What is the direction of the relationship? Does it look linear?
 2. Estimate the slope by eye. If GDHI increases by £5,000, by roughly how much does the median house price change?
@@ -220,7 +222,7 @@ The same problem appears in reverse for floor effects (data bounded below), and 
 
 ### Problem 10: Income and health deprivation in English neighbourhoods
 
-![Each dot is one of 2,000 randomly sampled Lower Super Output Areas in England (from the 2019 Index of Multiple Deprivation). The x-axis shows the income deprivation score (fraction of residents in poverty). The y-axis shows the health deprivation and disability score (a composite of premature death, ill health, disability, and emergency admissions).](../../pictures/figures/output/fig_wb2_q10.png){#fig-wb2-q10}
+![Each dot is one of 2,000 randomly sampled Lower Super Output Areas (LSOAs) from the English IMD 2019. Horizontal axis: income deprivation score (proportion of residents below 60% of median income after housing costs). Vertical axis: health deprivation and disability score — a standardised composite of premature mortality, illness, disability, and emergency admissions (positive = worse than average, negative = better). **Source:** MHCLG, English Indices of Deprivation 2019.](../../pictures/figures/output/fig_wb2_uk_income_health.png){#fig-wb2-uk-income-health}
 
 1. Is the relationship positive or negative? Strong or weak?
 2. The correlation coefficient is printed on the figure. What does it tell you about the fit?

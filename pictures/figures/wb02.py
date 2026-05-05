@@ -206,8 +206,8 @@ def fig_wb2_q8():
 
 
 @poi_style(size=FIG_FULL)
-def fig_wb2_q9():
-    """GDHI vs median house price by English/Welsh local authority district."""
+def fig_wb2_uk_gdhi_prices():
+    """GDHI vs median house price by English/Welsh local authority district (ONS/Land Registry)."""
     import pandas as pd
 
     # Load GDHI data from inequality metrics (344 LADs, no duplicates)
@@ -261,7 +261,7 @@ def fig_wb2_q9():
 
 
 @poi_style(size=FIG_FULL)
-def fig_wb2_q10():
+def fig_wb2_uk_income_health():
     """Income deprivation vs health deprivation across English LSOAs (IMD 2019)."""
     import pandas as pd
     rng = np.random.default_rng(1002)

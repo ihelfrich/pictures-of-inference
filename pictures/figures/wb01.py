@@ -123,8 +123,8 @@ def fig_wb1_q8():
 
 
 @poi_style(size=(10, 4.5))
-def fig_wb1_q9():
-    """UK house prices: linear vs log scale histograms."""
+def fig_wb1_uk_house_prices():
+    """UK house prices (Land Registry): linear vs log scale histograms."""
     import pandas as pd
     rng = np.random.default_rng(901)
     df = pd.read_parquet('/Volumes/HELFRICH-GD/UK_EconomicData/data/raw/LandRegistry_PPD_Latest.parquet')
@@ -154,7 +154,7 @@ def fig_wb1_q9():
 
 
 @poi_style(size=FIG_FULL)
-def fig_wb1_q10():
+def fig_wb1_uk_deprivation():
     """IMD 2019: distribution of deprivation scores across English LSOAs."""
     import pandas as pd
     df = pd.read_parquet('/Volumes/HELFRICH-GD/UK_EconomicData/data/raw/IMD_2019_England.parquet')

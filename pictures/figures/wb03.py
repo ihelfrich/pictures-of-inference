@@ -242,8 +242,8 @@ def fig_wb3_q7():
 
 
 @poi_style(size=FIG_FULL)
-def fig_wb3_q8():
-    """SIMD: urban vs rural deprivation rank distribution in Scotland."""
+def fig_wb3_uk_simd():
+    """SIMD 2020: urban vs rural deprivation rank distribution in Scotland."""
     import pandas as pd
     df = pd.read_parquet('/Volumes/HELFRICH-GD/UK_EconomicData/data/raw/SIMD_2020_Lookup.parquet')
     urban = df[df['URclass'] == 1]['SIMD2020v2_Rank'].values
@@ -274,8 +274,8 @@ def fig_wb3_q8():
 
 
 @poi_style(size=FIG_FULL)
-def fig_wb3_q9():
-    """Land Registry: sampling distribution of mean price, London vs rest of England."""
+def fig_wb3_uk_london_prices():
+    """Land Registry: sampling distributions of mean price, London vs rest of England."""
     import pandas as pd
     rng = np.random.default_rng(909)
     df = pd.read_parquet('/Volumes/HELFRICH-GD/UK_EconomicData/data/raw/LandRegistry_PPD_Latest.parquet')
@@ -319,7 +319,7 @@ def fig_wb3_q9():
 
 
 @poi_style(size=(9, 5.0))
-def fig_wb3_q10():
+def fig_wb3_uk_property_types():
     """Land Registry: observed vs expected property type counts (chi-squared test)."""
     import pandas as pd
     df = pd.read_parquet('/Volumes/HELFRICH-GD/UK_EconomicData/data/raw/LandRegistry_PPD_Latest.parquet')

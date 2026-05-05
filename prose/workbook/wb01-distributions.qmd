@@ -192,9 +192,11 @@ Without computing anything:
 
 ## Real UK data
 
+The two problems below use administrative data collected by UK government agencies. The Land Registry Price Paid Data records every residential property transaction in England and Wales registered with HM Land Registry; the 2024 extract contains approximately 93,000 transactions with price, property type, date, and location. The English Indices of Deprivation 2019 (IMD 2019), published by the Ministry of Housing, Communities and Local Government, measures deprivation across seven domains for every Lower Super Output Area in England — 32,844 small geographies of roughly 1,500 residents each.
+
 ### Problem 9: UK house transaction prices
 
-![8,000 residential property transactions from the Land Registry Price Paid Data, England and Wales. Left panel: prices in thousands of pounds on a linear scale. Right panel: the same values after taking natural logs.](../../pictures/figures/output/fig_wb1_q9.png){#fig-wb1-q9}
+![8,000 randomly sampled residential property transactions in England and Wales from the Land Registry Price Paid Data (2024 extract, ~93,000 transactions total). Left: raw prices in £ thousands on a linear scale. Right: natural log of the same prices. Transactions above £2 million excluded. **Source:** HM Land Registry, Price Paid Data, accessed 2024.](../../pictures/figures/output/fig_wb1_uk_house_prices.png){#fig-wb1-uk-house-prices}
 
 1. What shape does the price distribution take on the linear scale?
 2. Which chapter-3 story explains why house prices take this shape?
@@ -215,7 +217,7 @@ Without computing anything:
 
 ### Problem 10: English neighbourhood deprivation
 
-![Distribution of the 2019 Index of Multiple Deprivation (IMD) score across all 32,844 Lower Super Output Areas in England. Higher scores indicate greater deprivation. Vertical lines mark the mean (gold) and median (green).](../../pictures/figures/output/fig_wb1_q10.png){#fig-wb1-q10}
+![Distribution of Index of Multiple Deprivation (IMD) scores across all 32,844 Lower Super Output Areas (LSOAs) in England. An LSOA contains roughly 1,500 residents. The IMD combines seven domains — income, employment, education, health, crime, housing barriers, and living environment — into a single score; higher values indicate greater deprivation. Gold line: mean (21.7). Green dashed line: median (17.6). **Source:** Ministry of Housing, Communities and Local Government (MHCLG), English Indices of Deprivation 2019.](../../pictures/figures/output/fig_wb1_uk_deprivation.png){#fig-wb1-uk-deprivation}
 
 1. Describe the shape of this distribution. Is it symmetric?
 2. The mean is noticeably higher than the median. What does this tell you about inequality in the data?
