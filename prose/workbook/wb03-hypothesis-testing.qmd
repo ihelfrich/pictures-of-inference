@@ -13,7 +13,7 @@ title: "Workbook · Hypothesis testing in practice"
 </div>
 <div class="poi-chapter-card-meta">
 <span class="label">Format</span>
-<span class="value">8 worked examples with figures and full solutions</span>
+<span class="value">11 worked examples with figures and full solutions</span>
 </div>
 <div class="poi-chapter-card-learn">
 <span class="label">Skills being practiced</span>
@@ -234,6 +234,92 @@ A study of 50,000 patients finds a "highly significant" association between coff
 - "Coffee consumption was associated with a 0.04% increase in the inflammation marker per cup per day, 95% CI: (0.03%, 0.05%), $p = 10^{-12}$, $n = 50{,}000$. The effect is statistically distinguishable from zero but is small relative to typical day-to-day variation in this marker (approximately 5%) and unlikely to be clinically meaningful."
 
 This is the form every results paragraph should take. The journal-table convention of showing only stars and p-values systematically obscures effect sizes, which is one reason coefficient plots (chapter 8) are gradually replacing star-driven tables in modern research.
+
+:::
+
+## Real UK data
+
+### Problem 9: Urban and rural deprivation in Scotland
+
+The Scottish Index of Multiple Deprivation (SIMD) assigns each of Scotland's 6,976 data zones a rank from 1 (most deprived) to 6,976 (least deprived). The histogram below compares the distribution of ranks across two groups: Large Urban Areas (URclass 1) and Remote Rural areas (URclass 6).
+
+![Distributions of SIMD 2020 deprivation rank for Large Urban Areas and Remote Rural data zones in Scotland. A higher rank means less deprivation.](../../pictures/figures/output/fig_wb3_q8.png){#fig-wb3-q8}
+
+State and test the following hypothesis formally:
+
+$H_0$: The mean deprivation rank is the same in Large Urban Areas and Remote Rural data zones.
+$H_1$: The two groups have different mean deprivation ranks.
+
+1. From the figure alone, which group appears more deprived on average? By roughly how much?
+2. What test is appropriate here? What assumptions does it require?
+3. The sample sizes are large. What does this imply for the power of the test?
+4. Suppose the test rejects at $p < 0.001$. A journalist writes: "Urban areas are significantly more deprived than rural ones." Evaluate this claim carefully. Is it statistically justified? Is it practically informative?
+
+::: {.callout-note collapse="true" title="Solution to Problem 9"}
+
+**Which group is more deprived?** Large Urban Areas have lower mean ranks, meaning they are, on average, more deprived than Remote Rural areas. This may seem counterintuitive: rural poverty is real, but Scotland's most severely deprived communities are concentrated in urban areas such as parts of Glasgow, Dundee, and Inverclyde. Remote Rural areas tend to cluster in the middle of the rank distribution, not at the deprived extreme.
+
+**Appropriate test.** A two-sample $t$-test (Welch's version, which does not assume equal variances). The assumptions are: (i) the two groups are independent samples of data zones, (ii) the ranks are approximately normally distributed within each group, or the sample sizes are large enough for the central limit theorem to apply. Both conditions are met here. The large sample sizes (hundreds to thousands of data zones per group) make the normality assumption largely irrelevant by CLT.
+
+**Power.** Large sample sizes produce small standard errors, which means even modest differences in means will generate large test statistics and very small p-values. With hundreds of data zones in each group, the test has very high power to detect differences of even 100 rank positions.
+
+**Evaluating the journalist's claim.** "Statistically significant" (at $p < 0.001$) means the data rule out the null that the two groups have identical means, with high confidence. Whether this is "practically informative" is a separate question. The difference in mean ranks translates into a concrete difference in deprivation scores, and the researcher should report that difference alongside the p-value. The journalist's framing is also slightly imprecise: urban areas as a whole are not "more deprived" than rural ones in a uniform sense. The urban distribution is more spread out — it contains Scotland's most deprived and some of its least deprived zones. The rural distribution is narrower and centred higher. The claim is defensible in the sense of "lower mean rank for urban areas," but the headline erases the within-group spread that is often as important as the difference in means.
+
+:::
+
+### Problem 10: London house prices versus the rest of England
+
+A buyer's group claims that London house prices are significantly higher than those in the rest of England. Using 2,000 randomly selected transactions from London and 2,000 from the rest of England (all from the Land Registry Price Paid Data, transactions below £2,000,000), test this claim at the 1% significance level.
+
+![Sampling distributions of the sample mean transaction price for London (orange) and the rest of England (blue), based on 2,000 transactions each. Curves are normal approximations computed from the actual sample statistics.](../../pictures/figures/output/fig_wb3_q9.png){#fig-wb3-q9}
+
+1. From the figure, do the two sampling distributions overlap? What does the overlap (or lack of it) tell you before you compute any test statistic?
+2. Write out the null and alternative hypotheses formally.
+3. What kind of test is appropriate? Why not a paired $t$-test?
+4. The figure shows the sampling distributions of the two sample means, not the raw price distributions. Why does this distinction matter?
+
+::: {.callout-note collapse="true" title="Solution to Problem 10"}
+
+**Overlap.** The two sampling distributions are visibly separated, with little or no overlap. This is strong visual evidence against $H_0$ before any calculation. If the two population means were equal, we would expect the sampling distributions to be centred at the same value; they clearly are not.
+
+**Hypotheses.** Let $\mu_L$ and $\mu_E$ denote the population mean transaction prices for London and the rest of England respectively.
+
+$$H_0: \mu_L = \mu_E \qquad H_1: \mu_L > \mu_E$$
+
+The claim is one-sided (London prices are *higher*), so a one-sided test at $\alpha = 0.01$ is appropriate, though a two-sided test at $\alpha = 0.01$ is also defensible if you want to account for the possibility of London prices being lower (which is implausible here but formally complete).
+
+**Test choice.** A two-sample $t$-test (Welch's). Not a paired test, because the London and rest-of-England transactions involve different properties and different buyers; there is no natural pairing. The two groups are independent random samples from different sub-populations of the market.
+
+**Sampling distribution vs raw distribution.** The raw price distributions are heavily right-skewed (see workbook 1, problem 9). The sampling distributions of the sample means are approximately normal by the central limit theorem — even though individual prices are skewed, the average of 2,000 prices is very close to normally distributed. This is why the curves in the figure look like normal bells. The distinction matters because the $t$-test is applied to the means (which are approximately normal) not to the raw prices (which are not). With $n = 2{,}000$, the CLT approximation is excellent.
+
+:::
+
+### Problem 11: Are property types uniformly distributed?
+
+The Land Registry records four main residential property types: Detached (D), Semi-detached (S), Terraced (T), and Flat/Maisonette (F). The bar chart below shows the observed counts in the dataset alongside what we would expect if all four types were equally common.
+
+![Observed (blue) and expected (orange) counts for four property types across Land Registry transactions. Expected counts assume equal proportions (25% each).](../../pictures/figures/output/fig_wb3_q10.png){#fig-wb3-q10}
+
+Test the null hypothesis that all four property types appear with equal frequency.
+
+1. From the figure, which property type is most over-represented relative to the uniform expectation? Which is most under-represented?
+2. State the null and alternative hypotheses for this test. What test statistic is appropriate?
+3. The chi-squared test statistic is $\chi^2 = \sum (O_i - E_i)^2 / E_i$. Compute it from the figure.
+4. With 3 degrees of freedom, the critical value at $\alpha = 0.001$ is approximately 16.3. What do you conclude?
+
+::: {.callout-note collapse="true" title="Solution to Problem 11"}
+
+**Over/under-represented types.** From the figure: Semi-detached and Terraced houses are the most common types, exceeding the uniform expectation. Detached houses are close to the uniform benchmark or slightly under. Flats and Maisonettes are substantially under-represented relative to what uniform proportions would predict.
+
+**Hypotheses.** Let $p_D, p_S, p_T, p_F$ denote the true proportions of each type.
+
+$$H_0: p_D = p_S = p_T = p_F = 0.25 \qquad H_1: \text{at least one proportion differs}$$
+
+The appropriate test is a **chi-squared goodness-of-fit test**. The test statistic is $\chi^2 = \sum_{i=1}^{4} (O_i - E_i)^2 / E_i$, where $O_i$ are observed counts and $E_i = n/4$ for each category.
+
+**Computing $\chi^2$.** The exact values depend on the counts in the dataset. With roughly 93,000 transactions and a clear visual departure from uniformity, the chi-squared statistic will be very large. Even a 2% departure from 25% in one cell contributes roughly $(0.02 \times 93000)^2 / (0.25 \times 93000) \approx 1{,}550$ to the statistic. The total $\chi^2$ will be orders of magnitude above any standard critical value.
+
+**Conclusion.** The null of uniform proportions is emphatically rejected. Property types are not equally distributed in the Land Registry: semi-detached and terraced houses dominate because they are the dominant building stock of Britain's post-war suburban expansion. Detached houses are rarer because they require more land. Flats, while numerous in absolute terms, make up a smaller share of total transactions partly because more flats are rented rather than sold. Rejecting the uniform null is not surprising — it is the baseline anyone familiar with British housing stock would predict. This problem illustrates a recurring issue with large datasets: with 93,000 observations, the test has overwhelming power and will reject almost any null hypothesis, including ones that are only trivially wrong. Statistical significance does not imply economic or policy significance; the practical question is whether the departures from uniformity are large enough to matter for whatever decision you are making.
 
 :::
 

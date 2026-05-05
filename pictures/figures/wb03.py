@@ -239,3 +239,111 @@ def fig_wb3_q7():
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     return fig
+
+
+@poi_style(size=FIG_FULL)
+def fig_wb3_q8():
+    """SIMD: urban vs rural deprivation rank distribution in Scotland."""
+    import pandas as pd
+    df = pd.read_parquet('/Volumes/HELFRICH-GD/UK_EconomicData/data/raw/SIMD_2020_Lookup.parquet')
+    urban = df[df['URclass'] == 1]['SIMD2020v2_Rank'].values
+    rural = df[df['URclass'] == 6]['SIMD2020v2_Rank'].values
+
+    # Manual two-sample t-stat (Welch)
+    n1, n2 = len(urban), len(rural)
+    se_diff = np.sqrt(urban.var(ddof=1) / n1 + rural.var(ddof=1) / n2)
+    t_stat = (urban.mean() - rural.mean()) / se_diff
+
+    fig, ax = plt.subplots()
+    bins = np.linspace(1, 6976, 40)
+    ax.hist(urban, bins=bins, color=INK, alpha=0.5, edgecolor='white',
+            linewidth=0.4, label=f'Large Urban Areas (n={len(urban):,})')
+    ax.hist(rural, bins=bins, color=RUST, alpha=0.5, edgecolor='white',
+            linewidth=0.4, label=f'Remote Rural (n={len(rural):,})')
+    ax.axvline(urban.mean(), color=INK, linewidth=2.0, linestyle='dashed',
+               label=f'Urban mean = {urban.mean():.0f}')
+    ax.axvline(rural.mean(), color=RUST, linewidth=2.0, linestyle='dashed',
+               label=f'Rural mean = {rural.mean():.0f}')
+    ax.set_xlabel('SIMD deprivation rank (1 = most deprived, 6976 = least)')
+    ax.set_ylabel('count')
+    ax.set_title('SIMD 2020: deprivation rank by urban/rural class, Scotland', fontsize=11)
+    ax.legend(frameon=False, fontsize=9)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    return fig
+
+
+@poi_style(size=FIG_FULL)
+def fig_wb3_q9():
+    """Land Registry: sampling distribution of mean price, London vs rest of England."""
+    import pandas as pd
+    rng = np.random.default_rng(909)
+    df = pd.read_parquet('/Volumes/HELFRICH-GD/UK_EconomicData/data/raw/LandRegistry_PPD_Latest.parquet')
+    df = df[df['price'] < 2_000_000]
+    london = df[df['county'] == 'GREATER LONDON']['price'].values
+    rest   = df[df['county'] != 'GREATER LONDON']['price'].values
+
+    # Use subsamples for display
+    n_l = min(len(london), 2000)
+    n_r = 2000
+    lon_s = rng.choice(london, size=n_l, replace=False)
+    rst_s = rng.choice(rest,   size=n_r, replace=False)
+
+    mu_l, se_l = lon_s.mean(), lon_s.std() / np.sqrt(n_l)
+    mu_r, se_r = rst_s.mean(), rst_s.std() / np.sqrt(n_r)
+
+    x = np.linspace(
+        min(mu_l - 4*se_l, mu_r - 4*se_r),
+        max(mu_l + 4*se_l, mu_r + 4*se_r),
+        600
+    )
+
+    def norm_pdf(xv, mu, sd):
+        return (1 / (sd * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((xv - mu) / sd) ** 2)
+
+    fig, ax = plt.subplots()
+    ax.plot(x/1000, norm_pdf(x, mu_l, se_l)*1000, color=RUST, linewidth=2.0,
+            label=f'London ($\\bar{{x}}$ = £{mu_l/1000:.0f}k, n={n_l:,})')
+    ax.fill_between(x/1000, 0, norm_pdf(x, mu_l, se_l)*1000, color=RUST, alpha=0.15)
+    ax.plot(x/1000, norm_pdf(x, mu_r, se_r)*1000, color=INK, linewidth=2.0,
+            label=f'Rest of England ($\\bar{{x}}$ = £{mu_r/1000:.0f}k, n={n_r:,})')
+    ax.fill_between(x/1000, 0, norm_pdf(x, mu_r, se_r)*1000, color=INK, alpha=0.15)
+    ax.set_xlabel('sample mean transaction price (£ thousands)')
+    ax.set_ylabel('density')
+    ax.set_title('Sampling distributions of mean house price:\nLondon vs rest of England',
+                 fontsize=11)
+    ax.legend(frameon=False)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    return fig
+
+
+@poi_style(size=(9, 5.0))
+def fig_wb3_q10():
+    """Land Registry: observed vs expected property type counts (chi-squared test)."""
+    import pandas as pd
+    df = pd.read_parquet('/Volumes/HELFRICH-GD/UK_EconomicData/data/raw/LandRegistry_PPD_Latest.parquet')
+    df = df[df['property_type'].isin(['D', 'S', 'T', 'F'])]
+    counts = df['property_type'].value_counts()
+    # Re-order: Detached, Semi, Terraced, Flat
+    order = ['D', 'S', 'T', 'F']
+    labels = ['Detached', 'Semi-detached', 'Terraced', 'Flat/Maisonette']
+    obs = np.array([counts.get(k, 0) for k in order], dtype=float)
+    expected = np.full(4, obs.sum() / 4)
+
+    x = np.arange(4)
+    width = 0.35
+    fig, ax = plt.subplots()
+    ax.bar(x - width/2, obs, width, color=INK, alpha=0.85,
+           edgecolor='white', linewidth=0.6, label='Observed')
+    ax.bar(x + width/2, expected, width, color=RUST, alpha=0.6,
+           edgecolor='white', linewidth=0.6, label='Expected (uniform)')
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.set_ylabel('count')
+    ax.set_title('Observed vs. expected property-type frequencies, Land Registry',
+                 fontsize=11)
+    ax.legend(frameon=False)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    return fig

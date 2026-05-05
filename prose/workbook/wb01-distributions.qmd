@@ -13,7 +13,7 @@ title: "Workbook · Distributions in the wild"
 </div>
 <div class="poi-chapter-card-meta">
 <span class="label">Format</span>
-<span class="value">8 problems with figures and worked solutions</span>
+<span class="value">10 problems with figures and worked solutions</span>
 </div>
 <div class="poi-chapter-card-learn">
 <span class="label">Skill being practiced</span>
@@ -187,6 +187,50 @@ Without computing anything:
 **Log scale.** Approximately symmetric and roughly bell-shaped. Log-trade is much closer to normal than trade itself, which is the log-normal pattern from problem 4 applied to a different domain.
 
 **Implication.** Trade gravity equations are almost always written on the log scale: $\log(\text{exports}) = \alpha + \beta_1 \log(\text{GDP}_{\text{exporter}}) + \beta_2 \log(\text{GDP}_{\text{importer}}) + \beta_3 \log(\text{distance}) + \cdots$. Two reasons. First, log-trade is normal-shaped, which makes OLS work cleanly. Second, log-log regression coefficients are *elasticities*: a unit change in $\log x$ is a percentage change in $x$, so the coefficient on $\log(\text{GDP})$ tells you the percent change in exports per percent change in GDP. That is the quantity trade economists want. When you read empirical trade papers in later chapters, almost every regression you see will have logged dependent and independent variables.
+
+:::
+
+## Real UK data
+
+### Problem 9: UK house transaction prices
+
+![8,000 residential property transactions from the Land Registry Price Paid Data, England and Wales. Left panel: prices in thousands of pounds on a linear scale. Right panel: the same values after taking natural logs.](../../pictures/figures/output/fig_wb1_q9.png){#fig-wb1-q9}
+
+1. What shape does the price distribution take on the linear scale?
+2. Which chapter-3 story explains why house prices take this shape?
+3. What happens to the distribution when you take logs? What does this tell you about the data-generating process?
+4. A newspaper headline quotes the mean house price in England as much higher than what most buyers actually pay. How does the shape of this distribution explain the discrepancy?
+
+::: {.callout-note collapse="true" title="Solution to Problem 9"}
+
+**Shape on linear scale.** Heavily right-skewed. The bulk of transactions cluster between £100,000 and £400,000, but a long tail extends toward £1,000,000 and beyond. This is one of the most common distributional shapes in economics.
+
+**Story.** Multiplicative growth. A property's price reflects a sequence of compounding influences: local wage levels, planning constraints, proximity to amenities, neighborhood reputation, historical appreciation, and market timing. Each factor multiplies rather than adds to the previous. The product of many small positive multiplicative factors converges to a log-normal distribution. The same story applies to income (workbook problem 4) and bilateral trade (problem 8).
+
+**Log transform.** The log-scale histogram is approximately symmetric and bell-shaped, close to a normal distribution. This is the fingerprint of a log-normal: take logs and the result looks normal. The implication is that the data-generating process is fundamentally multiplicative.
+
+**Mean vs median.** The long right tail drags the mean above the median. A small fraction of very expensive transactions (often in London and the South East) inflates the mean without describing a typical buyer's experience. The median is the right summary for "what does a typical purchaser pay." Policy discussions about housing affordability almost always use the median for this reason, though press reports sometimes quote the mean because it is larger and sounds more alarming.
+
+:::
+
+### Problem 10: English neighbourhood deprivation
+
+![Distribution of the 2019 Index of Multiple Deprivation (IMD) score across all 32,844 Lower Super Output Areas in England. Higher scores indicate greater deprivation. Vertical lines mark the mean (gold) and median (green).](../../pictures/figures/output/fig_wb1_q10.png){#fig-wb1-q10}
+
+1. Describe the shape of this distribution. Is it symmetric?
+2. The mean is noticeably higher than the median. What does this tell you about inequality in the data?
+3. A researcher claims that the "typical" English neighbourhood has a deprivation score of about 20. Is this a defensible claim? What would you need to know to assess it?
+4. If a government programme targets the most deprived 10% of areas, which statistical tool is most useful for identifying them: the mean, the median, or the rank/decile structure of the data?
+
+::: {.callout-note collapse="true" title="Solution to Problem 10"}
+
+**Shape.** Right-skewed. Most LSOAs have moderate scores (roughly 10 to 35), but a tail of very deprived areas stretches toward high scores above 50. The shape is smoother than income distributions but has the same basic skew: concentrated moderate deprivation with a smaller group of severely deprived areas.
+
+**Mean above median.** In any right-skewed distribution, the mean is pulled upward by the long tail. Here, the areas of very concentrated deprivation (inner-city LSOAs in towns like Blackpool, Middlesbrough, and parts of London) drag the mean above where the bulk of the data sits. This is a direct measure of inequality: the greater the gap between mean and median, the more the distribution is dominated by extremes rather than the typical case.
+
+**Defending a claim about the "typical" neighbourhood.** Whether a score of 20 is defensible depends on whether you use the mean or median. If the median is roughly 21–22 and the mean is higher, then "about 20" may be close to the median. The defensibility requires specifying which summary you are using and why. The median is more representative of the typical neighbourhood; the mean is more sensitive to the most deprived areas.
+
+**Targeting the worst-off 10%.** The rank or decile structure is the right tool. The IMD data comes with pre-computed deciles and vigintiles (twentieths). Targeting "decile 1" areas directly selects the most deprived 10% without any ambiguity about mean versus median. This is a case where ranks are more decision-relevant than moments. Means and medians describe the centre of a distribution; ranks describe position within it.
 
 :::
 

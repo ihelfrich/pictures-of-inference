@@ -44,6 +44,10 @@ def run_chapter(slug: str) -> None:
     for func in fig_funcs:
         try:
             func()
+        except FileNotFoundError as e:
+            # Local-only data (e.g. external drive with UK datasets).
+            # Pre-generated PNGs are committed to the repo; skip silently on CI.
+            print(f"  SKIPPED {func.__name__}: data not available ({e})")
         except Exception as e:
             print(f"  ERROR in {func.__name__}: {e}")
             raise

@@ -13,7 +13,7 @@ title: "Workbook · Reading regressions by inspection"
 </div>
 <div class="poi-chapter-card-meta">
 <span class="label">Format</span>
-<span class="value">8 scatter-plot diagnostic problems</span>
+<span class="value">10 scatter-plot diagnostic problems</span>
 </div>
 <div class="poi-chapter-card-learn">
 <span class="label">Skill being practiced</span>
@@ -26,7 +26,7 @@ title: "Workbook · Reading regressions by inspection"
 </div>
 :::
 
-Most of what a regression tells you is visible in the scatter plot before you ever compute a coefficient. This workbook trains you to read it. Eight scatter plots follow. For each one, the question is what a regression *would* tell you if you ran it, and what diagnostic problems would show up if you looked at the residuals.
+Most of what a regression tells you is visible in the scatter plot before you ever compute a coefficient. This workbook trains you to read it. Ten scatter plots follow. For each one, the question is what a regression *would* tell you if you ran it, and what diagnostic problems would show up if you looked at the residuals.
 
 The chapters on regression itself are coming in Part II. The skill this workbook builds will make those chapters easier, because by then you will already know what a good regression looks like.
 
@@ -195,9 +195,53 @@ The same problem appears in reverse for floor effects (data bounded below), and 
 
 :::
 
+## Real UK data
+
+### Problem 9: Income and house prices across British local authorities
+
+![Each dot is a local authority district in England and Wales. The x-axis shows gross disposable household income per head in 2016 (£). The y-axis shows the median house transaction price (£ thousands). London boroughs are highlighted.](../../pictures/figures/output/fig_wb2_q9.png){#fig-wb2-q9}
+
+1. What is the direction of the relationship? Does it look linear?
+2. Estimate the slope by eye. If GDHI increases by £5,000, by roughly how much does the median house price change?
+3. The highlighted dots form a cluster at the upper right. What is special about them? What does their presence tell you about the reliability of the OLS line for non-London areas?
+4. Would you expect this relationship to be causal? In which direction, if any?
+
+::: {.callout-note collapse="true" title="Solution to Problem 9"}
+
+**Direction.** Strongly positive. Local authorities with higher disposable incomes tend to have higher house prices. The OLS slope is approximately 0.021 £ thousands per £1 of GDHI, which translates to roughly £105,000 in median house price for every £5,000 increase in GDHI per head. The relationship is broadly linear but with meaningful scatter.
+
+**Slope by eye.** The figure prints the fitted slope. A £5,000 increase in GDHI corresponds to roughly a £100,000–110,000 increase in median house price across the full sample. For non-London areas the relationship is tighter and the slope would be modestly different.
+
+**The London cluster.** Ten London boroughs sit far above the main cloud. Their GDHI is high, but their house prices are dramatically higher still, far more than the rest of the line would predict at those income levels. This is a form of influence: a cluster of observations that is not well-described by the fitted line for the rest of the sample. The OLS line tries to accommodate them, pulling the slope steeper than it would be for non-London England alone. London is genuinely a different housing market, driven by global capital flows, restrictive planning, and its role as a financial centre. Treating it and Hartlepool as observations from the same data-generating process is a modeling choice worth questioning.
+
+**Causality.** The relationship runs in both directions and through many channels. High incomes allow residents to bid more for housing, pushing prices up. High prices attract high earners who can afford them. Both income and house prices reflect common drivers: productivity, access to infrastructure, and local economic history. A scatter plot is the beginning of the question, not the answer. Establishing that income *causes* higher prices would require a source of variation in income that is unrelated to anything else that affects housing demand: a natural experiment or credibly exogenous policy change.
+
+:::
+
+### Problem 10: Income and health deprivation in English neighbourhoods
+
+![Each dot is one of 2,000 randomly sampled Lower Super Output Areas in England (from the 2019 Index of Multiple Deprivation). The x-axis shows the income deprivation score (fraction of residents in poverty). The y-axis shows the health deprivation and disability score (a composite of premature death, ill health, disability, and emergency admissions).](../../pictures/figures/output/fig_wb2_q10.png){#fig-wb2-q10}
+
+1. Is the relationship positive or negative? Strong or weak?
+2. The correlation coefficient is printed on the figure. What does it tell you about the fit?
+3. The cloud is dense and slightly curved near the bottom left. What does this suggest about using a straight line here?
+4. A researcher concludes: "poverty causes poor health in England." Does this scatter plot support that conclusion? What additional evidence would you need?
+
+::: {.callout-note collapse="true" title="Solution to Problem 10"}
+
+**Direction and strength.** Strongly positive. Areas with more income deprivation also tend to have worse health outcomes. The correlation shown on the figure is approximately 0.80, indicating a strong linear association.
+
+**What the correlation tells you.** A correlation near 0.80 means the linear model explains roughly 64% of the variance in health deprivation scores. That is a strong association. It also means around 36% of the variation in health is not explained by income deprivation alone. Other factors (environmental quality, access to primary care, local housing conditions) account for the remainder.
+
+**Curvature and fan shape.** The bottom-left corner of the cloud is compact, while the scatter fans out toward higher deprivation scores. This pattern (wider residuals at higher values) is mild heteroskedasticity, and there may be slight curvature near the upper end. A log transform of one or both variables, or a flexible smoother, might improve fit. For workbook purposes the straight line captures the dominant pattern, but a working analyst would examine residual plots before publishing.
+
+**Causality.** The scatter plot shows correlation, not causation. It is consistent with poverty causing poor health, and also consistent with poor health causing poverty (illness reduces earnings), with both driven by common causes (geography, education, or deindustrialisation), or some combination. To establish that poverty causes poor health, you would need an exogenous source of income variation: a policy that raised incomes in some areas but not others for reasons unrelated to health. This is exactly the kind of question Part III of the book addresses. The scatter plot opens the inquiry; it does not close it.
+
+:::
+
 ## What you practiced
 
-You have read eight scatter plots and identified what each tells you about the regression that would be fit through it. The pattern is:
+You have read ten scatter plots and identified what each tells you about the regression that would be fit through it. The pattern is:
 
 1. Look at the cloud. Estimate slope direction and rough magnitude before computing.
 2. Ask whether a straight line is the right shape.
