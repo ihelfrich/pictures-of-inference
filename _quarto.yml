@@ -28,6 +28,11 @@ book:
         - prose/part1/08-visualizing-uncertainty.qmd
         - prose/part1/09-reading-equations.qmd
         - prose/part1/10-reading-tables.qmd
+    - part: "Practice Workbook"
+      chapters:
+        - prose/workbook/wb01-distributions.qmd
+        - prose/workbook/wb02-reading-regressions.qmd
+        - prose/workbook/wb03-hypothesis-testing.qmd
   search: true
   page-navigation: true
   reader-mode: true

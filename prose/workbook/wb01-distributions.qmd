@@ -1,0 +1,202 @@
+---
+title: "Workbook · Distributions in the wild"
+---
+
+::: {.poi-chapter-card}
+<div class="poi-chapter-card-meta">
+<span class="label">Time</span>
+<span class="value">~45 minutes</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Prerequisites</span>
+<span class="value">Chapter 3</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Format</span>
+<span class="value">8 problems with figures and worked solutions</span>
+</div>
+<div class="poi-chapter-card-learn">
+<span class="label">Skill being practiced</span>
+<ul>
+<li>Recognizing distributional shape from a histogram alone</li>
+<li>Matching shape to a process-level story</li>
+<li>Applying the 68-95-99.7 rule and the log-transform reflex</li>
+</ul>
+</div>
+:::
+
+Eight histograms follow. For each one, your task is to name the shape, identify the underlying process from the chapter-3 story catalog, and answer one or two specific quantitative questions. Solutions are hidden behind a click. Resist looking until you have written your answer down.
+
+The skill is shape-to-story matching. Working analysts do this in five seconds when they see new data. By the end of this workbook you should be doing it too.
+
+## Warmups
+
+### Problem 1: Adult heights
+
+![Heights of 1,000 adult men, in centimeters, sampled from a single country.](../../pictures/figures/output/fig_wb1_q1.png){#fig-wb1-q1}
+
+Without computing anything:
+
+1. What shape best describes this distribution?
+2. What chapter-3 story produces this shape?
+3. If the mean is 175 cm and the standard deviation is 7 cm, where do approximately 95% of the values fall?
+
+::: {.callout-note collapse="true" title="Solution to Problem 1"}
+
+**Shape.** Approximately normal. Symmetric, single peak, smooth decay on both sides, no long tails.
+
+**Story.** "Sum of many small independent contributions." Adult height is shaped by many genetic and environmental influences, none of which dominates the total. The central limit theorem applies and the result is approximately normal.
+
+**95% rule.** By the 68-95-99.7 rule, about 95% of the values fall within 2 standard deviations of the mean. With $\bar{x} = 175$ and $s = 7$, that interval is $175 \pm 2(7) = 175 \pm 14$ cm, or roughly 161 to 189 cm.
+
+:::
+
+### Problem 2: Bus stop wait times
+
+![Wait times in minutes for 500 random arrivals at a bus stop where buses come at an approximately constant rate.](../../pictures/figures/output/fig_wb1_q2.png){#fig-wb1-q2}
+
+1. What shape?
+2. What story produces it?
+3. Is the mean larger or smaller than the median? Why?
+4. If the mean wait is 10 minutes, what is the probability of waiting more than 20?
+
+::: {.callout-note collapse="true" title="Solution to Problem 2"}
+
+**Shape.** Exponential. Peak at zero, fast decay to the right, no negative values.
+
+**Story.** "Memoryless waiting." Events (bus arrivals) happen at a constant rate; the time until the next one is exponentially distributed with rate $\lambda$.
+
+**Mean vs. median.** Mean is *larger* than median because the distribution is right-skewed. For an exponential with rate $\lambda$, the mean is $1/\lambda$ and the median is $\ln(2)/\lambda \approx 0.693/\lambda$. The median is roughly 70% of the mean. So a mean wait of 10 minutes implies a median around 7.
+
+**P(X > 20).** With mean 10, the rate is $\lambda = 1/10 = 0.1$. The exponential survival function gives $P(X > 20) = e^{-\lambda \cdot 20} = e^{-2} \approx 0.135$, or about 13.5%.
+
+:::
+
+## Core problems
+
+### Problem 3: Typos per page
+
+![Counts of typos per page across 200 pages of an unedited manuscript.](../../pictures/figures/output/fig_wb1_q3.png){#fig-wb1-q3}
+
+1. What shape?
+2. What story produces it?
+3. Roughly what is the average number of typos per page?
+
+::: {.callout-note collapse="true" title="Solution to Problem 3"}
+
+**Shape.** Poisson. Right-skewed, supported on non-negative integers, peaked near 2 or 3.
+
+**Story.** "Rare events in a fixed window." Each typo is rare per word, the rate is approximately constant, and typos are roughly independent of each other. The count per page is then approximately Poisson.
+
+**Average.** Visually the peak is near 2 or 3 and the tail extends out to 7 or 8. The mean is approximately 2.5. (Sanity check: for a Poisson, mean equals variance equals $\lambda$, so $\sqrt{\lambda} \approx 1.6$ should be the standard deviation. The histogram's spread looks about right.)
+
+:::
+
+### Problem 4: Household incomes
+
+![Annual household incomes for 5,000 working adults in a single country, in thousands of dollars.](../../pictures/figures/output/fig_wb1_q4.png){#fig-wb1-q4}
+
+1. What shape?
+2. What story?
+3. Should a journalist reporting this data quote the mean or the median?
+4. What happens if you take the log of the values and plot a new histogram?
+
+::: {.callout-note collapse="true" title="Solution to Problem 4"}
+
+**Shape.** Heavily right-skewed. Most of the mass clusters at moderate values; a long tail of high earners stretches to the right.
+
+**Story.** "Multiplied small effects." Income is the product of skill, education, opportunity, market conditions, and luck. Each multiplies the previous. The log of income is therefore approximately normal, which makes income itself approximately log-normal.
+
+**Mean or median.** The median, almost always. The mean is dragged upward by a small fraction of very high earners. If a country's median income is \$50,000 and its mean is \$80,000, the gap is the right tail. Reporting the mean exaggerates how a typical household lives.
+
+**Log transform.** Take the log of each value. The new histogram becomes approximately normal: symmetric, single peak. This is the reflex move whenever you see right-skewed data. Log it and see if the result looks normal. Often it does.
+
+:::
+
+### Problem 5: Twenty coin flips, repeated
+
+![Counts of heads from 1,000 repetitions of "flip a fair coin 20 times."](../../pictures/figures/output/fig_wb1_q5.png){#fig-wb1-q5}
+
+1. What shape?
+2. What story?
+3. Where is the peak? Where do most values fall?
+
+::: {.callout-note collapse="true" title="Solution to Problem 5"}
+
+**Shape.** Binomial. Symmetric (because $p = 0.5$), peaked at 10, bell-shaped envelope.
+
+**Story.** "Fixed number of trials, count the yeses." With $n = 20$ trials and $p = 0.5$ probability of success per trial, the count of heads follows Binomial(20, 0.5).
+
+**Peak and spread.** The peak is at $np = 10$. The standard deviation is $\sqrt{np(1-p)} = \sqrt{5} \approx 2.24$. By 68-95-99.7 (the binomial at this $n$ is well-approximated by a normal), about 95% of values fall in $10 \pm 2(2.24) \approx [5.5, 14.5]$. Almost all observations live between 5 and 15 heads.
+
+:::
+
+### Problem 6: Daily stock returns
+
+![Daily percentage returns for a single stock over 5,000 trading days.](../../pictures/figures/output/fig_wb1_q6.png){#fig-wb1-q6}
+
+1. What shape?
+2. How does this differ from a normal?
+3. What is the practical implication for risk management?
+
+::: {.callout-note collapse="true" title="Solution to Problem 6"}
+
+**Shape.** Roughly symmetric, peaked near zero, but with much heavier tails than a normal distribution. This is sometimes called "leptokurtic" or "fat-tailed." Visually, the peak is taller than a normal of the same standard deviation, and the tails (events more than 3 standard deviations from zero) are noticeably more populated.
+
+**Difference from normal.** Extreme returns (large positive or negative days) are more common than a normal would predict. A normal distribution with the same standard deviation would predict a 4-sigma daily return roughly once every 30,000 trading days. In real return data, 4-sigma days occur every few hundred days.
+
+**Risk management.** Models that assume normal-shaped returns systematically underestimate the probability of large losses. The 2008 financial crisis is partly a story of risk models built on normality assumptions when the real distribution had much heavier tails. Modern risk modeling uses heavy-tailed distributions (Student's $t$, generalized Pareto for the tails) to avoid this failure mode.
+
+:::
+
+## Stretch
+
+### Problem 7: Reaction times
+
+![Reaction times in milliseconds from 800 trials of a cognitive psychology experiment.](../../pictures/figures/output/fig_wb1_q7.png){#fig-wb1-q7}
+
+1. What shape?
+2. Why does the data take this shape?
+3. Should the experimenter report the mean or the median?
+4. What transformation makes this data easier to model?
+
+::: {.callout-note collapse="true" title="Solution to Problem 7"}
+
+**Shape.** Right-skewed, with a peak around 350 ms and a long tail extending to 1500 ms or more.
+
+**Why.** Reaction time is bounded below by neural transmission speed; you cannot react faster than your nervous system permits. It is unbounded above; you can react arbitrarily slowly when distracted. The lower bound builds a wall on the left; the unbounded right side opens a tail. Combined with the multiplicative nature of the stages of cognitive processing (signal detection × decision × motor response, each with its own variability), the result is approximately log-normal.
+
+**Mean or median.** The median, for the same reason as income. A few very slow trials drag the mean upward and away from the typical response.
+
+**Transformation.** Log-transform the reaction times. The result is approximately normal, which makes standard statistical methods (t-tests, regression) directly applicable. The cognitive psychology literature largely models reaction times on the log scale.
+
+:::
+
+### Problem 8: Bilateral trade volumes
+
+![Bilateral exports from the trade slice introduced in chapter 1, all 300 country-pair-year observations, in USD millions.](../../pictures/figures/output/fig_wb1_q8.png){#fig-wb1-q8}
+
+1. What shape on the linear scale?
+2. What shape on the log scale?
+3. What does this tell you about how trade economists actually fit regressions?
+
+::: {.callout-note collapse="true" title="Solution to Problem 8"}
+
+**Linear scale.** Heavily right-skewed. A small number of large bilateral relationships (USA-CHN, CHN-USA, USA-DEU) dominate the right tail; most pairs trade much less.
+
+**Log scale.** Approximately symmetric and roughly bell-shaped. Log-trade is much closer to normal than trade itself, which is the log-normal pattern from problem 4 applied to a different domain.
+
+**Implication.** Trade gravity equations are almost always written on the log scale: $\log(\text{exports}) = \alpha + \beta_1 \log(\text{GDP}_{\text{exporter}}) + \beta_2 \log(\text{GDP}_{\text{importer}}) + \beta_3 \log(\text{distance}) + \cdots$. Two reasons. First, log-trade is normal-shaped, which makes OLS work cleanly. Second, log-log regression coefficients are *elasticities*: a unit change in $\log x$ is a percentage change in $x$, so the coefficient on $\log(\text{GDP})$ tells you the percent change in exports per percent change in GDP. That is the quantity trade economists want. When you read empirical trade papers in later chapters, almost every regression you see will have logged dependent and independent variables.
+
+:::
+
+## What you practiced
+
+By the time you finish this workbook, the shape-to-story matching should feel automatic. The pattern is:
+
+1. Look at the histogram.
+2. Symmetric or skewed? Heavy-tailed or light-tailed? Single peak or several?
+3. Match to one of the six chapter-3 stories.
+4. If right-skewed, take the log and replot. Often the log-version is normal-shaped, which unlocks every standard tool.
+
+The next workbook (Reading regressions by inspection) extends this pattern to scatter plots and what they tell you about a regression *before* you fit one.

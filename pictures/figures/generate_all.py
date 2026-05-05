@@ -21,10 +21,12 @@ sys.path.insert(0, str(LIB))
 
 
 def discover_chapters() -> list[str]:
-    """Find all chXX.py modules in this directory."""
+    """Find all chXX.py and wbXX.py modules in this directory."""
     return sorted(
-        f.stem for f in HERE.glob("ch*.py")
-        if f.stem != "generate_all"
+        f.stem for f in HERE.iterdir()
+        if f.is_file() and f.suffix == ".py"
+        and f.stem != "generate_all"
+        and (f.stem.startswith("ch") or f.stem.startswith("wb"))
     )
 
 
