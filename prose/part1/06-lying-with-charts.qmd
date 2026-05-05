@@ -2,6 +2,30 @@
 title: "Lying with charts"
 ---
 
+::: {.poi-chapter-card}
+<div class="poi-chapter-card-meta">
+<span class="label">Reading time</span>
+<span class="value">~12 minutes</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Prerequisites</span>
+<span class="value">Chapter 4</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Track</span>
+<span class="value">Concept</span>
+</div>
+<div class="poi-chapter-card-learn">
+<span class="label">You will learn</span>
+<ul>
+<li>Five common visual lies and how to recognize them</li>
+<li>Why bar charts should almost always start at zero</li>
+<li>The honest defaults that prevent these errors</li>
+<li>Tufte's lie factor and how to compute it on a chart in the wild</li>
+</ul>
+</div>
+:::
+
 ## A defensive reading skill
 
 This is a different kind of chapter. The previous chapters built up the visual vocabulary the book uses. This one teaches you to read other people's charts critically, because most charts you encounter outside of textbooks are made by people with an argument they want to win, and a well-made chart is a powerful tool for winning arguments dishonestly.
@@ -122,4 +146,10 @@ For a longer treatment of this material, see Tufte's *The Visual Display of Quan
 - The chapter argues that most visual lies are mismatches between encoding and data. Can you think of a sixth kind of mismatch that was not named?
 - What is the strongest argument *for* a misleading chart? When (if ever) is editorial framing legitimate?
 
+:::
+
+::: {.poi-looking-ahead}
+[Looking ahead]{.label}
+
+**Chapter 7: Underused visualizations.** Once you can read defensively, you can also reach for chart types the standard intro repertoire skips. The next chapter walks through six of them, each anchored to the question it answers better than the conventional alternative. [Continue →](07-underused-visualizations.qmd)
 :::

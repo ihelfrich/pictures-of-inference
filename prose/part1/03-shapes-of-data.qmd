@@ -2,6 +2,30 @@
 title: "Shapes of data"
 ---
 
+::: {.poi-chapter-card}
+<div class="poi-chapter-card-meta">
+<span class="label">Reading time</span>
+<span class="value">~14 minutes</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Prerequisites</span>
+<span class="value">Chapter 2</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Track</span>
+<span class="value">Concept</span>
+</div>
+<div class="poi-chapter-card-learn">
+<span class="label">You will learn</span>
+<ul>
+<li>Six distributions as stories about the processes that produce them</li>
+<li>The 68-95-99.7 rule for the normal</li>
+<li>Why heavy tails matter and how to recognize them</li>
+<li>When to log-transform right-skewed data</li>
+</ul>
+</div>
+:::
+
 ## What a distribution is
 
 You have a column. A few hundred rows of bilateral exports, or trade distances, or human heights, or wait times for the bus. The values are not all the same, and they are not arranged at random across some flat range. They cluster, they spread, they trail off. The pattern of where the values fall is what statisticians call the *distribution*.
@@ -142,4 +166,10 @@ For now, the six stories cover everything in Parts One and Two of the book. The 
 - Pick one distribution from the chapter. Explain its underlying story to a friend in three sentences.
 - The mean of a sample becomes normal as $n$ grows, no matter what the parent distribution looks like. Why is this almost magical?
 
+:::
+
+::: {.poi-looking-ahead}
+[Looking ahead]{.label}
+
+**Chapter 4: The grammar of graphics.** Now that you can recognize distributional shapes, the next chapter teaches the visual grammar that lets you communicate about them. Wilkinson's three-layer grammar (data + aesthetics + geometry) plus the Cleveland-McGill perceptual hierarchy plus the discipline of small multiples. [Continue →](04-grammar-of-graphics.qmd)
 :::

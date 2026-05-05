@@ -2,6 +2,30 @@
 title: "Reading tables"
 ---
 
+::: {.poi-chapter-card}
+<div class="poi-chapter-card-meta">
+<span class="label">Reading time</span>
+<span class="value">~12 minutes</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Prerequisites</span>
+<span class="value">Chapter 9</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Track</span>
+<span class="value">Concept</span>
+</div>
+<div class="poi-chapter-card-learn">
+<span class="label">You will learn</span>
+<ul>
+<li>The anatomy of a regression table</li>
+<li>What summary statistics tables hide and reveal</li>
+<li>Balance tables as a window into randomization quality</li>
+<li>The crimes that show up in published tables</li>
+</ul>
+</div>
+:::
+
 ## A table is a chart with words
 
 A table is a chart. Its geometry is a grid of cells, its aesthetic mappings are row-position and column-position, and its data values are typed into the cells. The same questions you ask of a chart (what is the data, what is the encoding, what is the geometry) apply to a table, and the same critical-reading skill that lets you spot a misleading chart lets you spot a misleading table.
@@ -141,3 +165,9 @@ The general direction: less reduction, more transparency. Tables are still usefu
 4. A summary statistics table reports a variable with mean 50,000, median 32,000, and max 4,500,000. Sketch the implied distribution. What family from chapter 3 fits best? What summary would you report instead of the mean?
 
 5. Take any table from a paper you respect and re-render it as a coefficient plot or a small-multiples chart. Decide which version is more informative.
+
+::: {.poi-looking-ahead}
+[Looking ahead]{.label}
+
+**End of Part I.** The skills the part has built (data structure, probability, distributions, visualization, summarization, critical reading, mathematical literacy, table literacy) are the foundation for Part II, where you will use them to do an actual analysis end to end. Part II is being drafted; chapter 11 (the empirical paper, walked through) is the planned capstone for Part I and is in the queue.
+:::

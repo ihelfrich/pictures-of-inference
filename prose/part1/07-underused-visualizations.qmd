@@ -2,6 +2,29 @@
 title: "Underused visualizations"
 ---
 
+::: {.poi-chapter-card}
+<div class="poi-chapter-card-meta">
+<span class="label">Reading time</span>
+<span class="value">~13 minutes</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Prerequisites</span>
+<span class="value">Chapter 4</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Track</span>
+<span class="value">Concept</span>
+</div>
+<div class="poi-chapter-card-learn">
+<span class="label">You will learn</span>
+<ul>
+<li>Six chart types beyond the standard repertoire</li>
+<li>Slope graphs, Cleveland dot plots, hex bins, ridge plots, mosaics, alluvials</li>
+<li>Which question each one answers better than the conventional alternative</li>
+</ul>
+</div>
+:::
+
 ## Beyond the standard repertoire
 
 The standard chart repertoire in introductory courses is small: bars, lines, scatters, pies, histograms. Boxplots, if the instructor is feeling generous. Most students leave their first stats course with that as their entire vocabulary, and most working analysts add at most one or two more over the course of a career.
@@ -140,3 +163,9 @@ The next chapter (visualizing uncertainty) covers a separate frontier: chart typ
 4. Find a contingency table in a recent paper or news article. Sketch it as a mosaic plot. What relationship between the variables becomes visible in the mosaic that was hidden in the table of numbers?
 
 5. Construct an alluvial diagram for a categorical transition you actually care about (your students' major changes, your team's role transitions, partner shifts in a relationship dataset). The exercise is partly about whether the data lets you build it cleanly.
+
+::: {.poi-looking-ahead}
+[Looking ahead]{.label}
+
+**Chapter 8: Visualizing uncertainty.** Six new chart types in your hands. The next chapter turns to a separate frontier: how to show uncertainty as a first-class part of the visual story rather than as decoration on top of a point estimate. [Continue →](08-visualizing-uncertainty.qmd)
+:::

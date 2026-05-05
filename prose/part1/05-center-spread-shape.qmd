@@ -2,6 +2,30 @@
 title: "Center, spread, shape"
 ---
 
+::: {.poi-chapter-card}
+<div class="poi-chapter-card-meta">
+<span class="label">Reading time</span>
+<span class="value">~14 minutes</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Prerequisites</span>
+<span class="value">Chapter 3</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Track</span>
+<span class="value">Concept</span>
+</div>
+<div class="poi-chapter-card-learn">
+<span class="label">You will learn</span>
+<ul>
+<li>Three centers (mean, median, mode) and when each one lies</li>
+<li>Four ways to measure spread (range, variance, sd, IQR)</li>
+<li>Skewness and kurtosis without the formulas</li>
+<li>Why robustness changes which summary you reach for</li>
+</ul>
+</div>
+:::
+
 ## Three numbers that summarize a column
 
 You have a column of numbers. A million rows, maybe. You want to describe it in a way that fits in a sentence. What three numbers should you reach for?
@@ -140,4 +164,10 @@ In modern empirical economics, the practice of reporting both classical and robu
 - The IQR ignores the top and bottom 25%. What information are you giving up by reporting it instead of the standard deviation?
 - The bimodality warning sign comes up again and again. Why is bimodality usually a clue to disaggregate?
 
+:::
+
+::: {.poi-looking-ahead}
+[Looking ahead]{.label}
+
+**Chapter 6: Lying with charts.** Summary statistics are powerful, which means they can deceive. The next chapter catalogs the five most common visual lies (truncated axes, cherry-picked windows, area distortion, dual axes, log scales muting growth) and the honest defaults that prevent them. [Continue →](06-lying-with-charts.qmd)
 :::

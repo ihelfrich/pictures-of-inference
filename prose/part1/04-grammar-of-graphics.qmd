@@ -2,6 +2,30 @@
 title: "The grammar of graphics"
 ---
 
+::: {.poi-chapter-card}
+<div class="poi-chapter-card-meta">
+<span class="label">Reading time</span>
+<span class="value">~13 minutes</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Prerequisites</span>
+<span class="value">Chapter 1</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Track</span>
+<span class="value">Concept</span>
+</div>
+<div class="poi-chapter-card-learn">
+<span class="label">You will learn</span>
+<ul>
+<li>Wilkinson's three-layer grammar: data + aesthetics + geometry</li>
+<li>The Cleveland-McGill perceptual hierarchy and why position beats color</li>
+<li>Why small multiples (faceting) are the most underused technique</li>
+<li>The POI palette as semantic vocabulary</li>
+</ul>
+</div>
+:::
+
 ## Anatomy of a chart
 
 A chart is not a kind of thing. It is not "a bar chart" or "a scatter plot." A chart is a recipe with three layers, and once you see the layers separately, the apparent variety of charts collapses into a much smaller set of decisions.
@@ -140,4 +164,10 @@ The grammar is not finished, but the foundation is stable enough that this book 
 - Color is at the bottom of the hierarchy but is used everywhere. Why? When is color actually justified?
 - Pick a question you have had to answer with data and name the right geometry for it.
 
+:::
+
+::: {.poi-looking-ahead}
+[Looking ahead]{.label}
+
+**Chapter 5: Center, spread, shape.** The grammar tells you how to encode. The next chapter turns to the question of what to encode: the descriptive statistics that survive contact with reality. Mean and median, variance and IQR, robustness as a working concept. [Continue →](05-center-spread-shape.qmd)
 :::

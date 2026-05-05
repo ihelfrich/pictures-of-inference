@@ -2,6 +2,30 @@
 title: "Visualizing uncertainty"
 ---
 
+::: {.poi-chapter-card}
+<div class="poi-chapter-card-meta">
+<span class="label">Reading time</span>
+<span class="value">~12 minutes</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Prerequisites</span>
+<span class="value">Chapter 4</span>
+</div>
+<div class="poi-chapter-card-meta">
+<span class="label">Track</span>
+<span class="value">Concept</span>
+</div>
+<div class="poi-chapter-card-learn">
+<span class="label">You will learn</span>
+<ul>
+<li>Why error bars usually fail at showing uncertainty</li>
+<li>Confidence bands vs. prediction bands</li>
+<li>Coefficient plots, hypothetical outcome plots, fan charts</li>
+<li>Show-all-the-data as the most honest default</li>
+</ul>
+</div>
+:::
+
 ## What error bars cannot do
 
 Most published research that visualizes uncertainty uses error bars. A bar chart with a thin vertical line on top of each bar, terminated in horizontal caps, encoding either the standard error or a 95% confidence interval. Error bars are everywhere. They are also, in most situations, the wrong choice.
@@ -125,3 +149,9 @@ The general direction: less reduction, more information. The trend follows the t
 4. A fan chart of disease cases shows the 50%, 80%, and 95% prediction intervals widening into the future. Two months out, the 95% interval spans 100 to 1,000 cases. Is that a useful forecast? When would a fan chart with very wide outer bands still be informative?
 
 5. Construct a coefficient plot for the multiple-regression result you choose: at minimum three coefficients with their 95% intervals and a vertical reference line at zero. Annotate which coefficients are statistically distinguishable from zero and which are not. The exercise is half the chart and half the writing of the annotations.
+
+::: {.poi-looking-ahead}
+[Looking ahead]{.label}
+
+**Chapter 9: Reading equations.** The previous chapters built up your visual vocabulary. The next chapter builds the matching vocabulary for mathematical notation, which is what carries every formal claim about uncertainty in this book. [Continue →](09-reading-equations.qmd)
+:::
