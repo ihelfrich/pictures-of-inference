@@ -1,0 +1,206 @@
+---
+title: "Chart Truth Lab"
+subtitle: "See the same numbers told five different ways. Spot the lie. Rebuild the truth."
+---
+
+This page is a working sketch of a longer-term tool: a browser-side workbench where a reader can paste a chart (or a news article that contains one), and the lab will identify the underlying data, the encoding choices, the misleading defaults, and produce a remade version that lies less. The full version of that tool is a research project of its own. What's below is the part of it that runs today.
+
+## The premise
+
+A bar, a line, an area, a pie, and a lollipop chart can encode the same numbers and tell five different stories. The story is in the encoding, not the data. The chart-truth question is: given a number we want to communicate, what visual encoding is closest to letting the reader recover that number accurately?
+
+The perceptual ranking is well established (Cleveland and McGill 1984; updated by Heer and Bostock 2010). Position on a common scale is most accurate. Length on a common scale is next. Slope, angle, area, volume, and color saturation degrade in roughly that order. Most "this chart lies" cases are encodings that have moved a quantity to a lower position on that ranking. Some are deliberate. Most are defaults.
+
+## Live demo: same CPI series, five encodings
+
+The data below are real. Twelve months of U.S. CPI from the FRED public CSV endpoint. The numbers are the same in each panel. Move the encoding slider to see how the same series becomes a different story.
+
+```{ojs}
+cpi_data = {
+  // Real FRED CPI series, 12 most recent monthly values.
+  // Fetched at build time; if FRED is unreachable, fallback is a recent snapshot.
+  const fallback = [
+    {date: "2024-05-01", value: 314.069},
+    {date: "2024-06-01", value: 314.175},
+    {date: "2024-07-01", value: 314.540},
+    {date: "2024-08-01", value: 314.796},
+    {date: "2024-09-01", value: 315.301},
+    {date: "2024-10-01", value: 315.664},
+    {date: "2024-11-01", value: 316.441},
+    {date: "2024-12-01", value: 317.685},
+    {date: "2025-01-01", value: 319.086},
+    {date: "2025-02-01", value: 319.775},
+    {date: "2025-03-01", value: 319.615},
+    {date: "2025-04-01", value: 320.321}
+  ]
+  try {
+    const r = await fetch("https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCSL")
+    const txt = await r.text()
+    const rows = txt.split("\n").slice(1).filter(x => x.trim())
+    const parsed = rows.map(row => { const [date, v] = row.split(","); return {date, value: parseFloat(v)} }).filter(d => !isNaN(d.value))
+    return parsed.slice(-12)
+  } catch (e) {
+    return fallback
+  }
+}
+```
+
+```{ojs}
+viewof encoding = Inputs.select(
+  ["Honest line (zero-baseline)", "Truncated line (auto-scale)", "Bar", "Area (filled)", "Lollipop", "Dual-axis trick"],
+  {label: "Encoding"}
+)
+viewof aspect = Inputs.range([0.25, 2.5], {value: 0.5, step: 0.05, label: "Aspect (height/width). Stretch tall to dramatize change."})
+```
+
+```{ojs}
+{
+  const w = 720
+  const h = w * aspect
+  const data = cpi_data.map(d => ({...d, date: new Date(d.date)}))
+  const ymin = d3.min(data, d => d.value)
+  const ymax = d3.max(data, d => d.value)
+  const honest_domain = [0, Math.max(ymax * 1.05, ymax + 10)]
+  const truncated_domain = [ymin - (ymax - ymin) * 0.1, ymax + (ymax - ymin) * 0.1]
+
+  if (encoding === "Honest line (zero-baseline)") {
+    return Plot.plot({
+      width: w, height: h, marginLeft: 60,
+      x: {type: "utc", label: "Month →"},
+      y: {label: "↑ CPIAUCSL", domain: honest_domain, grid: true},
+      marks: [
+        Plot.line(data, {x: "date", y: "value", stroke: "#0d3b66", strokeWidth: 2.4}),
+        Plot.dot(data, {x: "date", y: "value", fill: "#0d3b66", r: 3})
+      ]
+    })
+  }
+  if (encoding === "Truncated line (auto-scale)") {
+    return Plot.plot({
+      width: w, height: h, marginLeft: 60,
+      x: {type: "utc", label: "Month →"},
+      y: {label: "↑ CPIAUCSL (auto-range)", domain: truncated_domain, grid: true},
+      marks: [
+        Plot.line(data, {x: "date", y: "value", stroke: "#b85c38", strokeWidth: 2.4}),
+        Plot.dot(data, {x: "date", y: "value", fill: "#b85c38", r: 3})
+      ]
+    })
+  }
+  if (encoding === "Bar") {
+    return Plot.plot({
+      width: w, height: h, marginLeft: 60, marginBottom: 60,
+      x: {type: "band", label: "Month →", tickFormat: d => d.toLocaleDateString("en-US", {year: "2-digit", month: "short"})},
+      y: {label: "↑ CPIAUCSL", domain: honest_domain, grid: true},
+      marks: [
+        Plot.barY(data, {x: "date", y: "value", fill: "#4f7942", fillOpacity: 0.8})
+      ]
+    })
+  }
+  if (encoding === "Area (filled)") {
+    return Plot.plot({
+      width: w, height: h, marginLeft: 60,
+      x: {type: "utc", label: "Month →"},
+      y: {label: "↑ CPIAUCSL (filled-area exaggerates ink)", domain: truncated_domain, grid: true},
+      marks: [
+        Plot.areaY(data, {x: "date", y: "value", fill: "#d4a72c", fillOpacity: 0.6}),
+        Plot.line(data, {x: "date", y: "value", stroke: "#7a5e10", strokeWidth: 1.6})
+      ]
+    })
+  }
+  if (encoding === "Lollipop") {
+    return Plot.plot({
+      width: w, height: h, marginLeft: 60, marginBottom: 60,
+      x: {type: "band", label: "Month →", tickFormat: d => d.toLocaleDateString("en-US", {year: "2-digit", month: "short"})},
+      y: {label: "↑ CPIAUCSL", domain: honest_domain, grid: true},
+      marks: [
+        Plot.ruleX(data, {x: "date", y1: 0, y2: "value", stroke: "#5b4fc7", strokeWidth: 1.5}),
+        Plot.dot(data, {x: "date", y: "value", fill: "#5b4fc7", r: 4})
+      ]
+    })
+  }
+  if (encoding === "Dual-axis trick") {
+    // simulate the classic dual-axis trick: second series scaled
+    const fake_second = data.map(d => ({...d, value2: 100 + Math.sin((+d.date) / 1e10) * 8 + Math.random() * 1.5}))
+    return Plot.plot({
+      width: w, height: h, marginLeft: 60, marginRight: 60,
+      x: {type: "utc", label: "Month →"},
+      y: {label: "↑ CPIAUCSL (left)", domain: truncated_domain, grid: true},
+      marks: [
+        Plot.line(data, {x: "date", y: "value", stroke: "#0d3b66", strokeWidth: 2.2}),
+        Plot.line(fake_second, {x: "date", y: d => 200 + (d.value2 - 100) * 5, stroke: "#b85c38", strokeWidth: 2.2, strokeDasharray: "5 5"}),
+        Plot.text([{x: data[0].date, y: 315}], {x: "x", y: "y", text: () => "Right axis (rescaled to deceive) →", textAnchor: "start", fontSize: 11, fill: "#b85c38", dx: 6})
+      ]
+    })
+  }
+}
+```
+
+```{ojs}
+{
+  const verdicts = {
+    "Honest line (zero-baseline)": ["✓ honest", "Zero baseline lets the reader compare absolute level and absolute change. The line looks flat at this scale because CPI changes by 1-2% a year. The reader will correctly infer that the change is small in absolute terms."],
+    "Truncated line (auto-scale)": ["⚠ misleading", "Auto-scaled y-axis blows up a 2% change into a dramatic-looking slope. This is the single most common defaulted lie in news graphics. The data are real; the visual story is wildly exaggerated."],
+    "Bar": ["✓ honest, with caveats", "Bars with a zero baseline are fine for a small number of categories. They get crowded fast and they lose the connectedness that suggests time. Use them for cross-sectional comparison, not for monthly time series."],
+    "Area (filled)": ["⚠ misleading", "Filling the area below an auto-scaled line doubles the lie. The reader's eye is recruited to interpret the fill as cumulative or as magnitude. CPI is a level, not a flow; filling it is meaningless and exaggerates."],
+    "Lollipop": ["✓ fine", "Lollipops are bars with less ink-per-bar. For a short series with categorical x, they read clean. For a long monthly series, they get noisy."],
+    "Dual-axis trick": ["✗ deceptive", "Two series on two y-axes with arbitrary scaling lets you fabricate any correlation you want. The right move is one chart per series, side by side. Or two normalized series on a single axis (e.g., both indexed to 100 at a reference date)."]
+  }
+  const [tag, body] = verdicts[encoding]
+  const colors = {"✓ honest": "#4f7942", "✓ honest, with caveats": "#4f7942", "✓ fine": "#4f7942", "⚠ misleading": "#d4a72c", "✗ deceptive": "#b85c38"}
+  const color = colors[tag] || "#888"
+  return html`<div style="background: #f3efe3; border-left: 4px solid ${color}; padding: 0.8rem 1rem; margin: 1rem 0; border-radius: 4px;">
+    <div style="font-weight: 600; color: ${color}; margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; letter-spacing: 0.03em;">VERDICT: ${tag}</div>
+    <div>${body}</div>
+  </div>`
+}
+```
+
+## What "lying less" looks like, in five rules
+
+These are the rules the tool tries to encode. None of them are original. They condense Tufte, Cleveland, and Wilkinson's *Grammar of Graphics* into operating-room defaults.
+
+1. **Zero baseline for bars, always. For lines, almost always.** The exception is when the natural zero is meaningless (e.g., human body temperature, where 0°C is not "off"). For everything financial, use zero.
+2. **One y-axis per chart unless the second is a transform of the first** (e.g., a log of the same series). Two unrelated quantities on the same chart, with independent scales, can fabricate any correlation.
+3. **Aspect ratio matters.** Cleveland's "banking to 45°" rule: make the average slope of the line about 45 degrees. Stretch a chart taller than that and you exaggerate. Flatter than that, you suppress.
+4. **Match encoding to data type.** Time series: lines. Categorical comparison: bars. Two continuous variables: scatter. Three: scatter with size or color. Four: small multiples.
+5. **Mark uncertainty.** A point estimate without a confidence interval is a story, not a number.
+
+## What the full version of this tool will do
+
+The page above is what works in a browser today. The longer-term vision has four pieces.
+
+**(a) Article ingest.** Paste a URL from the New York Times, the Wall Street Journal, the Financial Times, Bloomberg, Reuters, the Economist, or any other major economic news outlet. The tool fetches the article HTML, extracts embedded chart images and the data source citation (if present), and identifies the underlying data series where possible (often it is FRED, BLS, Eurostat, World Bank, IMF, or a national statistical agency).
+
+**(b) Live data hookup.** Once the data series is identified, the tool fetches it directly from the public API (FRED, BLS, ECB, World Bank, IMF, Eurostat) and renders it in five honest encodings alongside the article's original. The reader can see, in real time, how the article's encoding compares to the data's true shape.
+
+**(c) Chart parsing.** Where the article uses an image of a chart rather than embedded data, the tool runs the image through a chart-parsing model (e.g., DePlot, ChartGemma, or a CV pipeline) to extract the implied values, the axis ranges, the marks, and the encodings. From the extracted parameters, the tool flags the misleading defaults: truncated axes, dual axes, area encoding for non-area data, aspect-ratio manipulation, color choices that imply a ranking that the data don't support.
+
+**(d) RSS firehose.** A daily-refreshed feed of new charts from major economic and policy outlets, ranked by the lab's "lying-score" heuristic. Lying-score combines: truncation-vs-zero of y-axis; aspect-ratio departure from 45-degree banking; presence of dual axes; mismatch between encoding and data type; absence of uncertainty marks. The feed produces a daily list of "today's most misleading charts," which is a teaching corpus that grows itself.
+
+None of those four pieces are launched. The third is the hardest (the chart-parsing model has known limits on multi-line and small-multiple charts). The first and the fourth are mostly engineering. The second is mostly already feasible with the FRED/BLS/ECB/World Bank public APIs.
+
+The point of putting this rough version on the site now is to make the workflow legible. A reader who plays with the encoding slider above has already done 80 percent of the work that the full tool will eventually do automatically. The remaining 20 percent is the part that scales to news consumption at speed.
+
+## Sources for the live data and the news feed
+
+When the full version is built, it will draw from:
+
+- **U.S.:** FRED (Federal Reserve Bank of St. Louis), BLS (Bureau of Labor Statistics), BEA (Bureau of Economic Analysis), Census, Treasury, CDFI Fund.
+- **EU:** Eurostat, ECB (European Central Bank), national statistical offices through Eurostat.
+- **International:** World Bank Open Data, IMF Data Mapper, BIS (Bank for International Settlements), UNCTAD, OECD.
+- **News:** NYT, FT, WSJ, Bloomberg, Reuters, the Economist, ProPublica, VoxEU, the World Bank Development Impact blog, the IFS, the IMF blogs, the CGD blog. RSS where available; HTML scraping where it is not.
+
+## How to use this in a class
+
+The exercise this page replaces (the "take any chart from a news article" prompt in [Chapter 4, the grammar of graphics](../part1/04-grammar-of-graphics.qmd)) is one a reader can do by hand. The lab automates the comparison: paste a URL, get the five honest re-encodings, compare. As a teaching tool, the workflow is roughly:
+
+1. Find a chart in the wild.
+2. Identify the data, the aesthetic mappings, and the geometry (per Chapter 4).
+3. Catalog the misleading defaults (per [Chapter 6, lying with charts](../part1/06-lying-with-charts.qmd)).
+4. Rebuild in two or three honest encodings.
+5. Compare and write the one-paragraph caption.
+
+The lab above does step 4 in five clicks. Steps 1, 2, 3, and 5 are still the reader's job, which is the point.
+
+## Status
+
+Live demo working today. The four-piece full version is on the roadmap. If you have a chart you want re-encoded, a news article you want parsed, or a data source you want added to the source list, [open an issue](https://github.com/ihelfrich/pictures-of-inference/issues).

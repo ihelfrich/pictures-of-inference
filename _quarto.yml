@@ -33,6 +33,9 @@ book:
         - prose/workbook/wb01-distributions.qmd
         - prose/workbook/wb02-reading-regressions.qmd
         - prose/workbook/wb03-hypothesis-testing.qmd
+    - part: "Tools"
+      chapters:
+        - prose/tools/chart-truth-lab.qmd
   search: true
   page-navigation: true
   reader-mode: true
